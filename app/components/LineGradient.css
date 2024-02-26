@@ -1,0 +1,27 @@
+.line-gradient {
+	height: 16px;
+	width: 100%;
+	background: linear-gradient(
+		90deg,
+		#1f5f70 0%,
+		#007882 12.41%,
+		#089f8f 33.33%,
+		#10989e 50%,
+		#1891ac 66.67%,
+		#1c759a 83.33%
+	);
+	background-size: 400% 400%;
+	animation: line-gradient 10s ease infinite;
+}
+
+@keyframes line-gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
