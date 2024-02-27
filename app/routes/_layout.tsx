@@ -18,7 +18,7 @@ export default function Layout() {
 
 function Header() {
 	return (
-		<header className="flex h-[150px] flex-col items-center justify-center bg-primary-dark text-primary-light">
+		<header className="flex h-[150px] flex-col items-center justify-center bg-surface text-on-surface">
 			<Logo />
 			<div className="relative mt-4 w-full">
 				<nav className="flex flex-row items-center justify-center gap-16">
@@ -63,7 +63,7 @@ function NavLink({
 
 function Footer() {
 	return (
-		<footer className="relative bg-primary-dark p-5 text-primary-light">
+		<footer className="relative bg-surface p-5 text-on-surface">
 			<div className="flex justify-between">
 				<div className="w-[200px]">
 					<img
@@ -124,7 +124,7 @@ function EmailContactForm() {
 			</label>
 			<div
 				className="
-					mt-1 flex border border-primary-light
+					mt-1 flex border border-on-surface
 					focus-within:outline focus-within:outline-1 focus-within:outline-offset-2
 				"
 			>
@@ -132,12 +132,9 @@ function EmailContactForm() {
 					id={id}
 					type="email"
 					placeholder="Email..."
-					className="h-10 bg-transparent px-2 py-1 placeholder:text-primary-light/50 focus:outline-none"
+					className="h-10 bg-transparent px-2 py-1 placeholder:text-on-surface/50 focus:outline-none"
 				/>
-				<button
-					type="submit"
-					className="bg-primary-light px-1.5 font-medium uppercase text-primary-dark"
-				>
+				<button type="submit" className="bg-on-surface px-1.5 font-medium uppercase text-surface">
 					Go
 				</button>
 			</div>

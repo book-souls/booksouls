@@ -28,7 +28,7 @@ export default function Page() {
 	const { featuredBooks } = useLoaderData<typeof loader>();
 	return (
 		<main>
-			<section className="flex h-[calc(100vh-var(--header-h))] flex-col items-center bg-primary-dark pt-8 text-primary-light">
+			<section className="flex h-[calc(100vh-var(--header-h))] flex-col items-center bg-surface pt-8 text-on-surface">
 				<h1 className="mb-10 text-center text-6xl font-thin uppercase">Get Engulfed</h1>
 				<Read aria-label="A person sitting on a chair reading a book" className="mt-auto" />
 				<LineGradient />
@@ -65,18 +65,19 @@ function FeaturedBooksCarousel({ books }: { books: Book[] }) {
 		<section
 			aria-label="Featured books slides"
 			aria-live="polite"
-			className="relative bg-gradient-to-r from-primary-dark to-primary text-primary-light"
+			className="relative bg-gradient-to-r from-primary to-primary-light text-on-primary"
 		>
 			<IconButton
 				aria-label="Previous book"
 				disabled={selectedIndex === 0}
-				className="absolute left-6 top-1/2 -translate-y-1/2"
+				className="absolute left-6 top-1/2 z-10 -translate-y-1/2"
 				onClick={() => carousel?.scrollPrev()}
 			>
 				<ChevronLeftIcon />
 			</IconButton>
+
 			<div ref={ref} className="overflow-hidden">
-				<div className="flex items-center">
+				<div className="flex items-center p-12">
 					{books.map((book, i) => (
 						<FeaturedBooksCarouselItem
 							key={book.id}
@@ -87,6 +88,7 @@ function FeaturedBooksCarousel({ books }: { books: Book[] }) {
 					))}
 				</div>
 			</div>
+
 			<IconButton
 				aria-label="Next book"
 				disabled={selectedIndex === books.length - 1}
@@ -95,6 +97,7 @@ function FeaturedBooksCarousel({ books }: { books: Book[] }) {
 			>
 				<ChevronRightIcon />
 			</IconButton>
+
 			<ul
 				aria-label="Page indicators"
 				className="absolute bottom-4 left-1/2 flex -translate-x-1/2 justify-center gap-4"
@@ -122,7 +125,7 @@ function FeaturedBooksCarouselItem({
 	"aria-hidden": boolean;
 }) {
 	return (
-		<div className="flex shrink-0 basis-full items-center justify-center gap-12 p-12" {...props}>
+		<div className="flex shrink-0 basis-full items-center justify-center gap-12" {...props}>
 			<img
 				src={placeholder}
 				alt={`Book "${book.name}"`}
@@ -144,10 +147,10 @@ function FeaturedBooksCarouselIndicator(props: {
 	return (
 		<button
 			className="
-				relative h-2 w-2 rounded-full bg-primary-light/50
+				relative h-2 w-2 rounded-full bg-on-primary/50
 				before:absolute before:left-1/2 before:top-1/2 before:h-5 before:w-5 before:-translate-x-1/2 before:-translate-y-1/2
 				focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current
-				[&[aria-current='true']]:bg-primary-light
+				[&[aria-current='true']]:bg-on-primary
 			"
 			{...props}
 		/>
