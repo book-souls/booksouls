@@ -6,15 +6,15 @@ import { Logo } from "~/components/Logo";
 export default function About() {
 	return (
 		<main>
-			<div className="absolute left-[80px] top-[50px] z-10 flex h-[620px] w-[1130px] flex-col items-center bg-brand-light">
-				<h1 className="py-5 text-4xl text-brand-lightest">About Book Souls</h1>
+			<div className="absolute left-[80px] top-[50px] z-10 flex h-[620px] w-[1130px] flex-col items-center">
+				<h1 className="py-5 text-4xl">About Book Souls</h1>
 			</div>
-			<div className="absolute right-[80px] top-0 h-full w-[500px] bg-brand">
+			<div className="absolute right-[80px] top-0 h-full w-[500px]">
 				<Link to="/">
 					<Logo className="absolute right-6 top-0 z-20 w-40" />
 				</Link>
 				<div className="absolute left-64 top-20 z-30 p-7">
-					<h1 className="mb-5 text-xl text-brand-lightest">Meet The Creators</h1>
+					<h1 className="mb-5 text-xl">Meet The Creators</h1>
 					<div className="right-0 grid h-full grid-cols-2 justify-center gap-7">
 						<Creator href="#" image={placeholder}></Creator>
 						<Creator href="#" image={placeholder}></Creator>

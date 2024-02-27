@@ -2,7 +2,7 @@ import { Link, Outlet } from "@remix-run/react";
 import { SearchIcon } from "lucide-react";
 import React from "react";
 import CrueltyFreeIcon from "~/assets/cruelty-free.svg?react";
-import footerLogo from "~/assets/logo-footer.svg";
+import footerLogo from "~/assets/footer-logo.svg";
 import { IconButton } from "~/components/IconButton";
 import { Logo } from "~/components/Logo";
 
@@ -18,19 +18,14 @@ export default function Layout() {
 
 function Header() {
 	return (
-		<header className="flex h-[--header-h] flex-col items-center justify-center bg-brand text-brand-lightest">
+		<header className="flex h-[150px] flex-col items-center justify-center bg-primary text-primary-foreground">
 			<Logo />
 			<div className="relative mt-4 w-full">
-				<nav>
-					<ul className="flex flex-row items-center justify-center">
-						<HeaderNavItem href="/">Home</HeaderNavItem>
-						<HeaderNavSeparator />
-						<HeaderNavItem href="/categories">Categories</HeaderNavItem>
-						<HeaderNavSeparator />
-						<HeaderNavItem href="/authors">Authors</HeaderNavItem>
-						<HeaderNavSeparator />
-						<HeaderNavItem href="/library">Library</HeaderNavItem>
-					</ul>
+				<nav className="flex flex-row items-center justify-center gap-16">
+					<NavLink to="/">Home</NavLink>
+					<NavLink to="/categories">Categories</NavLink>
+					<NavLink to="/authors">Authors</NavLink>
+					<NavLink to="/library">Library</NavLink>
 				</nav>
 				<IconButton className="absolute right-6 top-1/2 -translate-y-1/2">
 					<SearchIcon />
@@ -40,106 +35,108 @@ function Header() {
 	);
 }
 
-function HeaderNavSeparator() {
-	return <div className="w-[100px] select-none text-center text-[8px] font-extralight">X</div>;
-}
-
-function HeaderNavItem({ href, children }: { href: string; children: React.ReactNode }) {
+function NavLink({
+	to,
+	children,
+	className = "",
+}: {
+	to: string;
+	children: React.ReactNode;
+	className?: string;
+}) {
 	return (
-		<li>
-			<Link
-				to={href}
-				className="
-					relative select-none
-					before:absolute before:bottom-0 before:right-1/2 before:h-px before:w-0 before:bg-brand-lightest before:transition-[width] before:duration-500 before:ease-[ease]
-					after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-brand-lightest after:transition-[width] after:duration-500 after:ease-[ease]
-					hover:before:w-1/2
-					hover:after:w-1/2
-				"
-			>
-				{children}
-			</Link>
-		</li>
+		<Link
+			to={to}
+			className={`
+				relative select-none
+				before:absolute before:-bottom-0.5 before:right-1/2 before:h-px before:w-1/2 before:origin-right before:scale-x-0 before:bg-primary-foreground before:transition-transform before:duration-500
+				after:absolute after:-bottom-0.5 after:left-1/2 after:h-px after:w-1/2 after:origin-left after:scale-x-0 after:bg-primary-foreground after:transition-transform after:duration-500
+				hover:before:scale-x-100 hover:after:scale-x-100
+				focus:outline focus:outline-current focus:before:hidden focus:after:hidden
+				${className}
+			`}
+		>
+			{children}
+		</Link>
 	);
 }
 
 function Footer() {
 	return (
-		<footer className="relative bg-brand px-6 pb-4 pt-7 text-brand-lightest">
+		<footer className="relative bg-primary p-5 text-primary-foreground">
 			<div className="flex justify-between">
-				<div className="flex w-[200px] flex-col items-center">
-					<img src={footerLogo} alt="Book Souls logo" width={158.25} height={148.5} />
+				<div className="w-[200px]">
+					<img
+						src={footerLogo}
+						alt="Book Souls logo"
+						width={158.25}
+						height={148.5}
+						className="mx-auto"
+					/>
 					<p className="text-center text-sm font-light">
 						Get Engulphed and Explore a New Magical World
 					</p>
 				</div>
-				<FooterNav className="mt-8" />
-				<EmailContactForm className="mt-8" />
+				<FooterLinks />
+				<EmailContactForm />
 			</div>
 			<p className="mt-12 font-light">Copyright © 2024 Book Souls Inc. All rights reserved.</p>
-			<CrueltyFreeIcon className="absolute bottom-4 right-6" />
+			<CrueltyFreeIcon className="absolute bottom-5 right-5" />
 		</footer>
 	);
 }
 
-function FooterNav({ className }: { className: string }) {
+function FooterLinks() {
 	return (
-		<nav className={`flex flex-grow justify-center gap-20 ${className}`}>
+		<div className="mt-6 flex justify-center gap-20">
 			<section>
-				<FooterSectionHeader>About</FooterSectionHeader>
-				<ul>
-					<FooterNavItem href="/about">About Us</FooterNavItem>
-					<FooterNavItem href="/terms-and-privacy">Terms & Privacy</FooterNavItem>
-				</ul>
+				<h3 className="text-lg font-medium uppercase">About</h3>
+				<nav className="flex flex-col gap-2 pt-4">
+					<FooterNavLink to="/about">About Us</FooterNavLink>
+					<FooterNavLink to="/terms-and-privacy">Terms & Privacy</FooterNavLink>
+				</nav>
 			</section>
 			<section>
-				<FooterSectionHeader>Customer Care</FooterSectionHeader>
-				<ul>
-					<FooterNavItem href="/contact-us">Contact Us</FooterNavItem>
-					<FooterNavItem href="/faq">FAQ</FooterNavItem>
-				</ul>
+				<h3 className="text-lg font-medium uppercase">Customer Care</h3>
+				<nav className="flex flex-col gap-2 pt-4">
+					<FooterNavLink to="/contact-us">Contact Us</FooterNavLink>
+					<FooterNavLink to="/faq">Frequently Asked Questions</FooterNavLink>
+				</nav>
 			</section>
-		</nav>
+		</div>
 	);
 }
 
-function FooterSectionHeader({ children }: { children: React.ReactNode }) {
-	return <h3 className="text-lg uppercase">{children}</h3>;
-}
-
-function FooterNavItem({ href, children }: { href: string; children: React.ReactNode }) {
+function FooterNavLink({ to, children }: { to: string; children: React.ReactNode }) {
 	return (
-		<li className="mt-2">
-			<Link to={href} className="font-extralight hover:underline">
-				{children}
-			</Link>
-		</li>
+		<NavLink to={to} className="w-fit font-light">
+			{children}
+		</NavLink>
 	);
 }
 
-function EmailContactForm({ className }: { className: string }) {
+function EmailContactForm() {
+	const id = React.useId();
 	return (
-		<form className={className} onSubmit={(e) => e.preventDefault()}>
-			<label htmlFor="email" className="mb-1 block text-lg uppercase">
+		<form className="mt-6" onSubmit={(e) => e.preventDefault()}>
+			<label htmlFor={id} className="uppercase">
 				Stay in touch
 			</label>
 			<div
 				className="
-					flex border border-brand-lightest
-					focus-within:outline focus-within:outline-offset-2 focus-within:outline-brand-lightest
+					mt-1 flex border border-primary-foreground
+					focus-within:outline focus-within:outline-1 focus-within:outline-offset-2 focus-within:outline-current
 				"
 			>
 				<input
-					id="email"
+					id={id}
 					type="email"
 					placeholder="Email..."
-					className="
-						h-10 bg-transparent px-2 py-1
-						placeholder:text-brand-lightest/50
-						focus:outline-none
-					"
+					className="h-10 bg-transparent px-2 py-1 placeholder:text-primary-foreground/50 focus:outline-none"
 				/>
-				<button className="w-8 bg-brand-lightest font-medium uppercase text-brand">Go</button>
+				<button className="bg-primary-foreground px-1.5 font-medium uppercase text-primary">
+					Go
+				</button>
 			</div>
 		</form>
 	);

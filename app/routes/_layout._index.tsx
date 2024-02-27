@@ -1,4 +1,3 @@
-import { faker } from "@faker-js/faker";
 import { useLoaderData } from "@remix-run/react";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
@@ -8,19 +7,20 @@ import Read from "~/assets/read.svg?react";
 import { IconButton } from "~/components/IconButton";
 import { LineGradient } from "~/components/LineGradient";
 
-function createFakeBook() {
+function createPlaceholderBook() {
 	return {
-		id: faker.number.int(),
-		name: faker.commerce.productName(),
-		description: faker.commerce.productDescription(),
+		id: Math.random(),
+		name: "Lorem Ipsum",
+		description:
+			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec dui nec odio tincidunt luctus at vitae nunc. Nulla nec dui nec odio tincidunt luctus at vitae nunc.",
 	};
 }
 
-type Book = ReturnType<typeof createFakeBook>;
+type Book = ReturnType<typeof createPlaceholderBook>;
 
 export function loader() {
 	return {
-		featuredBooks: faker.helpers.multiple(createFakeBook, { count: 8 }),
+		featuredBooks: Array(8).fill(null).map(createPlaceholderBook),
 	};
 }
 
@@ -28,15 +28,14 @@ export default function Page() {
 	const { featuredBooks } = useLoaderData<typeof loader>();
 	return (
 		<main>
-			<section className="flex flex-col items-center bg-brand text-brand-lightest">
-				<h1 className="mt-12 text-center text-6xl font-thin uppercase">Get Engulfed</h1>
-				<Read className="mt-20" />
+			<section className="flex h-[calc(100vh-var(--header-h))] flex-col items-center bg-primary pt-8 text-primary-foreground">
+				<h1 className="mb-10 text-center text-6xl font-thin uppercase">Get Engulfed</h1>
+				<Read className="mt-auto" />
 				<LineGradient />
 			</section>
-			<section className="flex flex-col items-center bg-brand-lightest p-8 text-brand">
-				<h1 className="text-center text-7xl font-medium uppercase">Featured Books</h1>
-				<p className="mt-2 text-7xl font-bold text-brand/20">X</p>
-				<div className="mt-6 grid grid-cols-4 gap-10">
+			<section className="p-8">
+				<h1 className="text-center text-5xl font-medium uppercase">Featured Books</h1>
+				<div className="mx-auto mt-10 grid w-fit grid-cols-4 gap-8">
 					{featuredBooks.map((book) => (
 						<FeaturedBook key={book.id} book={book} />
 					))}
@@ -71,28 +70,19 @@ function FeaturedBooksCarousel({ books }: { books: Book[] }) {
 		}
 
 		carousel?.on("select", onSelect);
-
 		return () => {
 			carousel?.off("select", onSelect);
 		};
 	}, [carousel]);
 
 	return (
-		<div className="relative">
-			<div
-				ref={ref}
-				className="overflow-hidden bg-gradient-to-r from-brand to-brand-light text-brand-lightest"
-			>
+		<div className="relative bg-gradient-to-r from-primary to-secondary text-primary-foreground">
+			<div ref={ref} className="overflow-hidden bg-gradient-to-r">
 				<div className="flex items-center">
 					{books.map((book) => (
 						<FeaturedBooksCarouselItem key={book.id} book={book} />
 					))}
 				</div>
-			</div>
-			<div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 justify-center gap-4">
-				{books.map((_, i) => (
-					<FeaturedBooksCarouselIndicator key={i} active={i === index} />
-				))}
 			</div>
 			<IconButton
 				disabled={index === 0}
@@ -114,6 +104,15 @@ function FeaturedBooksCarousel({ books }: { books: Book[] }) {
 			>
 				<ChevronRightIcon />
 			</IconButton>
+			<div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 justify-center gap-4">
+				{books.map((_, i) => (
+					<FeaturedBooksCarouselIndicator
+						key={i}
+						active={i === index}
+						onClick={() => carousel?.scrollTo(i)}
+					/>
+				))}
+			</div>
 		</div>
 	);
 }
@@ -134,10 +133,22 @@ function FeaturedBooksCarouselItem({ book }: { book: Book }) {
 	);
 }
 
-function FeaturedBooksCarouselIndicator({ active }: { active: boolean }) {
+function FeaturedBooksCarouselIndicator({
+	active,
+	onClick,
+}: {
+	active: boolean;
+	onClick: React.MouseEventHandler<HTMLButtonElement>;
+}) {
 	return (
-		<span
-			className={`h-2 w-2 rounded-full ${active ? "bg-brand-lightest" : "bg-brand-lightest/25"}`}
+		<button
+			onClick={onClick}
+			className="
+				relative h-2 w-2 rounded-full bg-primary-foreground/50
+				before:absolute before:left-1/2 before:top-1/2 before:h-5 before:w-5 before:-translate-x-1/2 before:-translate-y-1/2
+				focus-visible:outline  focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current
+				[&[aria-current='true']]:bg-primary-foreground
+			"
 			aria-current={active}
 		/>
 	);
