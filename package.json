@@ -17,9 +17,9 @@
 		"@remix-run/node": "^2.7.2",
 		"@remix-run/react": "^2.7.2",
 		"@remix-run/serve": "^2.7.2",
-		"embla-carousel-react": "8.0.0-rc19",
+		"embla-carousel-react": "8.0.0",
 		"isbot": "^3.6.8",
-		"lucide-react": "^0.307.0",
+		"lucide-react": "^0.341.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0"
 	},
