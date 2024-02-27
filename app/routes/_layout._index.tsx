@@ -144,10 +144,10 @@ function FeaturedBooksCarouselIndicator({
 		<button
 			onClick={onClick}
 			className="
-				bg-primary-foreground/50 [&[aria-current='true']]:bg-primary-foreground relative h-2 w-2
-				rounded-full before:absolute before:left-1/2 before:top-1/2 before:h-5 before:w-5 before:-translate-x-1/2
-				before:-translate-y-1/2  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4
-				focus-visible:outline-current
+				relative h-2 w-2 rounded-full bg-primary-light/50
+				before:absolute before:left-1/2 before:top-1/2 before:h-5 before:w-5 before:-translate-x-1/2 before:-translate-y-1/2
+				focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current
+				[&[aria-current='true']]:bg-primary-light
 			"
 			aria-current={active}
 		/>
