@@ -5,27 +5,26 @@ import { Logo } from "~/components/Logo";
 
 export default function About() {
 	return (
-		<main>
-			<div className="absolute left-[80px] top-[50px] z-10 flex h-[620px] w-[1130px] flex-col items-center">
-				<h1 className="py-5 text-4xl">About Book Souls</h1>
+		<main className="relative h-screen">
+			<div className="absolute bottom-12 left-12 top-12 z-10 w-4/6 bg-primary text-on-primary">
+				<h1 className="py-5 text-center text-4xl">About Book Souls</h1>
 			</div>
-			<div className="absolute right-[80px] top-0 h-full w-[500px]">
+			<div className="absolute right-12 h-full w-1/3 bg-surface px-6 py-3 text-on-surface">
 				<Link to="/">
-					<Logo className="absolute right-6 top-0 z-20 w-40" />
+					<Logo scale={0.5} className="ml-auto" />
 				</Link>
-				<div className="absolute left-64 top-20 z-30 p-7">
-					<h1 className="mb-5 text-xl">Meet The Creators</h1>
-					<div className="right-0 grid h-full grid-cols-2 justify-center gap-7">
-						<Creator href="#" image={placeholder}></Creator>
-						<Creator href="#" image={placeholder}></Creator>
-						<Creator href="#" image={placeholder}></Creator>
-						<Creator href="#" image={placeholder}></Creator>
-						<Creator href="#" image={placeholder}></Creator>
-						<Creator href="#" image={placeholder}></Creator>
-					</div>
+				<h2 className="mt-8 text-right text-xl font-light">Meet the Creators</h2>
+				<div className="ml-auto mt-6 grid w-fit grid-cols-2 gap-6">
+					<Creator href="#" image={placeholder} />
+					<Creator href="#" image={placeholder} />
+					<Creator href="#" image={placeholder} />
+					<Creator href="#" image={placeholder} />
 				</div>
-				<AboutIcon className="absolute bottom-0 right-0 z-20 h-auto w-80"></AboutIcon>
 			</div>
+			<AboutIcon
+				aria-label="Three people standing next to each other"
+				className="absolute bottom-0 right-12 z-20 h-[auto] w-80"
+			/>
 		</main>
 	);
 }
