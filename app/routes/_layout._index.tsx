@@ -99,7 +99,7 @@ function FeaturedBooksCarousel({ books }: { books: Book[] }) {
 			</IconButton>
 
 			<ul
-				aria-label="Page indicators"
+				aria-label="Slide indicators"
 				className="absolute bottom-4 left-1/2 flex -translate-x-1/2 justify-center gap-4"
 			>
 				{books.map((_, i) => (
