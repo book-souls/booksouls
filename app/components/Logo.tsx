@@ -1,10 +1,13 @@
 import React from "react";
 import logo from "~/assets/logo.svg";
 
-export type LogoProps = Omit<React.ComponentPropsWithRef<"img">, "src" | "alt">;
+export interface LogoProps
+	extends Omit<React.ComponentPropsWithoutRef<"img">, "src" | "alt" | "width" | "height"> {
+	scale?: number;
+}
 
-export const Logo: React.FC<LogoProps> = React.forwardRef((props, ref) => {
-	return <img ref={ref} src={logo} alt="Book Souls logo" width={266} height={75} {...props} />;
-});
-
-Logo.displayName = "Logo";
+export function Logo({ scale = 1, ...props }: LogoProps) {
+	return (
+		<img src={logo} alt="Book Souls logo" width={scale * 266} height={scale * 75} {...props} />
+	);
+}

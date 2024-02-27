@@ -1,11 +1,8 @@
 import "./LineGradient.css";
 import React from "react";
 
-export type LineGradientProps = React.ComponentPropsWithRef<"div">;
+export type LineGradientProps = React.ComponentPropsWithoutRef<"div">;
 
-export const LineGradient: React.FC<LineGradientProps> = React.forwardRef((props, ref) => {
-	const { className = "", ...rest } = props;
-	return <div ref={ref} className={`line-gradient ${className}`} {...rest} />;
-});
-
-LineGradient.displayName = "LineGradient";
+export function LineGradient({ className = "", ...props }: LineGradientProps) {
+	return <div className={`line-gradient ${className}`} {...props} />;
+}

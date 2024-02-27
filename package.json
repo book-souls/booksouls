@@ -9,14 +9,14 @@
 		"format": "prettier --write .",
 		"lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
 		"start": "remix-serve ./build/server/index.js",
-		"typecheck": "tsc",
-		"add-component": "node scripts/add-component"
+		"typecheck": "tsc"
 	},
 	"dependencies": {
 		"@fontsource/poppins": "^5.0.8",
 		"@remix-run/node": "^2.7.2",
 		"@remix-run/react": "^2.7.2",
 		"@remix-run/serve": "^2.7.2",
+		"clsx": "^2.1.0",
 		"embla-carousel-react": "8.0.0",
 		"isbot": "^3.6.8",
 		"lucide-react": "^0.341.0",
@@ -24,7 +24,6 @@
 		"react-dom": "^18.2.0"
 	},
 	"devDependencies": {
-		"@faker-js/faker": "^8.3.1",
 		"@ianvs/prettier-plugin-sort-imports": "^4.1.1",
 		"@remix-run/dev": "^2.7.2",
 		"@types/prop-types": "^15.7.11",
