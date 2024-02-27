@@ -27,7 +27,7 @@ function Header() {
 					<NavLink to="/authors">Authors</NavLink>
 					<NavLink to="/library">Library</NavLink>
 				</nav>
-				<IconButton className="absolute right-6 top-1/2 -translate-y-1/2">
+				<IconButton aria-label="Search" className="absolute right-6 top-1/2 -translate-y-1/2">
 					<SearchIcon />
 				</IconButton>
 			</div>
@@ -81,7 +81,7 @@ function Footer() {
 				<EmailContactForm />
 			</div>
 			<p className="mt-12 font-light">Copyright © 2024 Book Souls Inc. All rights reserved.</p>
-			<CrueltyFreeIcon className="absolute bottom-5 right-5" />
+			<CrueltyFreeIcon aria-label="Cruelty free" className="absolute bottom-5 right-5" />
 		</footer>
 	);
 }
