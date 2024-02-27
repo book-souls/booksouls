@@ -6,7 +6,7 @@ import "@fontsource/poppins/500.css";
 import "@fontsource/poppins/900.css";
 import "./root.postcss";
 import type { MetaFunction } from "@remix-run/node";
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
 	return [{ title: "New Remix App" }, { name: "description", content: "Welcome to Remix!" }];
@@ -25,7 +25,6 @@ export default function App() {
 				<Outlet />
 				<ScrollRestoration />
 				<Scripts />
-				<LiveReload />
 			</body>
 		</html>
 	);
