@@ -18,7 +18,7 @@ export default function Layout() {
 
 function Header() {
 	return (
-		<header className="flex h-[150px] flex-col items-center justify-center bg-primary text-primary-foreground">
+		<header className="flex h-[150px] flex-col items-center justify-center bg-primary-dark text-primary-light">
 			<Logo />
 			<div className="relative mt-4 w-full">
 				<nav className="flex flex-row items-center justify-center gap-16">
@@ -49,8 +49,8 @@ function NavLink({
 			to={to}
 			className={`
 				relative select-none
-				before:absolute before:-bottom-0.5 before:right-1/2 before:h-px before:w-1/2 before:origin-right before:scale-x-0 before:bg-primary-foreground before:transition-transform before:duration-500
-				after:absolute after:-bottom-0.5 after:left-1/2 after:h-px after:w-1/2 after:origin-left after:scale-x-0 after:bg-primary-foreground after:transition-transform after:duration-500
+				before:absolute before:-bottom-0.5 before:right-1/2 before:h-px before:w-1/2 before:origin-right before:scale-x-0 before:bg-current before:transition-transform before:duration-500
+				after:absolute after:-bottom-0.5 after:left-1/2 after:h-px after:w-1/2 after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-500
 				hover:before:scale-x-100 hover:after:scale-x-100
 				focus:outline focus:outline-current focus:before:hidden focus:after:hidden
 				${className}
@@ -63,7 +63,7 @@ function NavLink({
 
 function Footer() {
 	return (
-		<footer className="relative bg-primary p-5 text-primary-foreground">
+		<footer className="relative bg-primary-dark p-5 text-primary-light">
 			<div className="flex justify-between">
 				<div className="w-[200px]">
 					<img
@@ -124,17 +124,20 @@ function EmailContactForm() {
 			</label>
 			<div
 				className="
-					mt-1 flex border border-primary-foreground
-					focus-within:outline focus-within:outline-1 focus-within:outline-offset-2 focus-within:outline-current
+					mt-1 flex border border-primary-light
+					focus-within:outline focus-within:outline-1 focus-within:outline-offset-2
 				"
 			>
 				<input
 					id={id}
 					type="email"
 					placeholder="Email..."
-					className="h-10 bg-transparent px-2 py-1 placeholder:text-primary-foreground/50 focus:outline-none"
+					className="h-10 bg-transparent px-2 py-1 placeholder:text-primary-light/50 focus:outline-none"
 				/>
-				<button className="bg-primary-foreground px-1.5 font-medium uppercase text-primary">
+				<button
+					type="submit"
+					className="bg-primary-light px-1.5 font-medium uppercase text-primary-dark"
+				>
 					Go
 				</button>
 			</div>

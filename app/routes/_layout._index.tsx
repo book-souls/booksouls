@@ -28,7 +28,7 @@ export default function Page() {
 	const { featuredBooks } = useLoaderData<typeof loader>();
 	return (
 		<main>
-			<section className="flex h-[calc(100vh-var(--header-h))] flex-col items-center bg-primary pt-8 text-primary-foreground">
+			<section className="flex h-[calc(100vh-var(--header-h))] flex-col items-center bg-primary-dark pt-8 text-primary-light">
 				<h1 className="mb-10 text-center text-6xl font-thin uppercase">Get Engulfed</h1>
 				<Read className="mt-auto" />
 				<LineGradient />
@@ -76,8 +76,8 @@ function FeaturedBooksCarousel({ books }: { books: Book[] }) {
 	}, [carousel]);
 
 	return (
-		<div className="relative bg-gradient-to-r from-primary to-secondary text-primary-foreground">
-			<div ref={ref} className="overflow-hidden bg-gradient-to-r">
+		<div className="relative bg-gradient-to-r from-primary-dark to-primary text-primary-light">
+			<div ref={ref} className="overflow-hidden">
 				<div className="flex items-center">
 					{books.map((book) => (
 						<FeaturedBooksCarouselItem key={book.id} book={book} />
@@ -144,10 +144,10 @@ function FeaturedBooksCarouselIndicator({
 		<button
 			onClick={onClick}
 			className="
-				relative h-2 w-2 rounded-full bg-primary-foreground/50
-				before:absolute before:left-1/2 before:top-1/2 before:h-5 before:w-5 before:-translate-x-1/2 before:-translate-y-1/2
-				focus-visible:outline  focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current
-				[&[aria-current='true']]:bg-primary-foreground
+				bg-primary-foreground/50 [&[aria-current='true']]:bg-primary-foreground relative h-2 w-2
+				rounded-full before:absolute before:left-1/2 before:top-1/2 before:h-5 before:w-5 before:-translate-x-1/2
+				before:-translate-y-1/2  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4
+				focus-visible:outline-current
 			"
 			aria-current={active}
 		/>
