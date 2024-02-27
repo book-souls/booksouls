@@ -18,7 +18,7 @@ export default function Layout() {
 
 function Header() {
 	return (
-		<header className="text-brand-lightest bg-brand flex h-[--header-h] flex-col items-center justify-center">
+		<header className="flex h-[--header-h] flex-col items-center justify-center bg-brand text-brand-lightest">
 			<Logo />
 			<div className="relative mt-4 w-full">
 				<nav>
@@ -50,9 +50,9 @@ function HeaderNavItem({ href, children }: { href: string; children: React.React
 			<Link
 				to={href}
 				className="
-					before:bg-brand-lightest after:bg-brand-lightest
-					relative select-none before:absolute before:bottom-0 before:right-1/2 before:h-px before:w-0 before:transition-[width] before:duration-500
-					before:ease-[ease] after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:transition-[width] after:duration-500 after:ease-[ease]
+					relative select-none
+					before:absolute before:bottom-0 before:right-1/2 before:h-px before:w-0 before:bg-brand-lightest before:transition-[width] before:duration-500 before:ease-[ease]
+					after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-brand-lightest after:transition-[width] after:duration-500 after:ease-[ease]
 					hover:before:w-1/2
 					hover:after:w-1/2
 				"
@@ -65,7 +65,7 @@ function HeaderNavItem({ href, children }: { href: string; children: React.React
 
 function Footer() {
 	return (
-		<footer className="text-brand-lightest bg-brand relative px-6 pb-4 pt-7">
+		<footer className="relative bg-brand px-6 pb-4 pt-7 text-brand-lightest">
 			<div className="flex justify-between">
 				<div className="flex w-[200px] flex-col items-center">
 					<img src={footerLogo} alt="Book Souls logo" width={158.25} height={148.5} />
@@ -125,8 +125,8 @@ function EmailContactForm({ className }: { className: string }) {
 			</label>
 			<div
 				className="
-					border-brand-lightest focus-within:outline-brand-lightest flex
-					border focus-within:outline focus-within:outline-offset-2
+					flex border border-brand-lightest
+					focus-within:outline focus-within:outline-offset-2 focus-within:outline-brand-lightest
 				"
 			>
 				<input
@@ -134,12 +134,12 @@ function EmailContactForm({ className }: { className: string }) {
 					type="email"
 					placeholder="Email..."
 					className="
-						placeholder:text-brand-lightest/50 h-10 bg-transparent px-2
-						py-1
+						h-10 bg-transparent px-2 py-1
+						placeholder:text-brand-lightest/50
 						focus:outline-none
 					"
 				/>
-				<button className="bg-brand-lightest text-brand w-8 font-medium uppercase">Go</button>
+				<button className="w-8 bg-brand-lightest font-medium uppercase text-brand">Go</button>
 			</div>
 		</form>
 	);

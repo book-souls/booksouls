@@ -28,14 +28,14 @@ export default function Page() {
 	const { featuredBooks } = useLoaderData<typeof loader>();
 	return (
 		<main>
-			<section className="text-brand-lightest bg-brand flex flex-col items-center">
+			<section className="flex flex-col items-center bg-brand text-brand-lightest">
 				<h1 className="mt-12 text-center text-6xl font-thin uppercase">Get Engulfed</h1>
 				<Read className="mt-20" />
 				<LineGradient />
 			</section>
-			<section className="bg-brand-lightest text-brand flex flex-col items-center p-8">
+			<section className="flex flex-col items-center bg-brand-lightest p-8 text-brand">
 				<h1 className="text-center text-7xl font-medium uppercase">Featured Books</h1>
-				<p className="text-brand/20 mt-2 text-7xl font-bold">X</p>
+				<p className="mt-2 text-7xl font-bold text-brand/20">X</p>
 				<div className="mt-6 grid grid-cols-4 gap-10">
 					{featuredBooks.map((book) => (
 						<FeaturedBook key={book.id} book={book} />
@@ -81,7 +81,7 @@ function FeaturedBooksCarousel({ books }: { books: Book[] }) {
 		<div className="relative">
 			<div
 				ref={ref}
-				className="text-brand-lightest from-brand to-brand-light overflow-hidden bg-gradient-to-r"
+				className="overflow-hidden bg-gradient-to-r from-brand to-brand-light text-brand-lightest"
 			>
 				<div className="flex items-center">
 					{books.map((book) => (
