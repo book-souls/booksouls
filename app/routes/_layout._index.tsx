@@ -35,6 +35,7 @@ export default function Page() {
 			</section>
 			<section className="p-8">
 				<h2 className="text-center text-5xl font-medium uppercase">Featured Books</h2>
+				<div className="mt-2 text-center text-3xl font-black opacity-20">X</div>
 				<div className="mx-auto mt-10 grid w-fit grid-cols-4 gap-8">
 					{featuredBooks.map((book) => (
 						<FeaturedBook key={book.id} book={book} />
