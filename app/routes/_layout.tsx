@@ -27,7 +27,7 @@ function Header() {
 					<NavLink to="/authors">Authors</NavLink>
 					<NavLink to="/library">Library</NavLink>
 				</nav>
-				<IconButton aria-label="Search" className="absolute right-6 top-1/2 -translate-y-1/2">
+				<IconButton aria-label="Search" className="!absolute right-6 top-1/2 -translate-y-1/2">
 					<SearchIcon />
 				</IconButton>
 			</div>
