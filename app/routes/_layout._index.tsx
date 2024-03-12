@@ -4,7 +4,6 @@ import React from "react";
 import placeholder from "~/assets/placeholder.jpeg";
 import Read from "~/assets/read.svg?react";
 import { IconButton } from "~/components/IconButton";
-import { LineGradient } from "~/components/LineGradient";
 import { useCarousel } from "~/hooks/carousel";
 
 function createPlaceholderBook() {
@@ -31,7 +30,7 @@ export default function Page() {
 			<section className="flex h-[calc(100vh-var(--header-h))] flex-col items-center bg-surface pt-8 text-on-surface">
 				<h1 className="mb-10 text-center text-6xl font-thin uppercase">Get Engulfed</h1>
 				<Read aria-label="A person sitting on a chair reading a book" className="mt-auto" />
-				<LineGradient />
+				<div className="line-gradient" />
 			</section>
 			<section className="p-8">
 				<h2 className="text-center text-5xl font-medium uppercase">Featured Books</h2>

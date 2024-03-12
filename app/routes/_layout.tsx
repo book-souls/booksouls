@@ -68,7 +68,7 @@ function Footer() {
 				<div className="w-[200px]">
 					<img
 						src={footerLogo}
-						alt="Book Souls logo"
+						alt="Book Souls"
 						width={158.25}
 						height={148.5}
 						className="mx-auto"
