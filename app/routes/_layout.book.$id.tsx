@@ -65,7 +65,6 @@ function SimilarBooks({ books }: { books: Book[] }) {
 			className="mb-9 mt-12"
 		>
 			<h2 className="text-center text-3xl uppercase">Similar Books</h2>
-			<div className="mt-2 text-center text-3xl font-black opacity-20">X</div>
 			<div ref={ref} className="overflow-hidden">
 				<div className="flex items-center pb-12 pt-8">
 					{books.map((book, i) => (
