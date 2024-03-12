@@ -1,18 +1,20 @@
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import placholder from "~/assets/placeholder.jpeg";
 import { IconButton } from "~/components/IconButton";
 import { useCarousel } from "~/hooks/carousel";
 
-export function loader() {
+export function loader({ params }: LoaderFunctionArgs) {
+	const id = String(params.id);
 	return {
+		id,
 		title: "Lorem Ipsum",
 		info: "Lorem Ipsum Dolor Sit, Amet Consectetur Elit. Lorem Ipsum Dolor Sit, Amet Consectetur Elit.",
 		description:
 			"Lorem Ipsum Dolor Sit Amet Consectetur Adipisicing Elit. Veniam, Lorem Ipsum Dolor Sit Amet, Consectetur Adipisicing Elit. Magni Animi Corporis Non Distinctio! Quas Aliquam Deleniti Nostrum At Dolor Laudantium Necessitatibus Vitae Sunt Incidunt Vero, Similique Ex Corporis Numquam Officia. Lorem Ipsum Dolor Sit Amet Consectetur Adipisicing Elit. Sed Ullam Error Exercitationem Vitae Odit Nobis Neque Rem. Ea Saepe Reprehenderit Aperiam Est Eveniet Dignissimos Asperiores, Atque Reiciendis Magni Nesciunt Ducimus. Lorem Ipsum Dolor Sit Amet Consectetur Adipisicing Elit. Distinctio Dolor Similique Deleniti Quas Voluptatum Ipsam Pariatur Possimus Ipsa Animi, Aspernatur Tempora Laudantium, Incidunt Esse Debitis? Atque Necessitatibus Perspiciatis Fugit Similique! Lorem Ipsum, Dolor Sit Amet Consectetur Adipisicing Elit. Quibusdam Atque Inventore Nesciunt Maxime, Exercitationem Expedita Eius Error Modi Omnis. Quis Dolorem Vel Autem Aliquid Sed Quo Fuga Mollitia? Repellat, Aliquam. ",
 		genres: ["Genre, Genre, ....."],
 		image: placholder,
-		id: Math.random(),
 		similarBooks: Array(8)
 			.fill(null)
 			.map(() => ({
@@ -27,7 +29,7 @@ export default function Book() {
 	return (
 		<main>
 			<div className="p-9">
-				<div className="mt-4 flex gap-6">
+				<section className="mt-4 flex gap-6">
 					<img
 						className="h-[285px] w-[200px] rounded-lg object-cover shadow-md"
 						src={book.image}
@@ -43,11 +45,11 @@ export default function Book() {
 							Read Book
 						</button>
 					</div>
-				</div>
-				<div className="mt-9">
+				</section>
+				<section className="mt-9">
 					<h2 className="text-2xl font-medium">Description</h2>
 					<p className="mt-4 text-on-background/75">{book.description}</p>
-				</div>
+				</section>
 			</div>
 			<SimilarBooks books={book.similarBooks} />
 		</main>
@@ -72,7 +74,7 @@ function SimilarBooks({ books }: { books: Book[] }) {
 							key={book.id}
 							book={book}
 							aria-label={`Slide ${i + 1}`}
-							aria-hidden={i >= selectedIndex && i < selectedIndex + 4}
+							aria-hidden={i < selectedIndex || i >= selectedIndex + 4}
 						/>
 					))}
 				</div>
