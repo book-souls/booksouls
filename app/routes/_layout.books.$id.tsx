@@ -28,7 +28,7 @@ export default function Book() {
 	const book = useLoaderData<typeof loader>();
 	return (
 		<main>
-			<div className="p-9">
+			<div className="mx-auto max-w-4xl p-9">
 				<section className="mt-4 flex gap-6">
 					<img
 						className="h-[285px] w-[200px] rounded-lg object-cover shadow-md"
