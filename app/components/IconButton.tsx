@@ -8,7 +8,7 @@ export const IconButton: React.FC<IconButtonProps> = React.forwardRef(
 		<button
 			ref={ref}
 			className={twMerge(
-				"inline-flex h-10 w-10 items-center justify-center rounded-full",
+				"relative inline-flex h-10 w-10 items-center justify-center rounded-full",
 				"before:absolute before:inset-0 before:rounded-[inherit] before:bg-current before:opacity-0",
 				"hover:before:opacity-[8%]",
 				"focus-visible:outline focus-visible:outline-2 focus-visible:outline-current",
