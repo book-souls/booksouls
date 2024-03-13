@@ -1,4 +1,4 @@
-import { ActionFunctionArgs } from "@remix-run/node";
+import type { ActionFunctionArgs } from "@remix-run/node";
 import { Form, Link } from "@remix-run/react";
 import LoginLogo from "~/assets/login.svg?react";
 import { Logo } from "~/components/Logo";
