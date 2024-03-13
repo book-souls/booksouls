@@ -9,13 +9,15 @@
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
 		"start": "remix-serve ./build/server/index.js",
-		"typecheck": "tsc"
+		"typecheck": "tsc",
+		"typegen": "supabase gen types typescript --project-id pbmtepadbgllxljfxprp --schema public > ./app/supabase/types.ts"
 	},
 	"dependencies": {
 		"@fontsource/poppins": "^5.0.8",
 		"@remix-run/node": "^2.7.2",
 		"@remix-run/react": "^2.7.2",
 		"@remix-run/serve": "^2.7.2",
+		"@supabase/ssr": "^0.1.0",
 		"embla-carousel-react": "8.0.0",
 		"isbot": "^3.6.8",
 		"lucide-react": "^0.341.0",
@@ -40,6 +42,7 @@
 		"postcss": "^8.4.35",
 		"prettier": "^3.2.5",
 		"prettier-plugin-tailwindcss": "^0.5.11",
+		"supabase": "^1.148.6",
 		"tailwindcss": "^3.4.1",
 		"typescript": "^5.1.6",
 		"vite": "^5.1.4",
