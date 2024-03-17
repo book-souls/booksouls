@@ -5,7 +5,10 @@ const colors = {
 		DEFAULT: "#1f5f8b",
 		light: "#1891ac",
 	},
-	background: "#d2ecf9",
+	background: {
+		DEFAULT: "#d2ecf9",
+		scrollbar: "#a9daf3",
+	},
 	surface: "#253b6e",
 };
 

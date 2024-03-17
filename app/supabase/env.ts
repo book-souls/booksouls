@@ -1,0 +1,3 @@
+export const supabaseUrl = "https://pbmtepadbgllxljfxprp.supabase.co";
+export const supabaseKey =
+	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBibXRlcGFkYmdsbHhsamZ4cHJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk1OTg1NjEsImV4cCI6MjAyNTE3NDU2MX0.Yu5rPRIZUfI37uSKcXhzakSYonIdbJX2upUQhXop_Eo";

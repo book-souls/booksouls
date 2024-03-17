@@ -13,7 +13,7 @@ export const IconButton: React.FC<IconButtonProps> = React.forwardRef(
 				"hover:before:opacity-[8%]",
 				"focus-visible:outline focus-visible:outline-2 focus-visible:outline-current",
 				"active:before:opacity-[12%]",
-				"disabled:pointer-events-none disabled:text-neutral-300/40",
+				"disabled:pointer-events-none disabled:opacity-50",
 				className,
 			)}
 			{...props}
