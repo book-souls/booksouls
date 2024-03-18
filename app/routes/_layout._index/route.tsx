@@ -118,7 +118,7 @@ function GenreSection({ genre, books }: { genre: string; books: Book[] }) {
 				// eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
 				tabIndex={0}
 				aria-label={`${genre} books`}
-				className="flex snap-x snap-mandatory gap-8 overflow-x-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-current focus-visible:outline-offset-8"
+				className="flex snap-x snap-mandatory gap-8 overflow-x-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-current"
 			>
 				{books.map((book) => (
 					<div key={book.id} className="snap-center first:pl-8 last:pr-8">
