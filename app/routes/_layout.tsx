@@ -52,7 +52,7 @@ function NavLink({
 				before:absolute before:-bottom-0.5 before:right-1/2 before:h-px before:w-1/2 before:origin-right before:scale-x-0 before:bg-current before:transition-transform before:duration-500
 				after:absolute after:-bottom-0.5 after:left-1/2 after:h-px after:w-1/2 after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-500
 				hover:before:scale-x-100 hover:after:scale-x-100
-				focus:outline focus:outline-current focus:before:hidden focus:after:hidden
+				focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current focus-visible:before:hidden focus-visible:after:hidden
 				${className}
 			`}
 		>
@@ -125,7 +125,7 @@ function EmailContactForm() {
 			<div
 				className="
 					mt-1 flex border border-on-surface
-					focus-within:outline focus-within:outline-1 focus-within:outline-offset-2
+					focus-within:outline focus-within:outline-2 focus-within:outline-offset-2
 				"
 			>
 				<input
@@ -134,7 +134,11 @@ function EmailContactForm() {
 					placeholder="Email..."
 					className="h-10 bg-transparent px-2 py-1 placeholder:text-on-surface/50 focus:outline-none"
 				/>
-				<button type="submit" className="bg-on-surface px-1.5 font-medium uppercase text-surface">
+				<button
+					type="submit"
+					tabIndex={-1}
+					className="bg-on-surface px-1.5 font-medium uppercase text-surface"
+				>
 					Go
 				</button>
 			</div>
