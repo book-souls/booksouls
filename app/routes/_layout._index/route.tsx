@@ -60,7 +60,7 @@ function FeaturedBooksSlider({ featuredBooks }: { featuredBooks: Book[] }) {
 			// eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
 			tabIndex={0}
 			aria-label="Featured books slides"
-			className="flex snap-x snap-mandatory overflow-x-auto bg-gradient-to-r from-primary  to-primary-light py-10 text-on-primary scrollbar-thumb-color-on-primary scrollbar-track-color-transparent"
+			className="flex snap-x snap-mandatory overflow-x-auto bg-gradient-to-r from-primary to-primary-light py-10 text-on-primary scrollbar-thumb-color-on-primary scrollbar-track-color-transparent focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-8 focus-visible:outline-primary"
 		>
 			{featuredBooks.map((book, index) => (
 				<div
@@ -87,14 +87,14 @@ function GenreSection({ genre, books }: { genre: string; books: Book[] }) {
 	const id = React.useId();
 	return (
 		<section>
-			<h3 id={id} className="ml-8 text-2xl font-medium">
+			<h3 id={id} className="mb-6 ml-8 text-2xl font-medium">
 				{genre}
 			</h3>
 			<section
 				// eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
 				tabIndex={0}
 				aria-labelledby={id}
-				className="flex snap-x snap-mandatory gap-8 overflow-x-auto pb-4 pt-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-current"
+				className="flex snap-x snap-mandatory gap-8 overflow-x-auto pb-4 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-8 focus-visible:outline-current"
 			>
 				{books.map((book) => (
 					<div key={book.id} className="snap-center first:pl-8 last:pr-8">
