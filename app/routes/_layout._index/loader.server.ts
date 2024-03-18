@@ -39,9 +39,7 @@ function groupBooksByGenre(books: Book[]) {
 	}
 
 	// Sort the genres alphabetically
-	return Object.fromEntries(
-		Object.keys(bookGenreMap)
-			.sort()
-			.map((key) => [key, bookGenreMap[key]]),
-	);
+	return Object.keys(bookGenreMap)
+		.sort()
+		.map((key) => [key, bookGenreMap[key]] as const);
 }

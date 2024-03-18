@@ -14,18 +14,6 @@
 	body {
 		@apply bg-background text-on-background;
 	}
-
-	::-webkit-scrollbar {
-		@apply w-[auto];
-	}
-
-	::-webkit-scrollbar-track {
-		@apply bg-background-scrollbar;
-	}
-
-	::-webkit-scrollbar-thumb {
-		@apply rounded-full border-4 border-solid border-transparent bg-on-background bg-clip-padding;
-	}
 }
 
 @layer components {

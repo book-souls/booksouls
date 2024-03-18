@@ -7,7 +7,6 @@ const colors = {
 	},
 	background: {
 		DEFAULT: "#d2ecf9",
-		scrollbar: "#a9daf3",
 	},
 	surface: "#253b6e",
 };
