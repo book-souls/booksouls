@@ -1,9 +1,7 @@
 import { useLoaderData } from "@remix-run/react";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import React from "react";
 import placeholder from "~/assets/placeholder.jpeg";
 import Read from "~/assets/read.svg?react";
-import { IconButton } from "~/components/IconButton";
-import { useCarousel } from "~/hooks/carousel";
 import { loader, type Book } from "./loader.server";
 
 export { loader };
@@ -57,68 +55,46 @@ function FeaturedBooksGrid({ featuredBooks }: { featuredBooks: Book[] }) {
 }
 
 function FeaturedBooksSlider({ featuredBooks }: { featuredBooks: Book[] }) {
-	const [ref, carousel, selectedIndex] = useCarousel();
 	return (
 		<section
+			// eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+			tabIndex={0}
 			aria-label="Featured books slides"
-			aria-live="polite"
-			className="space-y-6 bg-gradient-to-r from-primary to-primary-light pb-4 pt-8 text-on-primary"
+			className="flex snap-x snap-mandatory overflow-x-auto bg-gradient-to-r from-primary  to-primary-light py-10 text-on-primary scrollbar-thumb-color-on-primary scrollbar-track-color-transparent"
 		>
-			<div ref={ref} className="overflow-hidden">
-				<div className="flex">
-					{featuredBooks.map((book, index) => (
-						<div
-							key={book.id}
-							aria-label={`Slide ${index + 1}`}
-							aria-hidden={index !== selectedIndex}
-							className="flex shrink-0 basis-full snap-center items-center justify-center gap-12"
-						>
-							<img
-								src={placeholder}
-								alt={book.title}
-								className="h-[375px] w-[250px] rounded-xl object-cover shadow-md"
-							/>
-							<div className="max-w-lg">
-								<h3 className="text-3xl">{book.title}</h3>
-								<p className="mt-4">{book.shortDescription}</p>
-							</div>
-						</div>
-					))}
+			{featuredBooks.map((book, index) => (
+				<div
+					key={book.id}
+					aria-label={`Slide ${index + 1}`}
+					className="flex shrink-0 basis-full snap-center items-center justify-center gap-12"
+				>
+					<img
+						src={placeholder}
+						alt={book.title}
+						className="h-[375px] w-[250px] rounded-xl object-cover shadow-md"
+					/>
+					<div className="max-w-lg">
+						<h3 className="text-3xl">{book.title}</h3>
+						<p className="mt-4">{book.shortDescription}</p>
+					</div>
 				</div>
-			</div>
-			<div className="flex items-center justify-center">
-				<IconButton
-					aria-label="Go to the previous slide"
-					disabled={selectedIndex === 0}
-					onClick={() => carousel?.scrollPrev()}
-				>
-					<ChevronLeftIcon />
-				</IconButton>
-				<p aria-hidden className="w-32 text-center">
-					{selectedIndex + 1} / {featuredBooks.length}
-				</p>
-				<span className="sr-only">{`Slide ${selectedIndex + 1} out of ${featuredBooks.length}`}</span>
-				<IconButton
-					aria-label="Go to the next slide"
-					disabled={selectedIndex === featuredBooks.length - 1}
-					onClick={() => carousel?.scrollNext()}
-				>
-					<ChevronRightIcon />
-				</IconButton>
-			</div>
+			))}
 		</section>
 	);
 }
 
 function GenreSection({ genre, books }: { genre: string; books: Book[] }) {
+	const id = React.useId();
 	return (
 		<section>
-			<h3 className="mb-6 ml-8 text-2xl font-medium">{genre}</h3>
+			<h3 id={id} className="ml-8 text-2xl font-medium">
+				{genre}
+			</h3>
 			<section
 				// eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
 				tabIndex={0}
-				aria-label={`${genre} books`}
-				className="flex snap-x snap-mandatory gap-8 overflow-x-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-current"
+				aria-labelledby={id}
+				className="flex snap-x snap-mandatory gap-8 overflow-x-auto pb-4 pt-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-current"
 			>
 				{books.map((book) => (
 					<div key={book.id} className="snap-center first:pl-8 last:pr-8">

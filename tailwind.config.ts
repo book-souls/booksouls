@@ -1,4 +1,7 @@
 import type { Config } from "tailwindcss";
+// @ts-expect-error No DTS file for this module
+import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette";
+import plugin from "tailwindcss/plugin";
 
 const colors = {
 	primary: {
@@ -29,5 +32,33 @@ export default {
 			},
 		},
 	},
-	plugins: [],
+	plugins: [
+		plugin(({ matchUtilities, theme }) => {
+			matchUtilities(
+				{
+					"scrollbar-thumb-color": (value: string) => {
+						return {
+							"&::-webkit-scrollbar-thumb": {
+								backgroundColor: value,
+							},
+							"--scrollbar-thumb-color": value,
+							"scrollbar-color": "var(--scrollbar-thumb-color) var(--scrollbar-track-color)",
+						};
+					},
+					"scrollbar-track-color": (value: string) => {
+						return {
+							"&::-webkit-scrollbar-track": {
+								backgroundColor: value,
+							},
+							"--scrollbar-track-color": value,
+							"scrollbar-color": "var(--scrollbar-thumb-color) var(--scrollbar-track-color)",
+						};
+					},
+				},
+				{
+					values: flattenColorPalette(theme("colors")),
+				},
+			);
+		}),
+	],
 } satisfies Config;
