@@ -7,8 +7,10 @@ export type Database = {
 				Row: {
 					author: string;
 					description: string;
-					genre: string[];
+					epub_path: string | null;
+					genres: string[];
 					id: number;
+					is_featured: boolean;
 					language: string;
 					short_description: string;
 					title: string;
@@ -16,8 +18,10 @@ export type Database = {
 				Insert: {
 					author: string;
 					description: string;
-					genre: string[];
+					epub_path?: string | null;
+					genres: string[];
 					id?: number;
+					is_featured?: boolean;
 					language: string;
 					short_description: string;
 					title: string;
@@ -25,53 +29,15 @@ export type Database = {
 				Update: {
 					author?: string;
 					description?: string;
-					genre?: string[];
+					epub_path?: string | null;
+					genres?: string[];
 					id?: number;
+					is_featured?: boolean;
 					language?: string;
 					short_description?: string;
 					title?: string;
 				};
 				Relationships: [];
-			};
-			featured_books: {
-				Row: {
-					book_id: number;
-				};
-				Insert: {
-					book_id: number;
-				};
-				Update: {
-					book_id?: number;
-				};
-				Relationships: [
-					{
-						foreignKeyName: "public_Featured Books_book_id_fkey";
-						columns: ["book_id"];
-						isOneToOne: true;
-						referencedRelation: "books";
-						referencedColumns: ["id"];
-					},
-				];
-			};
-			newly_added_books: {
-				Row: {
-					book_id: number;
-				};
-				Insert: {
-					book_id: number;
-				};
-				Update: {
-					book_id?: number;
-				};
-				Relationships: [
-					{
-						foreignKeyName: "public_Newly Added Books_book_id_fkey";
-						columns: ["book_id"];
-						isOneToOne: true;
-						referencedRelation: "books";
-						referencedColumns: ["id"];
-					},
-				];
 			};
 		};
 		Views: {

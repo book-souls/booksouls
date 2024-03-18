@@ -1,32 +1,9 @@
-import {
-	createBrowserClient as _createBrowserClient,
-	createServerClient as _createServerClient,
-	parse,
-	serialize,
-} from "@supabase/ssr";
+import { createBrowserClient } from "@supabase/ssr";
+import { supabaseKey, supabaseUrl } from "./env";
 import type { Database } from "./types";
 
-const supabaseUrl = "https://pbmtepadbgllxljfxprp.supabase.co";
-const supabaseKey =
-	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBibXRlcGFkYmdsbHhsamZ4cHJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk1OTg1NjEsImV4cCI6MjAyNTE3NDU2MX0.Yu5rPRIZUfI37uSKcXhzakSYonIdbJX2upUQhXop_Eo";
-
-export function createServerClient(request: Request, responseHeaders: Headers) {
-	const cookies = parse(request.headers.get("Cookie") ?? "");
-	return _createServerClient<Database>(supabaseUrl, supabaseKey, {
-		cookies: {
-			get(key) {
-				return cookies[key];
-			},
-			set(key, value, options) {
-				responseHeaders.append("Set-Cookie", serialize(key, value, options));
-			},
-			remove(key, options) {
-				responseHeaders.append("Set-Cookie", serialize(key, "", options));
-			},
-		},
-	});
+function createClient() {
+	return createBrowserClient<Database>(supabaseUrl, supabaseKey);
 }
 
-export function createBrowserClient() {
-	return _createBrowserClient<Database>(supabaseUrl, supabaseKey);
-}
+export { createClient as createBrowserClient };

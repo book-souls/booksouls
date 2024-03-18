@@ -7,6 +7,10 @@
 		--header-h: 150px;
 	}
 
+	header {
+		@apply h-[--header-h];
+	}
+
 	body {
 		@apply bg-background text-on-background;
 	}
@@ -33,9 +37,11 @@
 		0% {
 			background-position: 0% 50%;
 		}
+
 		50% {
 			background-position: 100% 50%;
 		}
+
 		100% {
 			background-position: 0% 50%;
 		}

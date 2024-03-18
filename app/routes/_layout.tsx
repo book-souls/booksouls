@@ -18,7 +18,7 @@ export default function Layout() {
 
 function Header() {
 	return (
-		<header className="flex h-[150px] flex-col items-center justify-center bg-surface text-on-surface">
+		<header className="flex flex-col items-center justify-center bg-surface text-on-surface">
 			<Logo />
 			<div className="relative mt-4 w-full">
 				<nav className="flex flex-row items-center justify-center gap-16">
