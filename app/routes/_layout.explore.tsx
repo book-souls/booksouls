@@ -10,8 +10,8 @@ export default function Explore() {
 						<input
 							aria-describedby="search-desc"
 							type="text"
-                            placeholder="Search..."
-							className="placeholder:text-primary/60 px-3 w-[650px] max-w-full bg-transparent focus:outline-none"
+							placeholder="Search..."
+							className="w-[650px] max-w-full bg-transparent px-3 placeholder:text-primary/60 focus:outline-none"
 						/>
 						<button className="flex h-12 w-12 items-center justify-center bg-primary text-on-primary">
 							<Search />
