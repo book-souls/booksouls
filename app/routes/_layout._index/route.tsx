@@ -53,7 +53,7 @@ function FeaturedBooksSlider({ books }: { books: Book[] }) {
 			// eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
 			tabIndex={0}
 			aria-label={`Featured books. ${books.length} slides.`}
-			className="flex snap-x snap-mandatory overflow-x-auto bg-gradient-to-r from-primary to-primary-light  py-8 text-on-primary focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-primary"
+			className="flex snap-x snap-mandatory overflow-x-auto bg-gradient-to-r from-primary to-primary-light py-8 text-on-primary focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-primary"
 		>
 			{books.map((book, index) => (
 				<div

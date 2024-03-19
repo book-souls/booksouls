@@ -40,7 +40,7 @@ export default function Book() {
 						<p className="mt-2 text-2xl font-medium text-on-background/75">
 							{book.genres.join(", ")}
 						</p>
-						<p className="mt-5 text-xl  text-on-background/75 ">{book.info}</p>
+						<p className="mt-5 text-xl text-on-background/75 ">{book.info}</p>
 						<button className="mx-auto mb-2 mt-auto h-12 rounded-xl bg-gradient-to-r from-primary to-primary-light px-8 text-xl font-medium text-on-primary shadow-inner">
 							Read Book
 						</button>
