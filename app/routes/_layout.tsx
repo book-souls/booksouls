@@ -21,11 +21,21 @@ function Header() {
 		<header className="flex flex-col items-center justify-center bg-surface text-on-surface">
 			<Logo />
 			<div className="relative mt-4 w-full">
-				<nav className="flex flex-row items-center justify-center gap-16">
-					<NavLink to="/">Home</NavLink>
-					<NavLink to="/categories">Categories</NavLink>
-					<NavLink to="/authors">Authors</NavLink>
-					<NavLink to="/library">Library</NavLink>
+				<nav>
+					<ul className="flex items-center justify-center gap-16">
+						<li>
+							<NavLink to="/">Home</NavLink>
+						</li>
+						<li>
+							<NavLink to="/categories">Categories</NavLink>
+						</li>
+						<li>
+							<NavLink to="/authors">Authors</NavLink>
+						</li>
+						<li>
+							<NavLink to="/library">Library</NavLink>
+						</li>
+					</ul>
 				</nav>
 				<IconButton aria-label="Search" className="absolute right-6 top-1/2 -translate-y-1/2">
 					<SearchIcon />
@@ -35,26 +45,17 @@ function Header() {
 	);
 }
 
-function NavLink({
-	to,
-	children,
-	className = "",
-}: {
-	to: string;
-	children: React.ReactNode;
-	className?: string;
-}) {
+function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
 	return (
 		<Link
 			to={to}
-			className={`
+			className="
 				relative select-none
 				before:absolute before:-bottom-0.5 before:right-1/2 before:h-px before:w-1/2 before:origin-right before:scale-x-0 before:bg-current before:transition-transform before:duration-500
 				after:absolute after:-bottom-0.5 after:left-1/2 after:h-px after:w-1/2 after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-500
 				hover:before:scale-x-100 hover:after:scale-x-100
 				focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current focus-visible:before:hidden focus-visible:after:hidden
-				${className}
-			`}
+			"
 		>
 			{children}
 		</Link>
@@ -77,67 +78,76 @@ function Footer() {
 						Get Engulphed and Explore a New Magical World
 					</p>
 				</div>
-				<FooterLinks />
-				<EmailContactForm />
+				<div className="mt-6 flex justify-center gap-20">
+					<FooterAboutNav />
+					<FooterCustomerCareNav />
+				</div>
+				<div className="mt-6">
+					<EmailContactForm />
+				</div>
 			</div>
 			<p className="mt-12 font-light">Copyright © 2024 Book Souls Inc. All rights reserved.</p>
-			<CrueltyFreeIcon aria-label="Cruelty free" className="absolute bottom-5 right-5" />
+			<CrueltyFreeIcon role="img" aria-label="Cruelty free" className="absolute bottom-5 right-5" />
 		</footer>
 	);
 }
 
-function FooterLinks() {
+function FooterAboutNav() {
+	const id = React.useId();
 	return (
-		<div className="mt-6 flex justify-center gap-20">
-			<section>
-				<h3 className="text-lg font-medium uppercase">About</h3>
-				<nav className="flex flex-col gap-2 pt-4">
-					<FooterNavLink to="/about">About Us</FooterNavLink>
-					<FooterNavLink to="/terms-and-privacy">Terms & Privacy</FooterNavLink>
-				</nav>
-			</section>
-			<section>
-				<h3 className="text-lg font-medium uppercase">Customer Care</h3>
-				<nav className="flex flex-col gap-2 pt-4">
-					<FooterNavLink to="/contact-us">Contact Us</FooterNavLink>
-					<FooterNavLink to="/faq">Frequently Asked Questions</FooterNavLink>
-				</nav>
-			</section>
-		</div>
+		<nav aria-labelledby={id}>
+			<h3 id={id} className="text-xl font-medium uppercase">
+				About
+			</h3>
+			<ul className="mt-6 flex flex-col gap-3">
+				<li>
+					<NavLink to="/about">About Us</NavLink>
+				</li>
+				<li>
+					<NavLink to="/terms-and-privacy">Terms & Privacy</NavLink>
+				</li>
+			</ul>
+		</nav>
 	);
 }
 
-function FooterNavLink({ to, children }: { to: string; children: React.ReactNode }) {
+function FooterCustomerCareNav() {
+	const id = React.useId();
 	return (
-		<NavLink to={to} className="w-fit font-light">
-			{children}
-		</NavLink>
+		<nav aria-labelledby={id}>
+			<h3 id={id} className="text-xl font-medium uppercase">
+				Customer Care
+			</h3>
+			<ul className="mt-6 flex flex-col gap-3">
+				<li>
+					<NavLink to="/contact-us">Contact Us</NavLink>
+				</li>
+				<li>
+					<NavLink to="/faq">Frequently Asked Questions</NavLink>
+				</li>
+			</ul>
+		</nav>
 	);
 }
 
 function EmailContactForm() {
 	const id = React.useId();
 	return (
-		<form className="mt-6" onSubmit={(e) => e.preventDefault()}>
+		<form onSubmit={(e) => e.preventDefault()}>
 			<label htmlFor={id} className="uppercase">
 				Stay in touch
 			</label>
-			<div
-				className="
-					mt-1 flex border border-on-surface
-					focus-within:outline focus-within:outline-2 focus-within:outline-offset-2
-				"
-			>
+			<div className="mt-1 flex border border-on-surface focus-within:outline focus-within:outline-2 focus-within:outline-offset-2">
 				<input
 					id={id}
 					type="email"
 					placeholder="Email..."
-					className="h-10 bg-transparent px-2 py-1 placeholder:text-on-surface/50 focus:outline-none"
+					className="h-10 w-[200px] bg-transparent px-2 py-1 placeholder:text-on-surface/50 focus:outline-none"
 				/>
 				<button
 					type="submit"
 					tabIndex={-1}
-					className="bg-on-surface px-1.5 font-medium uppercase text-surface"
+					className="flex h-10 w-10 items-center justify-center bg-on-surface font-medium uppercase text-surface"
 				>
 					Go
 				</button>
