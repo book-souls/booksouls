@@ -54,7 +54,7 @@ function FeaturedBooksSlider({ featuredBooks }: { featuredBooks: Book[] }) {
 			// eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
 			tabIndex={0}
 			aria-label="Featured books slides"
-			className="flex snap-x snap-mandatory overflow-x-auto bg-gradient-to-r from-primary to-primary-light py-10 text-on-primary scrollbar-thumb-color-on-primary scrollbar-track-color-transparent focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-8 focus-visible:outline-primary"
+			className="flex snap-x snap-mandatory overflow-x-auto bg-gradient-to-r from-primary to-primary-light py-10 text-on-primary focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-8 focus-visible:outline-primary"
 		>
 			{featuredBooks.map((book, index) => (
 				<div
