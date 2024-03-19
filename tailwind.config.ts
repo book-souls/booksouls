@@ -41,8 +41,10 @@ export default {
 							"&::-webkit-scrollbar-thumb": {
 								backgroundColor: value,
 							},
-							"--scrollbar-thumb-color": value,
-							"scrollbar-color": "var(--scrollbar-thumb-color) var(--scrollbar-track-color)",
+							"@supports not selector(::-webkit-scrollbar-thumb)": {
+								"--scrollbar-thumb-color": value,
+								"scrollbar-color": "var(--scrollbar-thumb-color) var(--scrollbar-track-color)",
+							},
 						};
 					},
 					"scrollbar-track-color": (value: string) => {
@@ -50,8 +52,10 @@ export default {
 							"&::-webkit-scrollbar-track": {
 								backgroundColor: value,
 							},
-							"--scrollbar-track-color": value,
-							"scrollbar-color": "var(--scrollbar-thumb-color) var(--scrollbar-track-color)",
+							"@supports not selector(::-webkit-scrollbar-track)": {
+								"--scrollbar-track-color": value,
+								"scrollbar-color": "var(--scrollbar-thumb-color) var(--scrollbar-track-color)",
+							},
 						};
 					},
 				},
