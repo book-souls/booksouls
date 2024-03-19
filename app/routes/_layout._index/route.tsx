@@ -10,15 +10,9 @@ export default function Page() {
 	const { books, featuredBooks } = useLoaderData<typeof loader>();
 	return (
 		<main>
-			<section className="bg-surface text-on-surface">
-				<div className="px-8 pt-8">
-					<h1 className="mb-16 text-center text-6xl font-thin uppercase">Get Engulfed</h1>
-					<Read
-						role="img"
-						aria-label="A person sitting on a chair reading a book"
-						className="mx-auto"
-					/>
-				</div>
+			<section className="flex max-h-[calc(100vh-var(--header-h))] min-h-[400px] flex-col items-center bg-surface text-on-surface">
+				<h1 className="mb-16 mt-8 text-center text-6xl font-thin uppercase">Get Engulfed</h1>
+				<Read role="img" aria-label="A person sitting on a chair reading a book" />
 				<div className="line-gradient" />
 			</section>
 			<section>
