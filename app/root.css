@@ -15,16 +15,8 @@
 		@apply bg-background text-on-background;
 	}
 
-	::-webkit-scrollbar {
-		@apply w-[16px];
-	}
-
-	::-webkit-scrollbar-thumb {
-		@apply rounded-full border-4 border-solid border-transparent bg-clip-padding;
-	}
-
 	* {
-		@apply scrollbar-thumb-color-on-background scrollbar-track-color-background;
+		@apply scrollbar-thumb-color-on-background scrollbar-track-color-scrollbar;
 	}
 }
 

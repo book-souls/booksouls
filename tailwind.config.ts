@@ -12,6 +12,7 @@ const colors = {
 		DEFAULT: "#d2ecf9",
 	},
 	surface: "#253b6e",
+	scrollbar: "#bde3f6",
 };
 
 export default {
@@ -33,29 +34,23 @@ export default {
 		},
 	},
 	plugins: [
-		plugin(({ matchUtilities, theme }) => {
+		plugin(({ addBase, matchUtilities, theme }) => {
+			addBase({
+				"*": {
+					scrollbarColor: "var(--scrollbar-thumb-color, auto) var(--scrollbar-track-color, auto)",
+				},
+			});
+
 			matchUtilities(
 				{
 					"scrollbar-thumb-color": (value: string) => {
 						return {
-							"&::-webkit-scrollbar-thumb": {
-								backgroundColor: value,
-							},
-							"@supports not selector(::-webkit-scrollbar-thumb)": {
-								"--scrollbar-thumb-color": value,
-								"scrollbar-color": "var(--scrollbar-thumb-color) var(--scrollbar-track-color)",
-							},
+							"--scrollbar-thumb-color": value,
 						};
 					},
 					"scrollbar-track-color": (value: string) => {
 						return {
-							"&::-webkit-scrollbar-track": {
-								backgroundColor: value,
-							},
-							"@supports not selector(::-webkit-scrollbar-track)": {
-								"--scrollbar-track-color": value,
-								"scrollbar-color": "var(--scrollbar-thumb-color) var(--scrollbar-track-color)",
-							},
+							"--scrollbar-track-color": value,
 						};
 					},
 				},
