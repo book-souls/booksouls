@@ -65,17 +65,23 @@ function FeaturedBooksCarousel({ books }: { books: Book[] }) {
 				ref={scrollRef}
 				id={scrollId}
 				aria-live="polite"
-				className="scrollbar-hidden relative flex snap-x snap-mandatory overflow-x-auto pb-6 pt-8"
+				className="relative flex snap-x snap-mandatory overflow-x-auto pb-6 pt-8 scrollbar-hidden"
 			>
 				{books.map((book, index) => (
 					<div
 						key={book.id}
 						role="group"
 						aria-roledescription="slide"
-						aria-label={`${index + 1} of ${books.length}`}
+						aria-labelledby={`${scrollId}-${index}`}
 						aria-hidden={index !== activePageIndex}
 						className="flex shrink-0 basis-full snap-center items-center justify-center gap-12"
 					>
+						<span
+							id={`${scrollId}-${index}`}
+							className="sr-only"
+						>
+							{`${index + 1} of ${books.length}`}
+						</span>
 						<img src={placeholder} alt="" className="h-[375px] w-[250px] rounded-xl object-cover" />
 						<div className="max-w-lg">
 							<h3 className="text-3xl">{book.title}</h3>
@@ -84,7 +90,7 @@ function FeaturedBooksCarousel({ books }: { books: Book[] }) {
 					</div>
 				))}
 			</div>
-			<div className="flex justify-center items-center pb-4">
+			<div className="flex items-center justify-center pb-4">
 				<IconButton
 					aria-label="Go to the previous slide"
 					aria-controls={scrollId}
@@ -94,7 +100,9 @@ function FeaturedBooksCarousel({ books }: { books: Book[] }) {
 				>
 					<ChevronLeftIcon />
 				</IconButton>
-				<p aria-hidden className="text-center w-32">{activePageIndex + 1} / {books.length}</p>
+				<p aria-hidden className="w-32 text-center">
+					{activePageIndex + 1} / {books.length}
+				</p>
 				<IconButton
 					aria-label="Go to the next slide"
 					aria-controls={scrollId}

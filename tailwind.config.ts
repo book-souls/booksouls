@@ -57,19 +57,19 @@ export default {
 					},
 					"100%": {
 						backgroundPosition: "0% 50%",
-					}
-				}
+					},
+				},
 			});
 
 			addUtilities({
 				".scrollbar-hidden": {
 					"&::-webkit-scrollbar": {
-						display: "none"
+						display: "none",
 					},
-					// Firefox 
-					scrollbarWidth: "none"
-				}
+					// Firefox
+					scrollbarWidth: "none",
+				},
 			});
-		})
+		}),
 	],
 } satisfies Config;
