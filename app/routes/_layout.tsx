@@ -93,10 +93,10 @@ function Footer() {
 }
 
 function FooterAboutNav() {
-	const id = React.useId();
+	const headerId = React.useId();
 	return (
-		<nav aria-labelledby={id}>
-			<h3 id={id} className="text-xl font-medium uppercase">
+		<nav aria-labelledby={headerId}>
+			<h3 id={headerId} className="text-xl font-medium uppercase">
 				About
 			</h3>
 			<ul className="mt-6 flex flex-col gap-3">
@@ -112,10 +112,10 @@ function FooterAboutNav() {
 }
 
 function FooterCustomerCareNav() {
-	const id = React.useId();
+	const headerId = React.useId();
 	return (
-		<nav aria-labelledby={id}>
-			<h3 id={id} className="text-xl font-medium uppercase">
+		<nav aria-labelledby={headerId}>
+			<h3 id={headerId} className="text-xl font-medium uppercase">
 				Customer Care
 			</h3>
 			<ul className="mt-6 flex flex-col gap-3">
@@ -131,15 +131,15 @@ function FooterCustomerCareNav() {
 }
 
 function EmailContactForm() {
-	const id = React.useId();
+	const inputId = React.useId();
 	return (
 		<form onSubmit={(e) => e.preventDefault()}>
-			<label htmlFor={id} className="uppercase">
+			<label htmlFor={inputId} className="uppercase">
 				Stay in touch
 			</label>
 			<div className="mt-1 flex border border-on-surface focus-within:outline focus-within:outline-2 focus-within:outline-offset-2">
 				<input
-					id={id}
+					id={inputId}
 					type="email"
 					placeholder="Email..."
 					className="h-10 w-[200px] bg-transparent px-2 py-1 placeholder:text-on-surface/50 focus:outline-none"
