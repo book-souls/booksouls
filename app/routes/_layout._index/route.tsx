@@ -73,6 +73,7 @@ function FeaturedBooksCarousel({ books }: { books: Book[] }) {
 						role="group"
 						aria-roledescription="slide"
 						aria-label={`${index + 1} of ${books.length}`}
+						aria-hidden={index !== activePageIndex}
 						className="flex shrink-0 basis-full snap-center items-center justify-center gap-12"
 					>
 						<img src={placeholder} alt="" className="h-[375px] w-[250px] rounded-xl object-cover" />
