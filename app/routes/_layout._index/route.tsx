@@ -76,10 +76,7 @@ function FeaturedBooksCarousel({ books }: { books: Book[] }) {
 						aria-hidden={index !== activePageIndex}
 						className="flex shrink-0 basis-full snap-center items-center justify-center gap-12"
 					>
-						<span
-							id={`${scrollId}-${index}`}
-							className="sr-only"
-						>
+						<span id={`${scrollId}-${index}`} className="sr-only">
 							{`${index + 1} of ${books.length}`}
 						</span>
 						<img src={placeholder} alt="" className="h-[375px] w-[250px] rounded-xl object-cover" />
