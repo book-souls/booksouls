@@ -1,6 +1,6 @@
 import { Link, Outlet } from "@remix-run/react";
 import { SearchIcon } from "lucide-react";
-import React from "react";
+import { useId } from "react";
 import CrueltyFreeIcon from "~/assets/cruelty-free.svg?react";
 import footerLogo from "~/assets/footer-logo.svg";
 import { IconButton } from "~/components/IconButton";
@@ -93,7 +93,7 @@ function Footer() {
 }
 
 function FooterAboutNav() {
-	const headerId = React.useId();
+	const headerId = useId();
 	return (
 		<nav aria-labelledby={headerId}>
 			<h3 id={headerId} className="text-xl font-medium uppercase">
@@ -112,7 +112,7 @@ function FooterAboutNav() {
 }
 
 function FooterCustomerCareNav() {
-	const headerId = React.useId();
+	const headerId = useId();
 	return (
 		<nav aria-labelledby={headerId}>
 			<h3 id={headerId} className="text-xl font-medium uppercase">
@@ -131,7 +131,7 @@ function FooterCustomerCareNav() {
 }
 
 function EmailContactForm() {
-	const inputId = React.useId();
+	const inputId = useId();
 	return (
 		<form onSubmit={(e) => e.preventDefault()}>
 			<label htmlFor={inputId} className="uppercase">
