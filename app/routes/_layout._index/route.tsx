@@ -141,18 +141,14 @@ function GenreSection({ genre, books }: { genre: string; books: Book[] }) {
 	const scrollId = `${id}-scroll`;
 
 	return (
-		<section
-			aria-roledescription="carousel"
-			aria-labelledby={headerId}
-			className="mx-auto w-fit"
-		>
+		<section aria-roledescription="carousel" aria-labelledby={headerId} className="mx-auto w-fit">
 			<div className="flex justify-between px-[12px]">
 				<h3 id={headerId} className="text-2xl font-medium">
 					{genre}
 				</h3>
 				<p
 					aria-hidden
-					className="px-4 h-fit py-1.5 text-center rounded-md text-sm font-medium bg-on-background/10"
+					className="h-fit rounded-md bg-on-background/10 px-4 py-1.5 text-center text-sm font-medium"
 				>
 					{activePageIndex + 1} / {pages.length}
 				</p>
@@ -163,7 +159,7 @@ function GenreSection({ genre, books }: { genre: string; books: Book[] }) {
 					ref={scrollRef}
 					id={scrollId}
 					// 896px = 4 * (200px + 2 * 12px)
-					className="flex w-[896px] snap-x snap-mandatory overflow-x-auto pt-4 pb-6 scrollbar-hidden"
+					className="flex w-[896px] snap-x snap-mandatory overflow-x-auto pb-6 pt-4 scrollbar-hidden"
 				>
 					{books.map((book, index) => (
 						<div
@@ -173,7 +169,7 @@ function GenreSection({ genre, books }: { genre: string; books: Book[] }) {
 							aria-label={`${index + 1} of ${books.length}`}
 							aria-hidden={slideHidden(index)}
 							data-snap-point={snapPointIndexes.has(index)}
-							className="px-[12px] shrink-0 data-[snap-point='true']:snap-start"
+							className="shrink-0 px-[12px] data-[snap-point='true']:snap-start"
 						>
 							<img
 								src={placeholder}
@@ -185,7 +181,7 @@ function GenreSection({ genre, books }: { genre: string; books: Book[] }) {
 					))}
 				</div>
 			</div>
-			<div className="flex justify-center gap-32 items-center">
+			<div className="flex items-center justify-center gap-32">
 				<IconButton
 					aria-label="Go to the previous page"
 					aria-controls={scrollId}
@@ -203,6 +199,6 @@ function GenreSection({ genre, books }: { genre: string; books: Book[] }) {
 					<ChevronRightIcon />
 				</IconButton>
 			</div>
-		</section >
+		</section>
 	);
 }

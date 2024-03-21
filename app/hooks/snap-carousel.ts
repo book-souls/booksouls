@@ -38,7 +38,7 @@ export function useSnapCarousel({ slides, slidesPerPage, axis }: SnapCarouselPro
 		(index: number) => {
 			const endIndex = Math.min(activePageIndex * slidesPerPage + slidesPerPage, slides);
 			const startIndex = Math.max(endIndex - slidesPerPage, 0);
-			return index < startIndex || index >= endIndex
+			return index < startIndex || index >= endIndex;
 		},
 		[activePageIndex, slides, slidesPerPage],
 	);
