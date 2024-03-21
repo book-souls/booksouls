@@ -1,7 +1,7 @@
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
-export type IconButtonProps = React.ComponentPropsWithRef<"button">;
+export type IconButtonProps = React.ComponentProps<"button">;
 
 export const IconButton: React.FC<IconButtonProps> = React.forwardRef(
 	({ className, ...props }, ref) => (
