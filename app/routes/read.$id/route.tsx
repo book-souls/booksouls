@@ -85,7 +85,6 @@ export default function Page() {
 			</div>
 			<button
 				aria-hidden={!summarizeShown}
-				aria-disabled={summarizer.pending}
 				className="absolute bottom-6 right-6 flex h-10 items-center justify-center rounded-md bg-gradient-to-r from-primary to-primary-light px-6 text-on-primary transition-opacity duration-300 aria-hidden:opacity-0"
 				onClick={summarizeSelection}
 			>
