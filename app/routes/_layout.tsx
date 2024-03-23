@@ -21,10 +21,13 @@ function Header() {
 		<header className="flex flex-col items-center justify-center bg-surface text-on-surface">
 			<Logo />
 			<div className="relative mt-4 w-full">
-				<button className="absolute left-6 top-1/2 flex h-10 -translate-y-1/2 items-center justify-center gap-2 rounded-xl bg-on-surface px-3 text-surface">
+				<Link
+					to="/explore"
+					className="absolute left-6 top-1/2 flex h-10 -translate-y-1/2 items-center justify-center gap-2 rounded-xl bg-on-surface px-3 text-surface"
+				>
 					<span className="text-sm font-medium">Explore</span>
 					<SparklesIcon className="fill-amber-500 text-amber-600" />
-				</button>
+				</Link>
 				<nav className="flex flex-row items-center justify-center gap-16">
 					<NavLink to="/">Home</NavLink>
 					<NavLink to="/categories">Categories</NavLink>
