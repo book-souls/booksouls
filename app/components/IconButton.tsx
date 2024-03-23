@@ -1,7 +1,7 @@
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
-export type IconButtonProps = React.ComponentPropsWithRef<"button">;
+export type IconButtonProps = React.ComponentProps<"button">;
 
 export const IconButton: React.FC<IconButtonProps> = React.forwardRef(
 	({ className, ...props }, ref) => (
@@ -13,7 +13,8 @@ export const IconButton: React.FC<IconButtonProps> = React.forwardRef(
 				"hover:before:opacity-10",
 				"focus-visible:outline focus-visible:outline-2 focus-visible:outline-current",
 				"active:before:opacity-15",
-				"disabled:pointer-events-none disabled:opacity-50",
+				"disabled:pointer-events-none disabled:opacity-40",
+				"aria-disabled:pointer-events-none aria-disabled:opacity-40",
 				className,
 			)}
 			{...props}
