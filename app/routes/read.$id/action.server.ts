@@ -1,4 +1,4 @@
-import { InferenceOutputError, textGeneration } from "@huggingface/inference";
+import { textGeneration } from "@huggingface/inference";
 import type { ActionFunctionArgs } from "@remix-run/node";
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -15,14 +15,10 @@ export async function action({ request }: ActionFunctionArgs) {
 			error: null,
 		};
 	} catch (error) {
-		if (error instanceof InferenceOutputError) {
-			console.error(error);
-			return {
-				summary: null,
-				error: error.message,
-			};
-		}
-
-		throw error;
+		console.error(error);
+		return {
+			summary: null,
+			error: "Failed to summarize the text. Please try again.",
+		};
 	}
 }
