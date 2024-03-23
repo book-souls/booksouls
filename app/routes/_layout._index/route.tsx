@@ -158,8 +158,8 @@ function GenreSection({ genre, books }: { genre: string; books: Book[] }) {
 				<div
 					ref={scrollRef}
 					id={scrollId}
-					// 896px = 4 * (200px + 2 * 12px)
-					className="flex w-[896px] snap-x snap-mandatory overflow-x-auto pb-6 pt-4 scrollbar-hidden"
+					// 928px = 4 * (200px + 2 * 16px)
+					className="flex w-[928px] snap-x snap-mandatory overflow-x-auto pb-6 pt-4 scrollbar-hidden"
 				>
 					{books.map((book, index) => (
 						<div
@@ -169,7 +169,7 @@ function GenreSection({ genre, books }: { genre: string; books: Book[] }) {
 							aria-label={`${index + 1} of ${books.length}`}
 							aria-hidden={slideHidden(index)}
 							data-snap-point={snapPointIndexes.has(index)}
-							className="shrink-0 px-[12px] data-[snap-point='true']:snap-start"
+							className="shrink-0 px-[16px] data-[snap-point='true']:snap-start"
 						>
 							<img
 								src={placeholder}
