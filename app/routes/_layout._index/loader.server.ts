@@ -1,20 +1,16 @@
-import { json, type LoaderFunctionArgs } from "@remix-run/node";
-import { createServerClient, type ServerClient } from "~/supabase/client.server";
+import type { LoaderFunctionArgs } from "@remix-run/node";
+import { createServerClient, type SupabaseServerClient } from "~/supabase/client.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-	const headers = new Headers();
-	const supabase = createServerClient(request, headers);
+	const supabase = createServerClient(request);
 	const books = await getBooks(supabase);
-	return json(
-		{
-			books: groupBooksByGenre(books),
-			featuredBooks: books.filter((book) => book.featured),
-		},
-		{ headers },
-	);
+	return {
+		books: groupBooksByGenre(books),
+		featuredBooks: books.filter((book) => book.featured),
+	};
 }
 
-async function getBooks(supabase: ServerClient) {
+async function getBooks(supabase: SupabaseServerClient) {
 	const { data, error } = await supabase
 		.from("books")
 		.select("id, title, genres, shortDescription:short_description, featured:is_featured")
