@@ -1,24 +1,22 @@
-import { createServerClient, parse, serialize } from "@supabase/ssr";
+import { createServerClient as _createServerClient, parse, serialize } from "@supabase/ssr";
 import { supabaseKey, supabaseUrl } from "./env";
 import type { Database } from "./types";
 
-function createClient(request: Request, responseHeaders: Headers) {
+export function createServerClient(request: Request, responseHeaders?: Headers) {
 	const cookies = parse(request.headers.get("Cookie") ?? "");
-	return createServerClient<Database>(supabaseUrl, supabaseKey, {
+	return _createServerClient<Database>(supabaseUrl, supabaseKey, {
 		cookies: {
 			get(key) {
 				return cookies[key];
 			},
 			set(key, value, options) {
-				responseHeaders.append("Set-Cookie", serialize(key, value, options));
+				responseHeaders?.append("Set-Cookie", serialize(key, value, options));
 			},
 			remove(key, options) {
-				responseHeaders.append("Set-Cookie", serialize(key, "", options));
+				responseHeaders?.append("Set-Cookie", serialize(key, "", options));
 			},
 		},
 	});
 }
 
-export { createClient as createServerClient };
-
-export type ServerClient = ReturnType<typeof createClient>;
+export type SupabaseServerClient = ReturnType<typeof createServerClient>;

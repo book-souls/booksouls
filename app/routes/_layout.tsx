@@ -23,7 +23,7 @@ function Header() {
 			<div className="relative mt-4 w-full">
 				<Link
 					to="/explore"
-					className="absolute left-6 top-1/2 flex h-10 -translate-y-1/2 items-center justify-center gap-2 rounded-xl bg-on-surface px-3 text-surface"
+					className="absolute left-6 top-1/2 flex h-10 -translate-y-1/2 items-center justify-center gap-2 rounded-lg bg-on-surface px-3 text-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-surface"
 				>
 					<span className="text-sm font-medium">Explore</span>
 					<SparklesIcon className="fill-amber-500 text-amber-600" />

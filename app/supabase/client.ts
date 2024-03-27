@@ -1,9 +1,7 @@
-import { createBrowserClient } from "@supabase/ssr";
+import { createBrowserClient as _createBrowserClient } from "@supabase/ssr";
 import { supabaseKey, supabaseUrl } from "./env";
 import type { Database } from "./types";
 
-function createClient() {
-	return createBrowserClient<Database>(supabaseUrl, supabaseKey);
+export function createBrowserClient() {
+	return _createBrowserClient<Database>(supabaseUrl, supabaseKey);
 }
-
-export { createClient as createBrowserClient };
