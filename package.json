@@ -25,7 +25,9 @@
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-snap-carousel": "^0.4.0",
-		"tailwind-merge": "^2.2.1"
+		"sonner": "^1.4.41",
+		"tailwind-merge": "^2.2.1",
+		"valibot": "^0.30.0"
 	},
 	"devDependencies": {
 		"@ianvs/prettier-plugin-sort-imports": "^4.1.1",
