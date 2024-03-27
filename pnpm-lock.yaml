@@ -8,6 +8,9 @@ dependencies:
   '@fontsource/poppins':
     specifier: ^5.0.8
     version: 5.0.8
+  '@huggingface/inference':
+    specifier: ^2.6.6
+    version: 2.6.6
   '@remix-run/node':
     specifier: ^2.7.2
     version: 2.7.2(typescript@5.3.3)
@@ -1003,6 +1006,11 @@ packages:
 
   /@fontsource/poppins@5.0.8:
     resolution: {integrity: sha512-P8owfYWluoUY5Nyzk4gT/L6LmLmseP6ezFWhj6VBUa5pRIdnCvNJpoQ6i/vhekjtJOfqX6nKlB+LCttoUl2GQQ==}
+    dev: false
+
+  /@huggingface/inference@2.6.6:
+    resolution: {integrity: sha512-5VEsrKj/gQ0BViUHX43VFlgbVH5OR+w6/auTQkvMqnxF3e8yK2AqAVP+zoF4dcm1DEnxUkPGeNYrxOwIUFxjuw==}
+    engines: {node: '>=18'}
     dev: false
 
   /@humanwhocodes/config-array@0.11.14:
