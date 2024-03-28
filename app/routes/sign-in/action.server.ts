@@ -5,6 +5,9 @@ import { createServerClient } from "~/supabase/client.server";
 const emailSchema = string([email()]);
 
 export async function action({ request }: ActionFunctionArgs) {
+	// await new Promise((resolve) => setTimeout(resolve, 10_000));
+	// return null;
+
 	const formData = await request.formData();
 	const email = parse(emailSchema, formData.get("email"));
 

@@ -1,8 +1,8 @@
 import { Form, Link, useActionData, useNavigation } from "@remix-run/react";
-import { Loader2Icon } from "lucide-react";
+import { Loader2Icon, LogInIcon } from "lucide-react";
 import { useEffect, useId } from "react";
 import { toast, Toaster } from "sonner";
-import LoginIcon from "~/assets/login.svg?react";
+import LoginSidebarIcon from "~/assets/login-sidebar.svg?react";
 import { Logo } from "~/components/Logo";
 import { action } from "./action.server";
 
@@ -11,7 +11,7 @@ export { action };
 export default function SignIn() {
 	const actionData = useActionData<typeof action>();
 	return (
-		<div className="flex h-screen min-h-[550px]">
+		<div className="flex h-screen min-h-[400px]">
 			<aside className="relative flex w-[30%] min-w-[300px] flex-col items-center justify-center gap-8 bg-surface p-8 text-on-surface">
 				<Link
 					to="/"
@@ -19,10 +19,14 @@ export default function SignIn() {
 				>
 					<Logo scale={0.8} />
 				</Link>
-				<LoginIcon role="img" aria-label="A person reading a book" className="h-auto w-[250px]" />
+				<LoginSidebarIcon
+					role="img"
+					aria-label="A person reading a book"
+					className="h-auto w-[250px]"
+				/>
 			</aside>
-			<main className="relative flex grow items-center justify-center p-8">
-				<Form method="post" className="w-[400px] max-w-full">
+			<main className="flex grow items-center justify-center p-8">
+				<Form method="post">
 					<h1 className="text-center text-3xl font-medium">Sign in to Book Souls</h1>
 					<EmailInput defaultValue={actionData?.email} />
 					<SignInButton />
@@ -60,10 +64,11 @@ function SignInButton() {
 		<button
 			type="submit"
 			aria-disabled={submitting}
-			className="mx-auto mt-6 flex h-10 w-[200px] items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-primary-light to-primary text-on-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+			aria-label={submitting ? "Signing in" : "Sign In"}
+			className="mx-auto mt-6 flex h-10 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-primary-light to-primary px-10 text-on-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
 		>
-			{submitting && <Loader2Icon aria-label="Loading" className="animate-spin" />}
 			<span>Sign In</span>
+			{submitting ? <Loader2Icon size={20} className="animate-spin" /> : <LogInIcon size={20} />}
 		</button>
 	);
 }
