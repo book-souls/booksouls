@@ -1,47 +1,11 @@
-import type { ActionFunctionArgs } from "@remix-run/node";
-import { Form, Link, redirect, useActionData, useNavigation } from "@remix-run/react";
-import { useEffect, useRef, useState } from "react";
+import { Form, Link, useActionData, useNavigation } from "@remix-run/react";
+import { useEffect, useRef } from "react";
 import { toast, Toaster } from "sonner";
-import { custom, email, minLength, object, parse, string } from "valibot";
 import LoginLogo from "~/assets/login.svg?react";
 import { Logo } from "~/components/Logo";
-import { createServerClient } from "~/supabase/client.server";
+import { action } from "./action.server";
 
-const schema = object(
-	{
-		email: string([email()]),
-		password: string([minLength(8)]),
-		confirmPassword: string([minLength(8)]),
-	},
-	[
-		custom((input) => {
-			return input.password == input.confirmPassword;
-		}),
-	],
-);
-
-export async function action({ request }: ActionFunctionArgs) {
-	const formData = await request.formData();
-	const result = parse(schema, Object.fromEntries(formData));
-	const email = result.email;
-	const password = result.password;
-	const supabase = createServerClient(request);
-	const url = new URL(request.url);
-	const { data, error } = await supabase.auth.signUp({
-		email: email,
-		password: password,
-		options: {
-			emailRedirectTo: `${url.origin}/auth/confirm`,
-		},
-	});
-	if (error !== null) {
-		console.error(error);
-		return {
-			error: error.message,
-		};
-	}
-	return { error: null };
-}
+export { action };
 
 export default function SignUp() {
 	const actionData = useActionData<typeof action>();
