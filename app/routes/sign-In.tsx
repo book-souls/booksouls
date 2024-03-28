@@ -11,7 +11,7 @@ export async function action({ request }: ActionFunctionArgs) {
 	return null;
 }
 
-export default function Login() {
+export default function SignIn() {
 	return (
 		<div className="flex h-dvh flex-row">
 			<aside className="relative flex w-[30%] flex-col items-center justify-center bg-surface text-on-surface">
@@ -27,7 +27,7 @@ export default function Login() {
 			<main className="relative flex w-[70%] items-center justify-center">
 				<p className="absolute right-4 top-4">
 					Not a member?{" "}
-					<Link to="#" className="text-red-500">
+					<Link to="/signUp" className="text-red-500">
 						Sign up now
 					</Link>
 				</p>
