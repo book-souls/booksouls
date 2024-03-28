@@ -24,7 +24,7 @@ export default function SignUp() {
 			<main className="relative flex w-[70%] items-center justify-center">
 				<p className="absolute right-4 top-4">
 					Already a Member?{" "}
-					<Link to="/signIn" className="text-red-500">
+					<Link to="/sign-in" className="text-red-500">
 						Sign in now
 					</Link>
 				</p>
