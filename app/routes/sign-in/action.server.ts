@@ -8,16 +8,8 @@ export async function action({ request }: ActionFunctionArgs) {
 	const formData = await request.formData();
 	const email = parse(emailSchema, formData.get("email"));
 
-	const headers = new Headers();
-	const supabase = createServerClient(request, headers);
-
-	const url = new URL(request.url);
-	const { error } = await supabase.auth.signInWithOtp({
-		email,
-		options: {
-			emailRedirectTo: url.origin,
-		},
-	});
+	const supabase = createServerClient(request);
+	const { error } = await supabase.auth.signInWithOtp({ email });
 
 	if (error !== null) {
 		console.error(error);
@@ -26,18 +18,12 @@ export async function action({ request }: ActionFunctionArgs) {
 				error: error.message,
 				email,
 			},
-			{
-				headers,
-				status: 500,
-			},
+			{ status: error.status ?? 500 },
 		);
 	}
 
-	return json(
-		{
-			error: null,
-			email,
-		},
-		{ headers },
-	);
+	return {
+		error: null,
+		email,
+	};
 }

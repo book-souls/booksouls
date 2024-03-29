@@ -16,6 +16,9 @@ export function createServerClient(request: Request, responseHeaders?: Headers) 
 				responseHeaders?.append("Set-Cookie", serialize(key, "", options));
 			},
 		},
+		auth: {
+			flowType: "pkce",
+		},
 	});
 }
 
