@@ -1,14 +1,15 @@
-import { json, type ActionFunctionArgs } from "@remix-run/node";
-import { email, parse, string } from "valibot";
+import { json, redirect, type ActionFunctionArgs } from "@remix-run/node";
+import { parse } from "valibot";
 import { createServerClient } from "~/supabase/client.server";
-
-const emailSchema = string([email()]);
+import { setSignInCookie } from "./cookie.server";
+import { EmailSchema } from "./validate";
 
 export async function action({ request }: ActionFunctionArgs) {
 	const formData = await request.formData();
-	const email = parse(emailSchema, formData.get("email"));
+	const email = parse(EmailSchema, formData.get("email"));
 
-	const supabase = createServerClient(request);
+	const headers = new Headers();
+	const supabase = createServerClient(request, headers);
 	const { error } = await supabase.auth.signInWithOtp({ email });
 
 	if (error !== null) {
@@ -18,12 +19,13 @@ export async function action({ request }: ActionFunctionArgs) {
 				error: error.message,
 				email,
 			},
-			{ status: error.status ?? 500 },
+			{
+				status: error.status ?? 500,
+				headers,
+			},
 		);
 	}
 
-	return {
-		error: null,
-		email,
-	};
+	await setSignInCookie(headers, email);
+	return redirect("/otp", { headers });
 }

@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { createServerClient, type SupabaseServerClient } from "~/supabase/client.server";
+import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
 	const supabase = createServerClient(request);
@@ -10,7 +10,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 	};
 }
 
-async function getBooks(supabase: SupabaseServerClient) {
+async function getBooks(supabase: SupabaseClient) {
 	const { data, error } = await supabase
 		.from("books")
 		.select("id, title, genres, shortDescription:short_description, featured:is_featured")

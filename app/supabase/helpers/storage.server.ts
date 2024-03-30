@@ -1,6 +1,6 @@
-import type { SupabaseServerClient } from "../client.server";
+import type { SupabaseClient } from "../client.server";
 
-export function getBookImageUrl(supabase: SupabaseServerClient, imageFileName: string) {
+export function getBookImageUrl(supabase: SupabaseClient, imageFileName: string) {
 	const { data } = supabase.storage.from("books").getPublicUrl(imageFileName);
 	return data.publicUrl;
 }

@@ -5,14 +5,15 @@ import { toast, Toaster } from "sonner";
 import LoginSidebarIcon from "~/assets/login-sidebar.svg?react";
 import { Logo } from "~/components/Logo";
 import { action } from "./action.server";
+import { loader } from "./loader.server";
 
-export { action };
+export { action, loader };
 
 export default function SignIn() {
 	const actionData = useActionData<typeof action>();
 	return (
 		<div className="flex h-screen min-h-[400px]">
-			<aside className="relative flex w-[30%] min-w-[300px] flex-col items-center justify-center gap-8 bg-surface p-8 text-on-surface">
+			<aside className="relative flex w-1/3 min-w-[325px] flex-col items-center justify-center gap-8 bg-surface text-on-surface">
 				<Link
 					to="/"
 					className="focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
@@ -22,12 +23,12 @@ export default function SignIn() {
 				<LoginSidebarIcon
 					role="img"
 					aria-label="A person reading a book"
-					className="h-auto w-[250px]"
+					className="h-auto w-[275px]"
 				/>
 			</aside>
 			<main className="flex grow items-center justify-center p-8">
 				<Form method="post">
-					<h1 className="text-center text-3xl font-medium">Sign in to Book Souls</h1>
+					<h1 className="text-3xl font-medium">Sign in to Book Souls</h1>
 					<EmailInput defaultValue={actionData?.email} />
 					<SignInButton />
 				</Form>
@@ -39,9 +40,10 @@ export default function SignIn() {
 
 function EmailInput({ defaultValue }: { defaultValue?: string }) {
 	const inputId = useId();
+	const descriptionId = `${inputId}-description`;
 	return (
-		<div className="flex flex-col gap-1 pt-8">
-			<label className="font-medium" htmlFor={inputId}>
+		<div className="flex flex-col pb-6 pt-8">
+			<label htmlFor={inputId} className="mb-1 font-medium">
 				Email Address
 			</label>
 			<input
@@ -51,29 +53,33 @@ function EmailInput({ defaultValue }: { defaultValue?: string }) {
 				defaultValue={defaultValue}
 				required
 				autoComplete="email"
-				className="h-10 rounded-md bg-primary/20 px-3 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+				aria-describedby={descriptionId}
+				className="h-12 rounded-md bg-primary/20 px-3 text-surface focus:outline focus:outline-2 focus:outline-current"
 			/>
+			<p id={descriptionId} className="mt-2 text-sm">
+				If this is your first time signing in, a new account will be created.
+			</p>
 		</div>
 	);
 }
 
 function SignInButton() {
 	const navigation = useNavigation();
-	const submitting = navigation.state === "submitting";
+	const loading = navigation.state !== "idle";
 	return (
 		<button
 			type="submit"
-			aria-disabled={submitting}
-			aria-label={submitting ? "Signing in" : "Sign In"}
-			className="mx-auto mt-6 flex h-10 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-primary-light to-primary px-10 text-on-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+			aria-disabled={loading}
+			aria-label={loading ? "Signing in" : "Sign In"}
+			className="mx-auto flex h-10 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-primary-light to-primary px-10 text-on-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&_svg]:size-5"
 		>
 			<span>Sign In</span>
-			{submitting ? <Loader2Icon size={20} className="animate-spin" /> : <LogInIcon size={20} />}
+			{loading ? <Loader2Icon className="animate-spin" /> : <LogInIcon />}
 		</button>
 	);
 }
 
-function ErrorToaster({ error }: { error: string | null | undefined }) {
+function ErrorToaster({ error }: { error: string | undefined }) {
 	const navigation = useNavigation();
 	const idle = navigation.state === "idle";
 
@@ -82,11 +88,7 @@ function ErrorToaster({ error }: { error: string | null | undefined }) {
 			return;
 		}
 
-		if (error !== null) {
-			toast.error("Failed to sign in", { description: error });
-		} else {
-			toast.success("Check your inbox for a sign in link");
-		}
+		toast.error("Failed to sign in", { description: error });
 	}, [idle, error]);
 
 	return <Toaster richColors closeButton />;

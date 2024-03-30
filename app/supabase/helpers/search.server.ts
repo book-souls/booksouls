@@ -1,6 +1,6 @@
 import { featureExtraction } from "@huggingface/inference";
 import { array, number, parse } from "valibot";
-import type { SupabaseServerClient } from "~/supabase/client.server";
+import type { SupabaseClient } from "~/supabase/client.server";
 import { getBookImageUrl } from "./storage.server";
 
 export type SearchBooksOptions = {
@@ -9,7 +9,7 @@ export type SearchBooksOptions = {
 };
 
 export async function searchBooks(
-	supabase: SupabaseServerClient,
+	supabase: SupabaseClient,
 	query: string,
 	options: SearchBooksOptions,
 ) {
@@ -25,7 +25,7 @@ export async function searchBooks(
 	}
 
 	return data.map((book) => {
-		const { image_file_name, short_description, ...rest } = book;
+		const { short_description, image_file_name, ...rest } = book;
 		return {
 			...rest,
 			shortDescription: short_description,
@@ -36,7 +36,7 @@ export async function searchBooks(
 
 export type BookSearchResults = Awaited<ReturnType<typeof searchBooks>>;
 
-const embeddingSchema = array(number());
+const EmbeddingSchema = array(number());
 
 async function getEmbeddings(query: string) {
 	const embedding = await featureExtraction({
@@ -44,6 +44,5 @@ async function getEmbeddings(query: string) {
 		inputs: query,
 		accessToken: process.env.HF_API_KEY,
 	});
-
-	return parse(embeddingSchema, embedding);
+	return parse(EmbeddingSchema, embedding);
 }

@@ -22,4 +22,4 @@ export function createServerClient(request: Request, responseHeaders?: Headers) 
 	});
 }
 
-export type SupabaseServerClient = ReturnType<typeof createServerClient>;
+export type SupabaseClient = ReturnType<typeof createServerClient>;
