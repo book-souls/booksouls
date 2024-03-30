@@ -1,7 +1,7 @@
 import { json, redirect, type ActionFunctionArgs } from "@remix-run/node";
 import { array, length, parse, regex, string } from "valibot";
 import { createServerClient } from "~/supabase/client.server";
-import { getSignInCookie } from "../sign-in/cookie.server";
+import { deleteSignInCookie, getSignInCookie } from "../sign-in/cookie.server";
 
 const DigitSchema = string([regex(/^[0-9]$/)]);
 const OTPSchema = array(DigitSchema, [length(6)]);
@@ -39,5 +39,6 @@ export async function action({ request }: ActionFunctionArgs) {
 		);
 	}
 
+	await deleteSignInCookie(headers);
 	return redirect("/", { headers });
 }

@@ -61,7 +61,7 @@ function OTPInput({ otp, onComplete }: { otp: string | undefined; onComplete: ()
 
 function VerifyButton() {
 	const navigation = useNavigation();
-	const loading = navigation.state !== "idle";
+	const loading = navigation.state === "submitting";
 	return (
 		<button
 			type="submit"

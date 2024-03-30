@@ -65,7 +65,7 @@ function EmailInput({ defaultValue }: { defaultValue?: string }) {
 
 function SignInButton() {
 	const navigation = useNavigation();
-	const loading = navigation.state !== "idle";
+	const loading = navigation.state === "submitting";
 	return (
 		<button
 			type="submit"
