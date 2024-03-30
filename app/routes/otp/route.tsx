@@ -4,6 +4,7 @@ import { normalizeProps, useMachine } from "@zag-js/react";
 import { Loader2Icon } from "lucide-react";
 import { useEffect, useId, useRef } from "react";
 import { toast, Toaster } from "sonner";
+import { useMounted } from "~/hooks/mounted";
 import { action } from "./action.server";
 import { loader } from "./loader.server";
 
@@ -29,18 +30,25 @@ export default function OTP() {
 	);
 }
 
-function OTPInput({ otp, onComplete }: { otp: string | undefined; onComplete: () => void }) {
+function OTPInput({ otp, onComplete }: { otp: string[] | undefined; onComplete: () => void }) {
 	const id = useId();
 	const [state, send] = useMachine(
 		pinInput.machine({
 			id,
 			type: "numeric",
 			otp: true,
-			pattern: "[0-9]",
+			value: otp,
 			onValueComplete: onComplete,
 		}),
 	);
 	const api = pinInput.connect(state, send, normalizeProps);
+
+	// If JS hasn't yet loaded, we use HTML validation because it doesn't need
+	// JS to work. Otherwise, we don't limit the input length to 1 because
+	// it prevents pasting the entire OTP code at once.
+	const mounted = useMounted();
+	const maxLength = mounted ? undefined : 1;
+
 	return (
 		<div {...api.rootProps} className="flex items-center justify-center gap-2 pb-6 pt-8">
 			{Array(6)
@@ -50,8 +58,9 @@ function OTPInput({ otp, onComplete }: { otp: string | undefined; onComplete: ()
 						key={i}
 						{...api.getInputProps({ index: i })}
 						name="otp"
-						defaultValue={otp?.charAt(i)}
 						required
+						pattern="[0-9]"
+						maxLength={maxLength}
 						className="h-14 w-14 rounded bg-primary/20 text-center text-lg font-medium text-surface placeholder:text-current focus:outline focus:outline-2 focus:outline-current focus:placeholder:text-transparent"
 					/>
 				))}

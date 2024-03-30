@@ -15,13 +15,13 @@ export async function action({ request }: ActionFunctionArgs) {
 	}
 
 	const formData = await request.formData();
-	const otp = parse(OTPSchema, formData.getAll("otp")).join("");
+	const otp = parse(OTPSchema, formData.getAll("otp"));
 
 	const headers = new Headers();
 	const supabase = createServerClient(request, headers);
 	const { error } = await supabase.auth.verifyOtp({
 		email,
-		token: otp,
+		token: otp.join(""),
 		type: "email",
 	});
 
