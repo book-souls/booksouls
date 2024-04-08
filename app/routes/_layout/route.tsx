@@ -1,9 +1,8 @@
-import { Link, Outlet } from "@remix-run/react";
+import { Form, Link, Outlet } from "@remix-run/react";
 import { SearchIcon, SparklesIcon } from "lucide-react";
 import { useId } from "react";
 import CrueltyFreeIcon from "~/assets/cruelty-free.svg?react";
 import footerLogo from "~/assets/footer-logo.svg";
-import { IconButton } from "~/components/IconButton";
 import { Logo } from "~/components/Logo";
 
 export default function Layout() {
@@ -18,37 +17,55 @@ export default function Layout() {
 
 function Header() {
 	return (
-		<header className="flex flex-col items-center justify-center bg-surface text-on-surface">
-			<Logo />
-			<div className="relative mt-4 w-full">
-				<Link
-					to="/explore"
-					className="absolute left-6 top-1/2 flex h-10 -translate-y-1/2 items-center justify-center gap-2 rounded-lg bg-on-surface px-3 text-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-surface"
-				>
-					<span className="text-sm font-medium">Explore</span>
-					<SparklesIcon className="fill-amber-500 text-amber-600" />
+		<header className="bg-surface px-8 py-4 text-on-surface">
+			<div className="relative flex items-center justify-between">
+				<Link to="/">
+					<Logo scale={0.75} />
 				</Link>
-				<nav>
-					<ul className="flex items-center justify-center gap-16">
-						<li>
-							<NavLink to="/">Home</NavLink>
-						</li>
-						<li>
-							<NavLink to="/categories">Categories</NavLink>
-						</li>
-						<li>
-							<NavLink to="/authors">Authors</NavLink>
-						</li>
-						<li>
-							<NavLink to="/library">Library</NavLink>
-						</li>
-					</ul>
-				</nav>
-				<IconButton aria-label="Search" className="absolute right-6 top-1/2 -translate-y-1/2">
-					<SearchIcon />
-				</IconButton>
+				<div className="absolute left-1/2 -translate-x-1/2">
+					<SearchForm />
+				</div>
+				<div className="flex items-center gap-4">
+					<Link
+						to="/explore"
+						className="flex h-10 items-center justify-center gap-2 rounded-lg bg-on-surface px-3 text-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-surface"
+					>
+						<span className="text-sm font-medium">Explore</span>
+						<SparklesIcon className="fill-amber-500 text-amber-600" />
+					</Link>
+				</div>
 			</div>
+			<nav className="pt-6">
+				<ul className="flex items-center justify-center gap-16">
+					<li>
+						<NavLink to="/">Home</NavLink>
+					</li>
+					<li>
+						<NavLink to="/categories">Categories</NavLink>
+					</li>
+					<li>
+						<NavLink to="/authors">Authors</NavLink>
+					</li>
+					<li>
+						<NavLink to="/library">Library</NavLink>
+					</li>
+				</ul>
+			</nav>
 		</header>
+	);
+}
+
+function SearchForm() {
+	return (
+		<Form role="search" className="relative">
+			<input
+				name="query"
+				placeholder="Search"
+				required
+				className="h-9 w-80 rounded bg-on-surface pl-3 pr-9 text-surface placeholder:text-surface/60 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-on-surface"
+			/>
+			<SearchIcon className="pointer-events-none absolute right-2 top-1/2 size-5 -translate-y-1/2 text-surface" />
+		</Form>
 	);
 }
 
