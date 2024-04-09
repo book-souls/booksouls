@@ -1,7 +1,7 @@
 import { Form, Link, useActionData, useNavigation } from "@remix-run/react";
 import { Loader2Icon, LogInIcon } from "lucide-react";
 import { useEffect, useId } from "react";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import LoginSidebarIcon from "~/assets/login-sidebar.svg?react";
 import { Logo } from "~/components/Logo";
 import { action } from "./action.server";
@@ -33,7 +33,7 @@ export default function SignIn() {
 					<SignInButton />
 				</Form>
 			</main>
-			<ErrorToaster error={actionData?.error} />
+			<ErrorToast error={actionData?.error} />
 		</div>
 	);
 }
@@ -79,7 +79,7 @@ function SignInButton() {
 	);
 }
 
-function ErrorToaster({ error }: { error: string | undefined }) {
+function ErrorToast({ error }: { error: string | undefined }) {
 	const navigation = useNavigation();
 	const idle = navigation.state === "idle";
 
@@ -91,5 +91,5 @@ function ErrorToaster({ error }: { error: string | undefined }) {
 		toast.error("Failed to sign in", { description: error });
 	}, [idle, error]);
 
-	return <Toaster richColors closeButton />;
+	return null;
 }

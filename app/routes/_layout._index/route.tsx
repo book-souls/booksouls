@@ -3,7 +3,6 @@ import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useId } from "react";
 import placeholder from "~/assets/placeholder.jpeg";
 import Read from "~/assets/read.svg?react";
-import { IconButton } from "~/components/IconButton";
 import { useSnapCarousel } from "~/hooks/snap-carousel";
 import { loader, type Book } from "./loader.server";
 
@@ -98,25 +97,27 @@ function FeaturedBooksCarousel({ books }: { books: Book[] }) {
 				})}
 			</div>
 			<div className="flex items-center justify-center pb-4">
-				<IconButton
+				<button
 					aria-label="Go to the previous slide"
 					aria-controls={scrollId}
 					aria-disabled={activePageIndex === 0}
+					className="icon-button"
 					onClick={scrollPrev}
 				>
 					<ChevronLeftIcon />
-				</IconButton>
+				</button>
 				<p aria-hidden className="w-32 text-center text-sm font-medium">
 					{activePageIndex + 1} / {pages.length}
 				</p>
-				<IconButton
+				<button
 					aria-label="Go to the next slide"
 					aria-controls={scrollId}
 					aria-disabled={activePageIndex === pages.length - 1}
+					className="icon-button"
 					onClick={scrollNext}
 				>
 					<ChevronRightIcon />
-				</IconButton>
+				</button>
 			</div>
 		</section>
 	);
@@ -182,22 +183,24 @@ function GenreSection({ genre, books }: { genre: string; books: Book[] }) {
 				</div>
 			</div>
 			<div className="flex items-center justify-center gap-32">
-				<IconButton
+				<button
 					aria-label="Go to the previous page"
 					aria-controls={scrollId}
 					aria-disabled={activePageIndex === 0}
+					className="icon-button"
 					onClick={scrollPrev}
 				>
 					<ChevronLeftIcon />
-				</IconButton>
-				<IconButton
+				</button>
+				<button
 					aria-label="Go to the next page"
 					aria-controls={scrollId}
 					aria-disabled={activePageIndex === pages.length - 1}
+					className="icon-button"
 					onClick={scrollNext}
 				>
 					<ChevronRightIcon />
-				</IconButton>
+				</button>
 			</div>
 		</section>
 	);

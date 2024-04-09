@@ -3,7 +3,7 @@ import * as pinInput from "@zag-js/pin-input";
 import { normalizeProps, useMachine } from "@zag-js/react";
 import { Loader2Icon } from "lucide-react";
 import { useEffect, useId, useRef } from "react";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import { useMounted } from "~/hooks/mounted";
 import { action } from "./action.server";
 import { loader } from "./loader.server";
@@ -25,7 +25,7 @@ export default function OTP() {
 				<OTPInput otp={actionData?.otp} onComplete={() => submit(formRef.current)} />
 				<VerifyButton />
 			</Form>
-			<ErrorToaster error={actionData?.error} />
+			<ErrorToast error={actionData?.error} />
 		</main>
 	);
 }
@@ -84,7 +84,7 @@ function VerifyButton() {
 	);
 }
 
-function ErrorToaster({ error }: { error: string | undefined }) {
+function ErrorToast({ error }: { error: string | undefined }) {
 	const navigation = useNavigation();
 	const idle = navigation.state === "idle";
 
@@ -96,5 +96,5 @@ function ErrorToaster({ error }: { error: string | undefined }) {
 		toast.error("Failed to verify code", { description: error });
 	}, [idle, error]);
 
-	return <Toaster richColors closeButton />;
+	return null;
 }

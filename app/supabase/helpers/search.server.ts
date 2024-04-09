@@ -1,7 +1,7 @@
 import { featureExtraction } from "@huggingface/inference";
 import { array, number, parse } from "valibot";
-import type { SupabaseClient } from "~/supabase/client.server";
-import { getBookImageUrl } from "./storage.server";
+import type { SupabaseClient } from "../client.server";
+import { getBookImageUrl } from "./storage";
 
 export type SearchBooksOptions = {
 	matchThreshold: number;

@@ -61,12 +61,49 @@ export default {
 				},
 			});
 
+			addComponents({
+				".icon-button": {
+					position: "relative",
+					display: "inline-flex",
+					alignItems: "center",
+					justifyContent: "center",
+					width: "2.5rem",
+					height: "2.5rem",
+					borderRadius: "9999px",
+					"& svg": {
+						width: "1.5rem",
+						height: "1.5rem",
+					},
+					"&::before": {
+						content: "''",
+						position: "absolute",
+						inset: "0",
+						borderRadius: "inherit",
+						backgroundColor: "currentColor",
+						opacity: "0",
+					},
+					"&:hover::before": {
+						opacity: "0.1",
+					},
+					"&:active::before": {
+						opacity: "0.15",
+					},
+					"&:focus-visible": {
+						outline: "2px solid currentColor",
+					},
+					"&:disabled, &[aria-disabled='true']": {
+						pointerEvents: "none",
+						opacity: "0.5",
+					},
+				},
+			});
+
 			addUtilities({
 				".scrollbar-hidden": {
 					"&::-webkit-scrollbar": {
 						display: "none",
 					},
-					// Firefox
+					// Firefox doesn't support -webkit-scrollbar.
 					scrollbarWidth: "none",
 				},
 			});

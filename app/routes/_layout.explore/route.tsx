@@ -1,7 +1,7 @@
 import { Form, useActionData, useNavigation } from "@remix-run/react";
 import { Loader2Icon, Search } from "lucide-react";
 import { useEffect, useId } from "react";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import SearchBooks from "~/assets/search-books.svg?react";
 import SearchNotFound from "~/assets/search-not-found.svg?react";
 import type { BookSearchResults } from "~/supabase/helpers/search.server";
@@ -20,7 +20,7 @@ export default function Explore() {
 				</div>
 			</div>
 			<div className="line-gradient" />
-			<ErrorToaster error={actionData?.error} />
+			<ErrorToast error={actionData?.error} />
 		</main>
 	);
 }
@@ -131,7 +131,7 @@ function SearchResultsList({ results }: { results: BookSearchResults }) {
 	);
 }
 
-function ErrorToaster({ error }: { error: boolean | undefined }) {
+function ErrorToast({ error }: { error: boolean | undefined }) {
 	const navigation = useNavigation();
 	const idle = navigation.state === "idle";
 
@@ -143,5 +143,5 @@ function ErrorToaster({ error }: { error: boolean | undefined }) {
 		toast.error("Failed to load search results");
 	}, [idle, error]);
 
-	return <Toaster richColors closeButton />;
+	return null;
 }

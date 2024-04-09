@@ -1,9 +1,16 @@
-import { Form, Link, Outlet } from "@remix-run/react";
-import { SearchIcon, SparklesIcon } from "lucide-react";
+import { Form, Link, Outlet, useLoaderData } from "@remix-run/react";
+import type { User } from "@supabase/supabase-js";
+import * as popover from "@zag-js/popover";
+import { normalizeProps, Portal, useMachine } from "@zag-js/react";
+import { Loader2Icon, LogInIcon, LogOutIcon, SearchIcon, SparklesIcon, XIcon } from "lucide-react";
 import { useId } from "react";
 import CrueltyFreeIcon from "~/assets/cruelty-free.svg?react";
 import footerLogo from "~/assets/footer-logo.svg";
 import { Logo } from "~/components/Logo";
+import { useSignOut } from "../api.sign-out/use-sign-out";
+import { loader } from "./loader.server";
+
+export { loader };
 
 export default function Layout() {
 	return (
@@ -16,8 +23,9 @@ export default function Layout() {
 }
 
 function Header() {
+	const { session } = useLoaderData<typeof loader>();
 	return (
-		<header className="bg-surface px-8 py-4 text-on-surface">
+		<header className="bg-surface px-6 py-4 text-on-surface">
 			<div className="relative flex items-center justify-between">
 				<Link to="/">
 					<Logo scale={0.75} />
@@ -33,6 +41,7 @@ function Header() {
 						<span className="text-sm font-medium">Explore</span>
 						<SparklesIcon className="fill-amber-500 text-amber-600" />
 					</Link>
+					{session !== null ? <UserAvatar user={session.user} /> : <SignInLink />}
 				</div>
 			</div>
 			<nav className="pt-6">
@@ -66,6 +75,76 @@ function SearchForm() {
 			/>
 			<SearchIcon className="pointer-events-none absolute right-2 top-1/2 size-5 -translate-y-1/2 text-surface" />
 		</Form>
+	);
+}
+
+function UserAvatar({ user }: { user: User }) {
+	const id = useId();
+	const [state, send] = useMachine(
+		popover.machine({
+			id,
+			modal: true,
+		}),
+	);
+	const api = popover.connect(state, send, normalizeProps);
+	return (
+		<div>
+			<button
+				{...api.triggerProps}
+				aria-label="Open profile menu"
+				className="icon-button bg-primary-light text-xl text-on-primary focus-visible:outline-offset-2 focus-visible:outline-primary-light"
+			>
+				{user?.email?.at(0)?.toUpperCase()}
+			</button>
+			<Portal>
+				<div {...api.positionerProps}>
+					<div
+						{...api.contentProps}
+						className="relative !block rounded-lg bg-background p-4 text-on-background opacity-0 transition-opacity duration-200 data-[state='open']:opacity-100"
+					>
+						<div
+							{...api.arrowProps}
+							className="[--arrow-background:theme(colors.background.DEFAULT)] [--arrow-size:8px]"
+						>
+							<div {...api.arrowTipProps} />
+						</div>
+						<button
+							{...api.closeTriggerProps}
+							className="icon-button absolute right-2 top-2 size-8 [&_svg]:size-5"
+						>
+							<XIcon />
+						</button>
+						<div className="pb-6 pt-4">
+							<p className="font-medium">Email</p>
+							<p className="text-sm">{user.email}</p>
+						</div>
+						<SignOutButton />
+					</div>
+				</div>
+			</Portal>
+		</div>
+	);
+}
+
+function SignOutButton() {
+	const { signOut, loading } = useSignOut();
+	return (
+		<button
+			aria-disabled={loading}
+			className="mx-auto flex h-10 items-center justify-center gap-2 rounded-lg bg-red-700 px-6 text-sm text-red-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 [&_svg]:size-4"
+			onClick={signOut}
+		>
+			Sign Out
+			{loading ? <Loader2Icon className="animate-spin" /> : <LogOutIcon />}
+		</button>
+	);
+}
+
+function SignInLink() {
+	return (
+		<Link to="/sign-in" title="Sign in" className="icon-button">
+			<LogInIcon />
+		</Link>
 	);
 }
 
