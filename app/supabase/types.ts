@@ -8,7 +8,7 @@ export type Database = {
 					author: string;
 					description: string;
 					description_embeddings: string | null;
-          e_name: string;
+					epub_file_name: string;
 					fts: unknown | null;
 					genres: string[];
 					id: number;
@@ -53,13 +53,6 @@ export type Database = {
 			[_ in never]: never;
 		};
 		Functions: {
-			match_books: {
-				Args: {
-					query_embedding: string;
-					match_threshold: number;
-					match_count: number;
-				};
-				Returns: Database["public"]["CompositeTypes"]["match_books_result"][];
 			search_books: {
 				Args: {
 					query_embeddings: string;
@@ -80,12 +73,7 @@ export type Database = {
 			[_ in never]: never;
 		};
 		CompositeTypes: {
-			match_books_result: {
-				id: number | null;
-				title: string | null;
-				short_description: string | null;
-				genres: string[] | null;
-			};
+			[_ in never]: never;
 		};
 	};
 };
