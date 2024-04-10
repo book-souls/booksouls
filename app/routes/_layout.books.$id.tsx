@@ -2,7 +2,6 @@ import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import placholder from "~/assets/placeholder.jpeg";
-import { IconButton } from "~/components/IconButton";
 import { useCarousel } from "~/hooks/carousel";
 
 export function loader({ params }: LoaderFunctionArgs) {
@@ -80,21 +79,23 @@ function SimilarBooks({ books }: { books: Book[] }) {
 				</div>
 			</div>
 			<div className="flex justify-center gap-20">
-				<IconButton
+				<button
 					aria-label="Previous page"
 					disabled={selectedIndex === 0}
+					className="icon-button"
 					onClick={() => carousel?.scrollTo(selectedIndex - 6)}
 				>
 					<ChevronLeftIcon />
-				</IconButton>
+				</button>
 
-				<IconButton
+				<button
 					aria-label="Next page"
 					disabled={selectedIndex === books.length - 1}
+					className="icon-button"
 					onClick={() => carousel?.scrollTo(selectedIndex + 6)}
 				>
 					<ChevronRightIcon />
-				</IconButton>
+				</button>
 			</div>
 		</section>
 	);

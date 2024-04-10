@@ -1,7 +1,7 @@
 import { Form, useActionData, useNavigation } from "@remix-run/react";
 import { Loader2Icon, Search } from "lucide-react";
 import { useEffect, useId } from "react";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import SearchBooks from "~/assets/search-books.svg?react";
 import SearchNotFound from "~/assets/search-not-found.svg?react";
 import type { BookSearchResults } from "~/supabase/helpers/search.server";
@@ -20,7 +20,7 @@ export default function Explore() {
 				</div>
 			</div>
 			<div className="line-gradient" />
-			<ErrorToaster error={actionData?.error} />
+			<ErrorToast error={actionData?.error} />
 		</main>
 	);
 }
@@ -58,13 +58,10 @@ function SearchSubmit() {
 			type="submit"
 			tabIndex={-1}
 			aria-disabled={submitting}
+			aria-label={submitting ? "Searching" : "Search"}
 			className="flex h-12 w-12 shrink-0 items-center justify-center bg-primary text-on-primary"
 		>
-			{submitting ? (
-				<Loader2Icon aria-label="Searching..." className="animate-spin" />
-			) : (
-				<Search aria-label="Search" />
-			)}
+			{submitting ? <Loader2Icon className="animate-spin" /> : <Search />}
 		</button>
 	);
 }
@@ -134,7 +131,7 @@ function SearchResultsList({ results }: { results: BookSearchResults }) {
 	);
 }
 
-function ErrorToaster({ error }: { error: boolean | undefined }) {
+function ErrorToast({ error }: { error: boolean | undefined }) {
 	const navigation = useNavigation();
 	const idle = navigation.state === "idle";
 
@@ -146,5 +143,5 @@ function ErrorToaster({ error }: { error: boolean | undefined }) {
 		toast.error("Failed to load search results");
 	}, [idle, error]);
 
-	return <Toaster richColors closeButton />;
+	return null;
 }

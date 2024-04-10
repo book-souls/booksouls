@@ -19,6 +19,10 @@
 		"@remix-run/react": "^2.7.2",
 		"@remix-run/serve": "^2.7.2",
 		"@supabase/ssr": "^0.1.0",
+		"@supabase/supabase-js": "^2.40.0",
+		"@zag-js/pin-input": "^0.45.0",
+		"@zag-js/popover": "^0.45.0",
+		"@zag-js/react": "^0.45.0",
 		"embla-carousel-react": "8.0.0",
 		"isbot": "^3.6.8",
 		"lucide-react": "^0.341.0",
@@ -26,7 +30,6 @@
 		"react-dom": "^18.2.0",
 		"react-snap-carousel": "^0.4.0",
 		"sonner": "^1.4.41",
-		"tailwind-merge": "^2.2.1",
 		"valibot": "^0.30.0"
 	},
 	"devDependencies": {

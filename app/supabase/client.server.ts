@@ -16,7 +16,10 @@ export function createServerClient(request: Request, responseHeaders?: Headers) 
 				responseHeaders?.append("Set-Cookie", serialize(key, "", options));
 			},
 		},
+		auth: {
+			flowType: "pkce",
+		},
 	});
 }
 
-export type SupabaseServerClient = ReturnType<typeof createServerClient>;
+export type SupabaseClient = ReturnType<typeof createServerClient>;
