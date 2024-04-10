@@ -2,7 +2,6 @@ import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import placholder from "~/assets/placeholder.jpeg";
-import { IconButton } from "~/components/IconButton";
 import { useCarousel } from "~/hooks/carousel";
 import { createServerClient, type ServerClient } from "~/supabase/client.server";
 
@@ -70,7 +69,7 @@ export default function Book() {
 						<p className="mt-2 text-2xl font-medium text-on-background/75">
 							{book.genres.join(", ")}
 						</p>
-						<p className="mt-5 text-xl text-on-background/75 ">{book.shortDescription}</p>
+						<p className="mt-5 text-xl text-on-background/75">{book.shortDescription}</p>
 						<button className="mx-auto mb-2 mt-auto h-12 rounded-xl bg-gradient-to-r from-primary to-primary-light px-8 text-xl font-medium text-on-primary shadow-inner">
 							Read Book
 						</button>
@@ -110,21 +109,23 @@ function SimilarBooks({ books }: { books: Book[] }) {
 				</div>
 			</div>
 			<div className="flex justify-center gap-20">
-				<IconButton
+				<button
 					aria-label="Previous page"
 					disabled={selectedIndex === 0}
+					className="icon-button"
 					onClick={() => carousel?.scrollTo(selectedIndex - 6)}
 				>
 					<ChevronLeftIcon />
-				</IconButton>
+				</button>
 
-				<IconButton
+				<button
 					aria-label="Next page"
 					disabled={selectedIndex === books.length - 1}
+					className="icon-button"
 					onClick={() => carousel?.scrollTo(selectedIndex + 6)}
 				>
 					<ChevronRightIcon />
-				</IconButton>
+				</button>
 			</div>
 		</section>
 	);

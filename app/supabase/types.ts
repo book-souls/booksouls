@@ -8,7 +8,8 @@ export type Database = {
 					author: string;
 					description: string;
 					description_embeddings: string | null;
-					epub_file_name: string;
+          e_name: string;
+					fts: unknown | null;
 					genres: string[];
 					id: number;
 					image_file_name: string;
@@ -22,6 +23,7 @@ export type Database = {
 					description: string;
 					description_embeddings?: string | null;
 					epub_file_name: string;
+					fts?: unknown | null;
 					genres: string[];
 					id?: number;
 					image_file_name: string;
@@ -35,6 +37,7 @@ export type Database = {
 					description?: string;
 					description_embeddings?: string | null;
 					epub_file_name?: string;
+					fts?: unknown | null;
 					genres?: string[];
 					id?: number;
 					image_file_name?: string;
@@ -57,6 +60,20 @@ export type Database = {
 					match_count: number;
 				};
 				Returns: Database["public"]["CompositeTypes"]["match_books_result"][];
+			search_books: {
+				Args: {
+					query_embeddings: string;
+					match_threshold: number;
+					match_count: number;
+				};
+				Returns: {
+					id: number;
+					title: string;
+					author: string;
+					short_description: string;
+					genres: string[];
+					image_file_name: string;
+				}[];
 			};
 		};
 		Enums: {
