@@ -25,7 +25,7 @@ export default function Layout() {
 function Header() {
 	const { session } = useLoaderData<typeof loader>();
 	return (
-		<header className="bg-surface px-6 py-4 text-on-surface">
+		<header className="flex flex-col justify-center bg-surface px-6 text-on-surface">
 			<div className="relative flex items-center justify-between">
 				<Link to="/">
 					<Logo scale={0.75} />

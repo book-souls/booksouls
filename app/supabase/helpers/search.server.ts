@@ -1,48 +1,36 @@
-import { featureExtraction } from "@huggingface/inference";
-import { array, number, parse } from "valibot";
+import { featureExtraction, InferenceOutputError } from "@huggingface/inference";
 import type { SupabaseClient } from "../client.server";
-import { getBookImageUrl } from "./storage";
 
-export type SearchBooksOptions = {
-	matchThreshold: number;
-	matchCount: number;
+export type SearchBooksProps<TSelect extends string> = {
+	query: string;
+	threshold: number;
+	limit: number;
+	select: TSelect;
 };
 
-export async function searchBooks(
+export async function searchBooks<TSelect extends string>(
 	supabase: SupabaseClient,
-	query: string,
-	options: SearchBooksOptions,
+	{ query, threshold, limit, select }: SearchBooksProps<TSelect>,
 ) {
-	const embeddings = await getEmbeddings(query);
-	const { data, error } = await supabase.rpc("search_books", {
-		query_embeddings: JSON.stringify(embeddings),
-		match_threshold: options.matchThreshold,
-		match_count: options.matchCount,
-	});
+	try {
+		const embeddings = await featureExtraction({
+			model: "booksouls/fasttext-skipgram",
+			inputs: query.replaceAll("\n", ". ").trim(),
+			accessToken: process.env.HF_API_KEY,
+		});
 
-	if (error !== null) {
+		return await supabase
+			.rpc("search_books", {
+				query_embeddings: JSON.stringify(embeddings),
+				match_threshold: threshold,
+				match_limit: limit,
+			})
+			.select(select);
+	} catch (error) {
+		if (error instanceof InferenceOutputError) {
+			return { data: null, error };
+		}
+
 		throw error;
 	}
-
-	return data.map((book) => {
-		const { short_description, image_file_name, ...rest } = book;
-		return {
-			...rest,
-			shortDescription: short_description,
-			image: getBookImageUrl(supabase, image_file_name),
-		};
-	});
-}
-
-export type BookSearchResults = Awaited<ReturnType<typeof searchBooks>>;
-
-const EmbeddingSchema = array(number());
-
-async function getEmbeddings(query: string) {
-	const embedding = await featureExtraction({
-		model: "booksouls/fasttext-skipgram",
-		inputs: query,
-		accessToken: process.env.HF_API_KEY,
-	});
-	return parse(EmbeddingSchema, embedding);
 }

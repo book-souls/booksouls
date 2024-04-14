@@ -57,15 +57,21 @@ export type Database = {
 				Args: {
 					query_embeddings: string;
 					match_threshold: number;
-					match_count: number;
+					match_limit: number;
 				};
 				Returns: {
-					id: number;
-					title: string;
 					author: string;
-					short_description: string;
+					description: string;
+					description_embeddings: string | null;
+					epub_file_name: string;
+					fts: unknown | null;
 					genres: string[];
+					id: number;
 					image_file_name: string;
+					is_featured: boolean;
+					language: string;
+					short_description: string;
+					title: string;
 				}[];
 			};
 		};

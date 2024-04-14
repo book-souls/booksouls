@@ -4,8 +4,7 @@ import { useEffect, useId } from "react";
 import { toast } from "sonner";
 import SearchBooks from "~/assets/search-books.svg?react";
 import SearchNotFound from "~/assets/search-not-found.svg?react";
-import type { BookSearchResults } from "~/supabase/helpers/search.server";
-import { action } from "./action.server";
+import { action, type BookSearchResults } from "./action.server";
 
 export { action };
 
@@ -66,7 +65,7 @@ function SearchSubmit() {
 	);
 }
 
-function SearchResults({ results }: { results: BookSearchResults | null | undefined }) {
+function SearchResults({ results }: { results: BookSearchResults | undefined }) {
 	if (results == null) {
 		return <SearchResultsPlaceholder />;
 	}
@@ -104,7 +103,7 @@ function EmptySearchResults() {
 	);
 }
 
-function SearchResultsList({ results }: { results: BookSearchResults }) {
+function SearchResultsList({ results }: { results: NonNullable<BookSearchResults> }) {
 	const headerId = useId();
 	return (
 		<section aria-labelledby={headerId} className="mx-auto max-w-3xl py-12">
@@ -131,7 +130,7 @@ function SearchResultsList({ results }: { results: BookSearchResults }) {
 	);
 }
 
-function ErrorToast({ error }: { error: boolean | undefined }) {
+function ErrorToast({ error }: { error: string | undefined }) {
 	const navigation = useNavigation();
 	const idle = navigation.state === "idle";
 
@@ -140,7 +139,7 @@ function ErrorToast({ error }: { error: boolean | undefined }) {
 			return;
 		}
 
-		toast.error("Failed to load search results");
+		toast.error("Failed to load search results", { description: error });
 	}, [idle, error]);
 
 	return null;
