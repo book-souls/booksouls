@@ -12,7 +12,7 @@ export default function Page() {
 		<main>
 			<section className="bg-surface text-on-surface">
 				<div className="px-8 pt-8">
-					<h1 className="mb-16 text-center text-6xl font-thin uppercase">Get Engulfed</h1>
+					<h1 className="mb-16 text-center text-6xl font-thin uppercase tracking-widest">Get Engulfed</h1>
 					<Read
 						role="img"
 						aria-label="A person sitting on a chair reading a book"
