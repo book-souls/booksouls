@@ -1,17 +1,25 @@
 import { Link } from "@remix-run/react";
 import { LinkedinIcon } from "lucide-react";
 import { useState } from "react";
+
+// Team Images
 import Ahmed from "~/assets/Ahmed.png";
-import SearchIcon from "~/assets/Ai-search.svg";
 import Bahaa from "~/assets/Bahaa.jpg";
-import BookStackIcon from "~/assets/bookstack-old.svg";
 import Deena from "~/assets/Deena.png";
 import Essmat from "~/assets/Essmat.jpg";
-import SummaryIcon from "~/assets/fast-summerization.svg";
-import UiIcon from "~/assets/minimalist-ui.svg";
-import Nour from "~/assets/Nour.jpg";
-import TeamIcon from "~/assets/team.svg?react";
 import Zeyad from "~/assets/Zeyad.jpg";
+import Nour from "~/assets/Nour.jpg";
+
+// Icons
+import TeamIcon from "~/assets/team.svg?react";
+import SearchIcon from "~/assets/Ai-search.svg";
+import UiIcon from "~/assets/minimalist-ui.svg";
+import SummaryIcon from "~/assets/fast-summerization.svg";
+import BookStackIcon from "~/assets/bookstack-old.svg";
+import MobileIcon from "~/assets/mobile.svg";
+import FasterIcon from "~/assets/faster.svg";
+import MultiLangIcon from "~/assets/multi-lang.svg";
+import CheckerIcon from "~/assets/checker.svg";
 
 export default function About() {
 	return (
@@ -46,24 +54,37 @@ export default function About() {
 				<p className="pt-5 text-4xl font-bold text-surface">Easy, Simple, and Delightful!</p>
 
 				<div className="flex flex-row gap-28 py-24 text-lg">
-					<Vision_icons image={BookStackIcon} data={"Variety of Books"} />
-					<Vision_icons image={SummaryIcon} data={"Fast Summarization"} />
-					<Vision_icons image={SearchIcon} data={"AI Powered Search"} />
-					<Vision_icons image={UiIcon} data={"Minimalist UI"} />
+					<About_icons image={BookStackIcon} data={"Variety of Books"} />
+					<About_icons image={SummaryIcon} data={"Fast Summarization"} />
+					<About_icons image={SearchIcon} data={"AI Powered Search"} />
+					<About_icons image={UiIcon} data={"Minimalist UI"} />
 				</div>
-				<p className="text-xl">
+				<p className="text-center text-xl">
 					<span className="font-bold">Book Souls</span> aims to make a difference in readers’
-					journeys
+					journeys <br />
+					through embedding of AI in our platform making reading
+					<br />
+					less stressing and more fun!
 				</p>
-				<p className="text-xl">through embedding of AI in our platform making reading</p>
-				<p className="text-xl">less stressing and more fun!</p>
 			</section>
 
-			<section className="flex flex-col items-center bg-surface bg-opacity-10 px-20 pb-16 pt-10">
+			<section className="flex flex-col items-center bg-surface bg-opacity-10 px-20 pb-16 pt-10 text-primary">
 				<h1 className="text-lg uppercase">Future Work</h1>
 				<p className="pt-5 text-4xl font-bold text-surface">Shaping the Future: Ongoing Work</p>
 				{/*Upcoming Features: A sneak peek into future updates*/}
-				<div className=""></div>
+				<div className="flex flex-row gap-28 py-24 text-lg">
+					<About_icons image={MobileIcon} data={"Mobile App"} />
+					<About_icons image={FasterIcon} data={"Faster Response"} />
+					<About_icons image={CheckerIcon} data={"Pronunciation Checker"} />
+					<About_icons image={MultiLangIcon} data={"Multi-Language Support"} />
+				</div>
+				<p className="text-center text-xl">
+					<span className="font-bold">Book Souls</span> Lorem ipsum dolor sit amet consectetur,
+					adipisicing elit.
+					<br />Eaque unde accusamus voluptatibus fuga, explicabo blanditiis, placeat doloribus,
+					<br />cupiditate beatae possimus amet praesentium sunt quia?
+					{/* TODO: IDK What to wrtie ;-; */}
+				</p>
 			</section>
 
 			<section className="flex flex-col items-center px-20 pb-16 pt-10 ">
@@ -131,29 +152,7 @@ function Creator({ href, image, name }: { href: string; image: string; name: str
 	);
 }
 
-// function Creator({ href, image, name }: { href: string; image: string; name: string }) {
-// 	return (
-// 		<div className="flex flex-col content-center items-center">
-// 			<Link to={href}>
-// 				<img
-// 					src={image}
-// 					alt="creator"
-// 					className="h-[150px] w-[150px] content-center items-center rounded-full shadow-lg"
-// 				/>
-// 			</Link>
-// 			<p className="pt-4 text-center text-xl font-medium">{name}</p>
-// 			<div className="">
-// 				<LinkedinIcon
-// 					aria-label="Linkedin Icon"
-// 					className=""
-// 					role="img"
-// 				/>
-// 			</div>
-// 		</div>
-// 	);
-// }
-
-function Vision_icons({ image, data }: { image: string; data: string }) {
+function About_icons({ image, data }: { image: string; data: string }) {
 	return (
 		<div className="flex flex-col items-center gap-5">
 			<img src={image} alt={data} className="h-[100px] w-[100px]" />
