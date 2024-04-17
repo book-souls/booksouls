@@ -1,0 +1,163 @@
+import { Link } from "@remix-run/react";
+import { LinkedinIcon } from "lucide-react";
+import { useState } from "react";
+import Ahmed from "~/assets/Ahmed.png";
+import SearchIcon from "~/assets/Ai-search.svg";
+import Bahaa from "~/assets/Bahaa.jpg";
+import BookStackIcon from "~/assets/bookstack-old.svg";
+import Deena from "~/assets/Deena.png";
+import Essmat from "~/assets/Essmat.jpg";
+import SummaryIcon from "~/assets/fast-summerization.svg";
+import UiIcon from "~/assets/minimalist-ui.svg";
+import Nour from "~/assets/Nour.jpg";
+import TeamIcon from "~/assets/team.svg?react";
+import Zeyad from "~/assets/Zeyad.jpg";
+
+export default function About() {
+	return (
+		<main>
+			<section className="flex items-center gap-24 bg-surface px-20 py-10 text-on-surface">
+				<div className="flex flex-col items-center gap-10">
+					<h1 className="text-center text-4xl font-light tracking-widest">ABOUT US</h1>
+					<p className="text-lg font-light leading-loose">
+						Welcome to <span className="font-medium">Book Souls</span> — the digital crossroads
+						where innovative technology meets the love of books. This platform is not only our
+						virtual bookshelf but also a capstone of our academic journey, a graduation project
+						designed with readers in mind.
+					</p>
+					<Link to="#vision" className="">
+						<button className="w-[150px] rounded-2xl bg-gradient-to-l from-primary to-primary-light p-4 py-3 text-lg font-normal tracking-wider text-on-primary shadow-inner">
+							Learn More
+						</button>
+					</Link>
+				</div>
+				<div>
+					<TeamIcon
+						aria-label="Four people Working on a Project"
+						className="h-[500px] w-[500px]"
+						role="img"
+					/>
+				</div>
+			</section>
+			<div className="line-gradient" />
+
+			<section id="vision" className="flex flex-col items-center px-20 pb-16 pt-10 text-primary">
+				<h1 className="text-lg uppercase">Our Vision</h1>
+				<p className="pt-5 text-4xl font-bold text-surface">Easy, Simple, and Delightful!</p>
+
+				<div className="flex flex-row gap-28 py-24 text-lg">
+					<Vision_icons image={BookStackIcon} data={"Variety of Books"} />
+					<Vision_icons image={SummaryIcon} data={"Fast Summarization"} />
+					<Vision_icons image={SearchIcon} data={"AI Powered Search"} />
+					<Vision_icons image={UiIcon} data={"Minimalist UI"} />
+				</div>
+				<p className="text-xl">
+					<span className="font-bold">Book Souls</span> aims to make a difference in readers’
+					journeys
+				</p>
+				<p className="text-xl">through embedding of AI in our platform making reading</p>
+				<p className="text-xl">less stressing and more fun!</p>
+			</section>
+
+			<section className="flex flex-col items-center bg-surface bg-opacity-10 px-20 pb-16 pt-10">
+				<h1 className="text-lg uppercase">Future Work</h1>
+				<p className="pt-5 text-4xl font-bold text-surface">Shaping the Future: Ongoing Work</p>
+				{/*Upcoming Features: A sneak peek into future updates*/}
+				<div className=""></div>
+			</section>
+
+			<section className="flex flex-col items-center px-20 pb-16 pt-10 ">
+				<h1 className="text-lg uppercase">The Team</h1>
+				<p className="pt-5 text-4xl font-bold text-surface">Meet The Creators</p>
+
+				<div className="grid grid-cols-3 grid-rows-2 gap-x-20 gap-y-12 pt-14">
+					<Creator href="https://linkedin.com/in/deena-fathi/" image={Deena} name={"Deena Fathi"} />
+					<Creator
+						href="https://linkedin.com/in/abdelrahman-bahaa/"
+						image={Bahaa}
+						name={"Abdelrahman Bahaa"}
+					/>
+					<Creator
+						href="https://linkedin.com/in/ahmed-saied02/"
+						image={Ahmed}
+						name={"Ahmed Mohamed"}
+					/>
+					<Creator href="#" image={Nour} name={"Nour Yasser"} />
+					<Creator
+						href="https://linkedin.com/in/abdelrahman-essmat-b525761b2/"
+						image={Essmat}
+						name={"Abdelrahman Essmat"}
+					/>
+					<Creator
+						href="https://linkedin.com/in/zeyad-bassiouny-653907246/"
+						image={Zeyad}
+						name={"Zeyad Mahmoud"}
+					/>
+				</div>
+			</section>
+		</main>
+	);
+}
+
+function Creator({ href, image, name }: { href: string; image: string; name: string }) {
+	const [isHovered, setIsHovered] = useState(false);
+
+	return (
+		<div
+			className="relative flex flex-col items-center"
+			onMouseEnter={() => setIsHovered(true)}
+			onMouseLeave={() => setIsHovered(false)}
+		>
+			<Link to={href}>
+				<div className="relative">
+					<img
+						src={image}
+						alt={name}
+						className={`h-[150px] w-[150px] rounded-full shadow-lg ${isHovered ? "bg-blend-darken" : "bg-blend-normal"}`}
+					/>
+					<div
+						className={`absolute inset-0 rounded-full bg-gradient-to-t from-stone-800/50 via-stone-800/10 to-transparent transition-opacity duration-500 ease-in-out ${isHovered ? "opacity-100" : "opacity-0"}`}
+					/>
+					<LinkedinIcon
+						aria-label="LinkedIn Icon"
+						className={`absolute bottom-0 left-0 right-0 m-auto rounded-md fill-white p-0.5 text-white drop-shadow-2xl transition-opacity duration-500 ease-in-out ${isHovered ? "opacity-100" : "opacity-0"}`}
+						role="img"
+					/>
+				</div>
+			</Link>
+
+			<p className="pt-4 text-center text-xl font-medium">{name}</p>
+		</div>
+	);
+}
+
+// function Creator({ href, image, name }: { href: string; image: string; name: string }) {
+// 	return (
+// 		<div className="flex flex-col content-center items-center">
+// 			<Link to={href}>
+// 				<img
+// 					src={image}
+// 					alt="creator"
+// 					className="h-[150px] w-[150px] content-center items-center rounded-full shadow-lg"
+// 				/>
+// 			</Link>
+// 			<p className="pt-4 text-center text-xl font-medium">{name}</p>
+// 			<div className="">
+// 				<LinkedinIcon
+// 					aria-label="Linkedin Icon"
+// 					className=""
+// 					role="img"
+// 				/>
+// 			</div>
+// 		</div>
+// 	);
+// }
+
+function Vision_icons({ image, data }: { image: string; data: string }) {
+	return (
+		<div className="flex flex-col items-center gap-5">
+			<img src={image} alt={data} className="h-[100px] w-[100px]" />
+			<p>{data}</p>
+		</div>
+	);
+}
