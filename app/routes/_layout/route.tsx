@@ -1,12 +1,15 @@
 import { Form, Link, Outlet, useLoaderData } from "@remix-run/react";
 import type { User } from "@supabase/supabase-js";
+import * as combobox from "@zag-js/combobox";
 import * as popover from "@zag-js/popover";
 import { normalizeProps, Portal, useMachine } from "@zag-js/react";
 import { Loader2Icon, LogInIcon, LogOutIcon, SearchIcon, SparklesIcon, XIcon } from "lucide-react";
-import { useId } from "react";
+import { useEffect, useId, useState } from "react";
 import CrueltyFreeIcon from "~/assets/cruelty-free.svg?react";
 import footerLogo from "~/assets/footer-logo.svg";
 import { Logo } from "~/components/Logo";
+import { createBrowserClient } from "~/supabase/client";
+import { getBookImageUrl } from "~/supabase/helpers/storage";
 import { useSignOut } from "../api.sign-out/use-sign-out";
 import { loader } from "./loader.server";
 
@@ -25,7 +28,7 @@ export default function Layout() {
 function Header() {
 	const { session } = useLoaderData<typeof loader>();
 	return (
-		<header className="flex flex-col justify-center bg-surface px-6 text-on-surface">
+		<header className="flex flex-col justify-center bg-surface px-6 text-on-surface ">
 			<div className="relative flex items-center justify-between">
 				<Link to="/">
 					<Logo scale={0.75} />
@@ -45,7 +48,7 @@ function Header() {
 				</div>
 			</div>
 			<nav className="pt-6">
-				<ul className="flex items-center justify-center gap-16">
+				<ul className="flex items-center justify-center gap-16 ">
 					<li>
 						<NavLink to="/">Home</NavLink>
 					</li>
@@ -63,18 +66,81 @@ function Header() {
 		</header>
 	);
 }
-
+type Book = {
+	id: number;
+	title: string;
+	genres: string[];
+	image_file_name: string;
+};
+const comboboxData: Book[] = [];
 function SearchForm() {
+	const [options, setOptions] = useState<Book[]>([]);
+	const supabase = createBrowserClient();
+	const collection = combobox.collection({
+		items: options,
+		itemToValue: (item) => String(item.id),
+		itemToString: (item) => item.title,
+	});
+
+	const [state, send] = useMachine(
+		combobox.machine({
+			id: useId(),
+			collection,
+			closeOnSelect: true,
+			
+			async onInputValueChange({ value }) {
+				const { data, error } = await supabase
+					.from("books")
+					.select("id, title, genres, image_file_name")
+					.textSearch("fts", `${value}`);
+				if (error !== null) {
+					throw error;
+				}
+				setOptions(data.length > 0 ? data : comboboxData);
+			},
+		}),
+		{
+			context: { collection },
+		},
+	);
+
+	const api = combobox.connect(state, send, normalizeProps);
+
 	return (
-		<Form role="search" className="relative">
-			<input
-				name="query"
-				placeholder="Search"
-				required
-				className="h-9 w-80 rounded bg-on-surface pl-3 pr-9 text-surface placeholder:text-surface/60 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-on-surface"
-			/>
-			<SearchIcon className="pointer-events-none absolute right-2 top-1/2 size-5 -translate-y-1/2 text-surface" />
-		</Form>
+		<div>
+			<div {...api.rootProps}>
+				<div {...api.controlProps}>
+					<input {...api.inputProps} className=" p-1 font-medium text-surface" />
+					<button {...api.triggerProps}>
+						<SearchIcon className="pointer-events-none absolute right-2 top-1/2 size-5 -translate-y-1/2 text-surface " />
+					</button>
+				</div>
+			</div>
+			<div {...api.positionerProps} className="z-50">
+				{options.length > 0 && (
+					<ul {...api.contentProps} className="z-50 flex flex-col gap-2 bg-on-primary">
+						{options.map((item) => (
+							<li
+								key={item.id}
+								{...api.getItemProps({ item })}
+								className="border-rounded hover:text-on-primary-light focus:text-on-primary-light  flex flex-row gap-2 bg-primary p-2 text-on-primary hover:bg-primary-light focus:bg-primary-light focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary-light"
+							>
+								<Link to={"books/" + item.id}>
+									<div className="flex flex-row gap-1">
+									<img
+										src={getBookImageUrl(supabase, item.image_file_name)}
+										alt="Book_image"
+										className="w-12"
+									/>
+									{item.title}
+									</div>
+								</Link>
+							</li>
+						))}
+					</ul>
+				)}
+			</div>
+		</div>
 	);
 }
 
