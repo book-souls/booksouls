@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 
 const colors = {
 	primary: {
@@ -29,5 +30,83 @@ export default {
 			},
 		},
 	},
-	plugins: [],
+	plugins: [
+		plugin(({ addComponents, addUtilities }) => {
+			addComponents({
+				".line-gradient": {
+					height: "16px",
+					width: "100%",
+					background: `linear-gradient(
+						90deg,
+						#1f5f70 0%,
+						#007882 12.41%,
+						#089f8f 33.33%,
+						#10989e 50%,
+						#1891ac 66.67%,
+						#1c759a 83.33%
+					)`,
+					backgroundSize: "400% 400%",
+					animation: "line-gradient 10s ease infinite",
+				},
+				"@keyframes line-gradient": {
+					"0%": {
+						backgroundPosition: "0% 50%",
+					},
+					"50%": {
+						backgroundPosition: "100% 50%",
+					},
+					"100%": {
+						backgroundPosition: "0% 50%",
+					},
+				},
+			});
+
+			addComponents({
+				".icon-button": {
+					position: "relative",
+					display: "inline-flex",
+					alignItems: "center",
+					justifyContent: "center",
+					width: "2.5rem",
+					height: "2.5rem",
+					borderRadius: "9999px",
+					"& svg": {
+						width: "1.5rem",
+						height: "1.5rem",
+					},
+					"&::before": {
+						content: "''",
+						position: "absolute",
+						inset: "0",
+						borderRadius: "inherit",
+						backgroundColor: "currentColor",
+						opacity: "0",
+					},
+					"&:hover::before": {
+						opacity: "0.1",
+					},
+					"&:active::before": {
+						opacity: "0.15",
+					},
+					"&:focus-visible": {
+						outline: "2px solid currentColor",
+					},
+					"&:disabled, &[aria-disabled='true']": {
+						pointerEvents: "none",
+						opacity: "0.5",
+					},
+				},
+			});
+
+			addUtilities({
+				".scrollbar-hidden": {
+					"&::-webkit-scrollbar": {
+						display: "none",
+					},
+					// Firefox doesn't support -webkit-scrollbar.
+					scrollbarWidth: "none",
+				},
+			});
+		}),
+	],
 } satisfies Config;
