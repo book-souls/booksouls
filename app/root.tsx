@@ -3,9 +3,11 @@ import "@fontsource/poppins/300.css";
 import "@fontsource/poppins/400.css";
 import "@fontsource/poppins/500.css";
 import "./root.css";
-import type { MetaFunction } from "@remix-run/node";
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
+import type { MetaFunction } from "@vercel/remix";
 import { Toaster } from "sonner";
+
+export const config = { runtime: "edge" };
 
 export const meta: MetaFunction = () => {
 	return [{ title: "New Remix App" }, { name: "description", content: "Welcome to Remix!" }];
