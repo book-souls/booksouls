@@ -1,4 +1,4 @@
-import { json, redirect, type LoaderFunctionArgs } from "@remix-run/node";
+import { json, redirect, type LoaderFunctionArgs } from "@vercel/remix";
 import { createServerClient } from "~/supabase/client.server";
 import { getSignInCookie } from "../sign-in/cookie.server";
 

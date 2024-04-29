@@ -1,4 +1,4 @@
-import { json, redirect, type ActionFunctionArgs } from "@remix-run/node";
+import { json, redirect, type ActionFunctionArgs } from "@vercel/remix";
 import { array, length, parse, regex, string } from "valibot";
 import { createServerClient } from "~/supabase/client.server";
 import { deleteSignInCookie, getSignInCookie } from "../sign-in/cookie.server";

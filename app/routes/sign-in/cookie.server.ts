@@ -1,4 +1,4 @@
-import { createCookie } from "@remix-run/node";
+import { createCookie } from "@vercel/remix";
 import { safeParse } from "valibot";
 import { EmailSchema } from "./validate";
 

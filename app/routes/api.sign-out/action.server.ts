@@ -1,4 +1,4 @@
-import { json, type ActionFunctionArgs } from "@remix-run/node";
+import { json, type ActionFunctionArgs } from "@vercel/remix";
 import { createServerClient } from "~/supabase/client.server";
 
 export async function action({ request }: ActionFunctionArgs) {
