@@ -79,7 +79,12 @@ export type Database = {
 			[_ in never]: never;
 		};
 		CompositeTypes: {
-			[_ in never]: never;
+			match_books_result: {
+				id: number | null;
+				title: string | null;
+				short_description: string | null;
+				genres: string[] | null;
+			};
 		};
 	};
 };
