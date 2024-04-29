@@ -1,5 +1,5 @@
 import { json, type LoaderFunctionArgs } from "@remix-run/node";
-import { createServerClient, type ServerClient } from "~/supabase/client.server";
+import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
 	const headers = new Headers();
@@ -18,7 +18,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 	return json({ epubUrl }, { headers });
 }
 
-async function getEpubUrl(supabase: ServerClient, id: string) {
+async function getEpubUrl(supabase: SupabaseClient, id: string) {
 	const { data, error } = await supabase
 		.from("books")
 		.select("epubFileName:epub_file_name")
