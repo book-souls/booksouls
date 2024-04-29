@@ -1,6 +1,4 @@
 import type { Config } from "tailwindcss";
-// @ts-expect-error No DTS file for this module
-import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette";
 import plugin from "tailwindcss/plugin";
 
 const colors = {
@@ -33,32 +31,82 @@ export default {
 		},
 	},
 	plugins: [
-		plugin(({ matchUtilities, theme }) => {
-			matchUtilities(
-				{
-					"scrollbar-thumb-color": (value: string) => {
-						return {
-							"&::-webkit-scrollbar-thumb": {
-								backgroundColor: value,
-							},
-							"--scrollbar-thumb-color": value,
-							"scrollbar-color": "var(--scrollbar-thumb-color) var(--scrollbar-track-color)",
-						};
+		plugin(({ addComponents, addUtilities }) => {
+			addComponents({
+				".line-gradient": {
+					height: "16px",
+					width: "100%",
+					background: `linear-gradient(
+						90deg,
+						#1f5f70 0%,
+						#007882 12.41%,
+						#089f8f 33.33%,
+						#10989e 50%,
+						#1891ac 66.67%,
+						#1c759a 83.33%
+					)`,
+					backgroundSize: "400% 400%",
+					animation: "line-gradient 10s ease infinite",
+				},
+				"@keyframes line-gradient": {
+					"0%": {
+						backgroundPosition: "0% 50%",
 					},
-					"scrollbar-track-color": (value: string) => {
-						return {
-							"&::-webkit-scrollbar-track": {
-								backgroundColor: value,
-							},
-							"--scrollbar-track-color": value,
-							"scrollbar-color": "var(--scrollbar-thumb-color) var(--scrollbar-track-color)",
-						};
+					"50%": {
+						backgroundPosition: "100% 50%",
+					},
+					"100%": {
+						backgroundPosition: "0% 50%",
 					},
 				},
-				{
-					values: flattenColorPalette(theme("colors")),
+			});
+
+			addComponents({
+				".icon-button": {
+					position: "relative",
+					display: "inline-flex",
+					alignItems: "center",
+					justifyContent: "center",
+					width: "2.5rem",
+					height: "2.5rem",
+					borderRadius: "9999px",
+					"& svg": {
+						width: "1.5rem",
+						height: "1.5rem",
+					},
+					"&::before": {
+						content: "''",
+						position: "absolute",
+						inset: "0",
+						borderRadius: "inherit",
+						backgroundColor: "currentColor",
+						opacity: "0",
+					},
+					"&:hover::before": {
+						opacity: "0.1",
+					},
+					"&:active::before": {
+						opacity: "0.15",
+					},
+					"&:focus-visible": {
+						outline: "2px solid currentColor",
+					},
+					"&:disabled, &[aria-disabled='true']": {
+						pointerEvents: "none",
+						opacity: "0.5",
+					},
 				},
-			);
+			});
+
+			addUtilities({
+				".scrollbar-hidden": {
+					"&::-webkit-scrollbar": {
+						display: "none",
+					},
+					// Firefox doesn't support -webkit-scrollbar.
+					scrollbarWidth: "none",
+				},
+			});
 		}),
 	],
 } satisfies Config;

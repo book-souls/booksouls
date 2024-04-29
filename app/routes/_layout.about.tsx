@@ -1,25 +1,23 @@
 import { Link } from "@remix-run/react";
 import { LinkedinIcon } from "lucide-react";
 import { useState } from "react";
-
 // Team Images
 import Ahmed from "~/assets/Ahmed.png";
+import SearchIcon from "~/assets/Ai-search.svg";
 import Bahaa from "~/assets/Bahaa.jpg";
+import BookStackIcon from "~/assets/bookstack-old.svg";
+import CheckerIcon from "~/assets/checker.svg";
 import Deena from "~/assets/Deena.png";
 import Essmat from "~/assets/Essmat.jpg";
-import Zeyad from "~/assets/Zeyad.jpg";
+import SummaryIcon from "~/assets/fast-summerization.svg";
+import FasterIcon from "~/assets/faster.svg";
+import UiIcon from "~/assets/minimalist-ui.svg";
+import MobileIcon from "~/assets/mobile.svg";
+import MultiLangIcon from "~/assets/multi-lang.svg";
 import Nour from "~/assets/Nour.jpg";
-
 // Icons
 import TeamIcon from "~/assets/team.svg?react";
-import SearchIcon from "~/assets/Ai-search.svg";
-import UiIcon from "~/assets/minimalist-ui.svg";
-import SummaryIcon from "~/assets/fast-summerization.svg";
-import BookStackIcon from "~/assets/bookstack-old.svg";
-import MobileIcon from "~/assets/mobile.svg";
-import FasterIcon from "~/assets/faster.svg";
-import MultiLangIcon from "~/assets/multi-lang.svg";
-import CheckerIcon from "~/assets/checker.svg";
+import Zeyad from "~/assets/Zeyad.jpg";
 
 export default function About() {
 	return (
@@ -81,8 +79,10 @@ export default function About() {
 				<p className="text-center text-xl">
 					<span className="font-bold">Book Souls</span> Lorem ipsum dolor sit amet consectetur,
 					adipisicing elit.
-					<br />Eaque unde accusamus voluptatibus fuga, explicabo blanditiis, placeat doloribus,
-					<br />cupiditate beatae possimus amet praesentium sunt quia?
+					<br />
+					Eaque unde accusamus voluptatibus fuga, explicabo blanditiis, placeat doloribus,
+					<br />
+					cupiditate beatae possimus amet praesentium sunt quia?
 					{/* TODO: IDK What to wrtie ;-; */}
 				</p>
 			</section>

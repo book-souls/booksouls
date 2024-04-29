@@ -9,8 +9,10 @@ export type Database = {
 					description: string;
 					description_embeddings: string | null;
 					epub_file_name: string;
+					fts: unknown | null;
 					genres: string[];
 					id: number;
+					image_file_name: string;
 					is_featured: boolean;
 					language: string;
 					short_description: string;
@@ -21,8 +23,10 @@ export type Database = {
 					description: string;
 					description_embeddings?: string | null;
 					epub_file_name: string;
+					fts?: unknown | null;
 					genres: string[];
 					id?: number;
+					image_file_name: string;
 					is_featured?: boolean;
 					language: string;
 					short_description: string;
@@ -33,8 +37,10 @@ export type Database = {
 					description?: string;
 					description_embeddings?: string | null;
 					epub_file_name?: string;
+					fts?: unknown | null;
 					genres?: string[];
 					id?: number;
+					image_file_name?: string;
 					is_featured?: boolean;
 					language?: string;
 					short_description?: string;
@@ -47,13 +53,26 @@ export type Database = {
 			[_ in never]: never;
 		};
 		Functions: {
-			match_books: {
+			search_books: {
 				Args: {
-					query_embedding: string;
+					query_embeddings: string;
 					match_threshold: number;
-					match_count: number;
+					match_limit: number;
 				};
-				Returns: Database["public"]["CompositeTypes"]["match_books_result"][];
+				Returns: {
+					author: string;
+					description: string;
+					description_embeddings: string | null;
+					epub_file_name: string;
+					fts: unknown | null;
+					genres: string[];
+					id: number;
+					image_file_name: string;
+					is_featured: boolean;
+					language: string;
+					short_description: string;
+					title: string;
+				}[];
 			};
 		};
 		Enums: {

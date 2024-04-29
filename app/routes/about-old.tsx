@@ -10,8 +10,8 @@ export default function About() {
 				<h1 className="py-5 text-center text-4xl">About Book Souls</h1>
 			</div>
 			<div className="absolute right-12 h-full w-1/3 bg-surface px-6 py-3 text-on-surface">
-				<Link to="/">
-					<Logo scale={0.5} className="ml-auto" />
+				<Link to="/" className="ml-auto block w-fit">
+					<Logo scale={0.5} />
 				</Link>
 				<h2 className="mt-8 text-right text-xl font-light">Meet the Creators</h2>
 				<div className="ml-auto mt-6 grid w-fit grid-cols-2 gap-6">
