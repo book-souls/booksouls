@@ -1,4 +1,4 @@
-import { Await, Link, Links, useLoaderData } from "@remix-run/react";
+import { Await, Link, useLoaderData } from "@remix-run/react";
 import { Suspense } from "react";
 import { loader, type SimilarBooksResult } from "./loader.server";
 
