@@ -1,7 +1,6 @@
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useId } from "react";
-import placeholder from "~/assets/placeholder.jpeg";
 import Read from "~/assets/read.svg?react";
 import { useSnapCarousel } from "~/hooks/snap-carousel";
 import { loader, type Book } from "./loader.server";
@@ -40,12 +39,17 @@ function FeaturedBooksSection({ books }: { books: Book[] }) {
 			<div className="mx-auto grid w-fit grid-cols-4 gap-8">
 				{books.map((book) => (
 					<div key={book.id}>
-						<img
-							src={placeholder}
-							alt=""
-							className="h-[300px] w-[200px] rounded-lg object-cover shadow-md"
-						/>
-						<p className="mt-2 w-[200px] text-center text-lg">{book.title}</p>
+						<Link to={`books/${book.id}`}>
+							{" "}
+							<img
+								src={book.image}
+								alt=""
+								className="h-[300px] w-[200px] rounded-lg object-cover shadow-md"
+							/>
+						</Link>
+						<Link to={`books/${book.id}`} className="mt-2 block w-[200px] text-center text-lg">
+							{book.title}
+						</Link>
 					</div>
 				))}
 			</div>
@@ -85,13 +89,17 @@ function FeaturedBooksCarousel({ books }: { books: Book[] }) {
 							<span id={labelId} className="sr-only">
 								{`${index + 1} of ${books.length}`}
 							</span>
-							<img
-								src={placeholder}
-								alt=""
-								className="h-[375px] w-[250px] rounded-xl object-cover"
-							/>
+							<Link to={`books/${book.id}`}>
+								<img
+									src={book.image}
+									alt=""
+									className="h-[375px] w-[250px] rounded-xl object-cover"
+								/>
+							</Link>
 							<div className="w-[400px]">
-								<h3 className="text-3xl">{book.title}</h3>
+								<Link to={`books/${book.id}`} className="hover:underline">
+									<h3 className="text-3xl">{book.title}</h3>
+								</Link>
 								<p className="mt-4">{book.shortDescription}</p>
 							</div>
 						</div>
@@ -174,12 +182,19 @@ function GenreSection({ genre, books }: { genre: string; books: Book[] }) {
 							data-snap-point={snapPointIndexes.has(index)}
 							className="shrink-0 px-[16px] data-[snap-point='true']:snap-start"
 						>
-							<img
-								src={placeholder}
-								alt=""
-								className="h-[300px] w-[200px] rounded-lg object-cover shadow-md"
-							/>
-							<p className="mt-2 line-clamp-1 w-[200px] text-center text-lg">{book.title}</p>
+							<Link to={`books/${book.id}`}>
+								<img
+									src={book.image}
+									alt=""
+									className="h-[300px] w-[200px] rounded-lg object-cover shadow-md"
+								/>
+							</Link>
+							<Link
+								to={`books/${book.id}`}
+								className="mt-2 line-clamp-1 block w-[200px] text-center text-lg"
+							>
+								{book.title}
+							</Link>
 						</div>
 					))}
 				</div>

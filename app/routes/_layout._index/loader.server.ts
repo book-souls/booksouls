@@ -1,5 +1,6 @@
 import type { LoaderFunctionArgs } from "@vercel/remix";
 import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
+import { getBookImageUrl } from "~/supabase/helpers/storage";
 
 export async function loader({ request }: LoaderFunctionArgs) {
 	const supabase = createServerClient(request);
@@ -13,11 +14,17 @@ export async function loader({ request }: LoaderFunctionArgs) {
 async function getBooks(supabase: SupabaseClient) {
 	const { data, error } = await supabase
 		.from("books")
-		.select("id, title, genres, shortDescription:short_description, featured:is_featured")
+		.select(
+			"id,image:image_file_name, title, genres, shortDescription:short_description, featured:is_featured",
+		)
 		.order("title");
 
 	if (error !== null) {
 		throw error;
+	}
+
+	for (const book of data) {
+		book.image = getBookImageUrl(supabase, book.image);
 	}
 
 	return data;

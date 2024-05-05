@@ -1,4 +1,4 @@
-import { Await, useLoaderData } from "@remix-run/react";
+import { Await, Link, useLoaderData } from "@remix-run/react";
 import { Suspense } from "react";
 import { loader, type SimilarBooksResult } from "./loader.server";
 
@@ -20,9 +20,12 @@ export default function Book() {
 						{book.genres.join(", ")}
 					</p>
 					<p className="mt-5 text-lg text-on-background/75">{book.shortDescription}</p>
-					<button className="mt-10 h-12 w-fit rounded-xl bg-gradient-to-r from-primary to-primary-light px-8 text-xl font-medium text-on-primary shadow-inner">
+					<Link
+						to={`/read/${book.id}`}
+						className="mt-10 flex h-12 w-fit items-center justify-center rounded-xl bg-gradient-to-r from-primary to-primary-light px-8 text-xl font-medium text-on-primary shadow-inner"
+					>
 						Read Book
-					</button>
+					</Link>
 				</div>
 			</section>
 			<section className="pt-8">
@@ -62,12 +65,16 @@ function SimilarBooks({ books }: { books: SimilarBooksResult }) {
 					data-snap-point={i % 4 === 0}
 					className="shrink-0 basis-1/4 data-[snap-point='true']:snap-start"
 				>
-					<img
-						src={book.image}
-						alt=""
-						className="mx-auto h-[270px] w-[180px] rounded object-cover shadow-md"
-					/>
-					<p className="mt-3 max-w-full text-center text-lg">{book.title}</p>
+					<Link to={`/books/${book.id}`}>
+						<img
+							src={book.image}
+							alt=""
+							className="mx-auto h-[270px] w-[180px] rounded object-cover shadow-md"
+						/>
+					</Link>
+					<Link to={`/books/${book.id}`} className="mt-3 block max-w-full text-center text-lg">
+						{book.title}
+					</Link>
 				</div>
 			))}
 		</div>
