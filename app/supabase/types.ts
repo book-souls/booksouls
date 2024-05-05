@@ -16,6 +16,7 @@ export type Database = {
 					is_featured: boolean;
 					language: string;
 					short_description: string;
+					skipgram_description_embedding: string;
 					title: string;
 				};
 				Insert: {
@@ -30,6 +31,7 @@ export type Database = {
 					is_featured?: boolean;
 					language: string;
 					short_description: string;
+					skipgram_description_embedding: string;
 					title: string;
 				};
 				Update: {
@@ -44,6 +46,7 @@ export type Database = {
 					is_featured?: boolean;
 					language?: string;
 					short_description?: string;
+					skipgram_description_embedding?: string;
 					title?: string;
 				};
 				Relationships: [];
@@ -53,6 +56,53 @@ export type Database = {
 			[_ in never]: never;
 		};
 		Functions: {
+			book_search: {
+				Args: {
+					query_embedding: string;
+					match_threshold: number;
+					match_limit: number;
+				};
+				Returns: {
+					author: string;
+					description: string;
+					description_embeddings: string | null;
+					epub_file_name: string;
+					fts: unknown | null;
+					genres: string[];
+					id: number;
+					image_file_name: string;
+					is_featured: boolean;
+					language: string;
+					short_description: string;
+					skipgram_description_embedding: string;
+					title: string;
+				}[];
+			};
+			hybrid_book_search: {
+				Args: {
+					query: string;
+					query_embedding: string;
+					match_limit: number;
+					fts_weight?: number;
+					semantic_weight?: number;
+					smoothing?: number;
+				};
+				Returns: {
+					author: string;
+					description: string;
+					description_embeddings: string | null;
+					epub_file_name: string;
+					fts: unknown | null;
+					genres: string[];
+					id: number;
+					image_file_name: string;
+					is_featured: boolean;
+					language: string;
+					short_description: string;
+					skipgram_description_embedding: string;
+					title: string;
+				}[];
+			};
 			search_books: {
 				Args: {
 					query_embeddings: string;
@@ -71,6 +121,7 @@ export type Database = {
 					is_featured: boolean;
 					language: string;
 					short_description: string;
+					skipgram_description_embedding: string;
 					title: string;
 				}[];
 			};
@@ -79,12 +130,7 @@ export type Database = {
 			[_ in never]: never;
 		};
 		CompositeTypes: {
-			match_books_result: {
-				id: number | null;
-				title: string | null;
-				short_description: string | null;
-				genres: string[] | null;
-			};
+			[_ in never]: never;
 		};
 	};
 };
