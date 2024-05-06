@@ -1,4 +1,4 @@
-import { Form, useActionData, useNavigation } from "@remix-run/react";
+import { Form, Link, useActionData, useNavigation } from "@remix-run/react";
 import { Loader2Icon, Search } from "lucide-react";
 import { useEffect, useId } from "react";
 import { toast } from "sonner";
@@ -113,15 +113,19 @@ function SearchResultsList({ results }: { results: NonNullable<BookSearchResults
 			<ul className="flex flex-col gap-8 pt-8">
 				{results.map((book) => (
 					<li key={book.id} className="flex gap-8">
-						<img
-							alt=""
-							src={book.image}
-							className="h-[180px] w-[120px] shrink-0 rounded object-cover shadow-md"
-						/>
+						<Link to={`/books/${book.id}`}>
+							<img
+								alt=""
+								src={book.image}
+								className="h-[180px] w-[120px] shrink-0 rounded object-cover shadow-md"
+							/>
+						</Link>
 						<div className="flex-grow">
 							<div className="flex justify-between">
 								<div>
-									<h2 className="text-xl font-medium">{book.title}</h2>
+									<h2 className="text-xl font-medium">
+										<Link to={`/books/${book.id}`}>{book.title}</Link>
+									</h2>
 									<p className="mt-2 text-on-background/85">{book.author}</p>
 								</div>
 								<p className="h-fit shrink-0 rounded bg-primary px-2 py-1 text-sm text-on-primary">

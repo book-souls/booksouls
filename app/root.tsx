@@ -33,7 +33,7 @@ export default function App() {
 				<Outlet />
 				<ScrollRestoration />
 				<Scripts />
-				<Toaster richColors closeButton />;
+				<Toaster richColors closeButton />
 			</body>
 		</html>
 	);
