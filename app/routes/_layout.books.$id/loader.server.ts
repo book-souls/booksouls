@@ -1,6 +1,6 @@
 import { defer, type LoaderFunctionArgs } from "@vercel/remix";
 import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
-import { searchBooks } from "~/supabase/helpers/search.server";
+import { generateSearchEmbedding, preprocessSearchQuery } from "~/supabase/helpers/search.server";
 import { getBookImageUrl } from "~/supabase/helpers/storage";
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
@@ -38,22 +38,33 @@ async function getSimilarBooks(
 	supabase: SupabaseClient,
 	book: { id: number; description: string },
 ) {
-	const { data, error } = await searchBooks(supabase, {
-		query: book.description,
-		threshold: 0.5,
-		limit: 9,
-		select: "id, title, image:image_file_name",
-	});
+	const query = preprocessSearchQuery(book.description);
+	const { data: embedding, error: embeddingError } = await generateSearchEmbedding(query);
 
-	if (error !== null) {
-		throw error;
+	if (embeddingError !== null) {
+		// TODO: handle error
+		throw embeddingError;
 	}
 
-	for (const book of data) {
+	const { data: results, error: resultsError } = await supabase
+		.rpc("book_search", {
+			query_embedding: JSON.stringify(embedding),
+			match_threshold: 0.5,
+			match_limit: 9,
+		})
+		.select("id, title, image:image_file_name");
+
+	if (resultsError !== null) {
+		// TODO: handle error
+		throw resultsError;
+	}
+
+	for (const book of results) {
 		book.image = getBookImageUrl(supabase, book.image);
 	}
 
-	return data.filter(({ id }) => book.id !== id);
+	// Don't suggest the same book.
+	return results.filter(({ id }) => book.id !== id);
 }
 
 export type SimilarBooksResult = Awaited<ReturnType<typeof getSimilarBooks>>;

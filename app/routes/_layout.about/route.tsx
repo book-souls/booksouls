@@ -4,7 +4,7 @@ import { useId } from "react";
 import ahmed from "~/assets/Ahmed.png";
 import SearchIcon from "~/assets/Ai-search.svg?react";
 import bahaa from "~/assets/Bahaa.jpg";
-import BookStackIcon from "~/assets/bookstack-old.svg?react";
+import BookStackIcon from "~/assets/bookstack.svg?react";
 import CheckerIcon from "~/assets/checker.svg?react";
 import deena from "~/assets/Deena.png";
 import essmat from "~/assets/Essmat.jpg";

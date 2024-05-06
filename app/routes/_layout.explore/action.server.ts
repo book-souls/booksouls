@@ -1,6 +1,6 @@
 import type { ActionFunctionArgs } from "@vercel/remix";
 import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
-import { searchBooks } from "~/supabase/helpers/search.server";
+import { generateSearchEmbedding, preprocessSearchQuery } from "~/supabase/helpers/search.server";
 import { getBookImageUrl } from "~/supabase/helpers/storage";
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -18,22 +18,31 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 async function getBookSearchResults(supabase: SupabaseClient, query: string) {
-	const { data, error } = await searchBooks(supabase, {
-		query,
-		threshold: 0.5,
-		limit: 10,
-		select: "id, genres, title, shortDescription:short_description, image:image_file_name",
-	});
+	const preprocessedQuery = preprocessSearchQuery(query);
+	const { data: embedding, error: embeddingError } =
+		await generateSearchEmbedding(preprocessedQuery);
 
-	if (error !== null) {
-		return { data: null, error };
+	if (embeddingError !== null) {
+		return { data: null, error: embeddingError };
 	}
 
-	for (const book of data) {
+	const { data: results, error: resultsError } = await supabase
+		.rpc("hybrid_book_search", {
+			query: preprocessedQuery,
+			query_embedding: JSON.stringify(embedding),
+			match_limit: 10,
+		})
+		.select("id, title, genres, author, shortDescription:short_description, image:image_file_name");
+
+	if (resultsError !== null) {
+		return { data: null, error: resultsError };
+	}
+
+	for (const book of results) {
 		book.image = getBookImageUrl(supabase, book.image);
 	}
 
-	return { data, error: null };
+	return { data: results, error: null };
 }
 
 export type BookSearchResults = Awaited<ReturnType<typeof getBookSearchResults>>["data"];

@@ -1,8 +1,8 @@
-import { Form, Link, Outlet, useLoaderData } from "@remix-run/react";
+import { Link, Outlet, useLoaderData } from "@remix-run/react";
 import type { User } from "@supabase/supabase-js";
 import * as popover from "@zag-js/popover";
 import { normalizeProps, Portal, useMachine } from "@zag-js/react";
-import { Loader2Icon, LogInIcon, LogOutIcon, SearchIcon, SparklesIcon, XIcon } from "lucide-react";
+import { Loader2Icon, LogInIcon, LogOutIcon, SearchIcon, XIcon } from "lucide-react";
 import { useId } from "react";
 import CrueltyFreeIcon from "~/assets/cruelty-free.svg?react";
 import footerLogo from "~/assets/footer-logo.svg";
@@ -26,55 +26,38 @@ function Header() {
 	const { session } = useLoaderData<typeof loader>();
 	return (
 		<header className="flex flex-col justify-center bg-surface px-6 text-on-surface">
-			<div className="relative flex items-center justify-between">
+			<div className="flex items-center justify-between">
 				<Link to="/">
 					<Logo scale={0.75} />
 				</Link>
-				<div className="absolute left-1/2 -translate-x-1/2">
-					<SearchForm />
-				</div>
-				<div className="flex items-center gap-4">
+				<nav>
+					<ul className="flex items-center justify-center gap-16">
+						<li>
+							<NavLink to="/">Home</NavLink>
+						</li>
+						<li>
+							<NavLink to="/categories">Categories</NavLink>
+						</li>
+						<li>
+							<NavLink to="/authors">Authors</NavLink>
+						</li>
+						<li>
+							<NavLink to="/library">Library</NavLink>
+						</li>
+					</ul>
+				</nav>
+				<div className="flex items-center gap-6">
 					<Link
 						to="/explore"
 						className="flex h-10 items-center justify-center gap-2 rounded-lg bg-on-surface px-3 text-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-surface"
 					>
 						<span className="text-sm font-medium">Explore</span>
-						<SparklesIcon className="fill-amber-500 text-amber-600" />
+						<SearchIcon className="size-5" />
 					</Link>
 					{session !== null ? <UserAvatar user={session.user} /> : <SignInLink />}
 				</div>
 			</div>
-			<nav className="pt-6">
-				<ul className="flex items-center justify-center gap-16">
-					<li>
-						<NavLink to="/">Home</NavLink>
-					</li>
-					<li>
-						<NavLink to="/categories">Categories</NavLink>
-					</li>
-					<li>
-						<NavLink to="/authors">Authors</NavLink>
-					</li>
-					<li>
-						<NavLink to="/library">Library</NavLink>
-					</li>
-				</ul>
-			</nav>
 		</header>
-	);
-}
-
-function SearchForm() {
-	return (
-		<Form role="search" className="relative">
-			<input
-				name="query"
-				placeholder="Search"
-				required
-				className="h-9 w-80 rounded bg-on-surface pl-3 pr-9 text-surface placeholder:text-surface/60 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-on-surface"
-			/>
-			<SearchIcon className="pointer-events-none absolute right-2 top-1/2 size-5 -translate-y-1/2 text-surface" />
-		</Form>
 	);
 }
 
@@ -153,7 +136,7 @@ function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
 		<Link
 			to={to}
 			className="
-				relative select-none
+				relative select-none text-lg
 				before:absolute before:-bottom-0.5 before:right-1/2 before:h-px before:w-1/2 before:origin-right before:scale-x-0 before:bg-current before:transition-transform before:duration-500
 				after:absolute after:-bottom-0.5 after:left-1/2 after:h-px after:w-1/2 after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-500
 				hover:before:scale-x-100 hover:after:scale-x-100
