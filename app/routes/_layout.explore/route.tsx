@@ -113,11 +113,11 @@ function SearchResultsList({ results }: { results: NonNullable<BookSearchResults
 			<ul className="flex flex-col gap-8 pt-8">
 				{results.map((book) => (
 					<li key={book.id} className="flex gap-8">
-						<Link to={`/books/${book.id}`}>
+						<Link to={`/books/${book.id}`} className="shrink-0">
 							<img
 								alt=""
 								src={book.image}
-								className="h-[180px] w-[120px] shrink-0 rounded object-cover shadow-md"
+								className="h-[180px] w-[120px] rounded object-cover shadow-md"
 							/>
 						</Link>
 						<div className="flex-grow">
