@@ -13,8 +13,13 @@
 	header {
 		@apply h-[--header-h];
 	}
+
+	html,
+	body {
+		@apply min-w-[1000px];
+	}
+
 	body {
 		@apply bg-background text-on-background;
-		@apply min-w-[1000px];
 	}
 }
