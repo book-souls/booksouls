@@ -10,7 +10,14 @@ import { Toaster } from "sonner";
 export const config = { runtime: "edge" };
 
 export const meta: MetaFunction = () => {
-	return [{ title: "New Remix App" }, { name: "description", content: "Welcome to Remix!" }];
+	return [
+		{ title: "Book Souls" },
+		{
+			name: "description",
+			content:
+				"Book Souls is a book platform that aims to bridge the literary gap with AI-powered summarization and recommendation features.",
+		},
+	];
 };
 
 export default function App() {
