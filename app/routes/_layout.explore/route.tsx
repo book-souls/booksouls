@@ -118,10 +118,17 @@ function SearchResultsList({ results }: { results: NonNullable<BookSearchResults
 							src={book.image}
 							className="h-[180px] w-[120px] shrink-0 rounded object-cover shadow-md"
 						/>
-						<div>
-							<h2 className="text-xl font-medium">{book.title}</h2>
-							<p className="mt-1">{book.genres.join(", ")}</p>
-							<p className="mt-5 text-on-background/75">{book.shortDescription}</p>
+						<div className="flex-grow">
+							<div className="flex justify-between">
+								<div>
+									<h2 className="text-xl font-medium">{book.title}</h2>
+									<p className="mt-2 text-on-background/85">{book.author}</p>
+								</div>
+								<p className="h-fit shrink-0 rounded bg-primary px-2 py-1 text-sm text-on-primary">
+									{book.genres.join(", ")}
+								</p>
+							</div>
+							<p className="mt-5 text-gray-800">{book.shortDescription}</p>
 						</div>
 					</li>
 				))}

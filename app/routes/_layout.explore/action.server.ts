@@ -32,7 +32,7 @@ async function getBookSearchResults(supabase: SupabaseClient, query: string) {
 			query_embedding: JSON.stringify(embedding),
 			match_limit: 10,
 		})
-		.select("id, title, genres, shortDescription:short_description, image:image_file_name");
+		.select("id, title, genres, author, shortDescription:short_description, image:image_file_name");
 
 	if (resultsError !== null) {
 		return { data: null, error: resultsError };
