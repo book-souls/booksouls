@@ -51,6 +51,36 @@ export type Database = {
 				};
 				Relationships: [];
 			};
+			user_library: {
+				Row: {
+					book_id: number;
+					user_id: string;
+				};
+				Insert: {
+					book_id: number;
+					user_id: string;
+				};
+				Update: {
+					book_id?: number;
+					user_id?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "user_library_book_id_fkey";
+						columns: ["book_id"];
+						isOneToOne: false;
+						referencedRelation: "books";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "user_library_user_id_fkey";
+						columns: ["user_id"];
+						isOneToOne: false;
+						referencedRelation: "users";
+						referencedColumns: ["id"];
+					},
+				];
+			};
 		};
 		Views: {
 			[_ in never]: never;

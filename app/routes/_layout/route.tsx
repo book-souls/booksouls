@@ -41,9 +41,11 @@ function Header() {
 						<li>
 							<NavLink to="/authors">Authors</NavLink>
 						</li>
-						<li>
-							<NavLink to="/library">Library</NavLink>
-						</li>
+						{session !== null && (
+							<li>
+								<NavLink to="/library">Library</NavLink>
+							</li>
+						)}
 					</ul>
 				</nav>
 				<div className="flex items-center gap-6">
