@@ -1,15 +1,21 @@
+import type { User } from "@supabase/supabase-js";
 import { defer, type LoaderFunctionArgs } from "@vercel/remix";
 import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
 import { generateSearchEmbedding, preprocessSearchQuery } from "~/supabase/helpers/search.server";
 import { getBookImageUrl } from "~/supabase/helpers/storage";
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
-	const id = Number(params.id);
-	const supabase = createServerClient(request);
-	const book = await getBook(supabase, id);
-	const favorite = await isFavoriteBook(supabase, book.id);
+	const headers = new Headers();
+	const supabase = createServerClient(request, headers);
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
+
+	const bookId = Number(params.id);
+	const book = await getBook(supabase, bookId);
+	const favorite = await isFavoriteBook(supabase, user, bookId);
 	const similarBooks = getSimilarBooks(supabase, book);
-	return defer({ book, favorite, similarBooks });
+	return defer({ book, favorite, similarBooks }, { headers });
 }
 
 async function getBook(supabase: SupabaseClient, id: number) {
@@ -35,11 +41,7 @@ async function getBook(supabase: SupabaseClient, id: number) {
 	return book;
 }
 
-async function isFavoriteBook(supabase: SupabaseClient, bookId: number) {
-	const {
-		data: { user },
-	} = await supabase.auth.getUser();
-
+export async function isFavoriteBook(supabase: SupabaseClient, user: User | null, bookId: number) {
 	if (user === null) {
 		return false;
 	}

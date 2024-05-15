@@ -1,4 +1,4 @@
-import { Await, Form, Link, useLoaderData } from "@remix-run/react";
+import { Await, Link, useFetcher, useLoaderData } from "@remix-run/react";
 import { Star } from "lucide-react";
 import { Suspense } from "react";
 import { action } from "./action.server";
@@ -29,15 +29,7 @@ export default function Book() {
 						>
 							Read Book
 						</Link>
-						<Form method="post">
-							<input name="favorite" type="hidden" value={favorite.toString()} />
-							<button type="submit" className="icon-button size-12 rounded-xl text-primary">
-								<Star
-									data-filled={favorite}
-									className="!size-9 data-[filled='true']:fill-primary"
-								/>
-							</button>
-						</Form>
+						<FavoriteButton favorite={favorite} />
 					</div>
 				</div>
 			</section>
@@ -52,6 +44,23 @@ export default function Book() {
 				</Suspense>
 			</section>
 		</main>
+	);
+}
+
+function FavoriteButton({ favorite }: { favorite: boolean }) {
+	const fetcher = useFetcher();
+	const optimisticFavorite =
+		fetcher.state !== "idle" ? fetcher.formData?.get("favorite") === "true" : favorite;
+	return (
+		<fetcher.Form method="post">
+			<input type="hidden" name="favorite" value={String(!optimisticFavorite)} />
+			<button type="submit" className="icon-button size-12 rounded-xl text-primary">
+				<Star
+					data-filled={optimisticFavorite}
+					className="!size-9 data-[filled='true']:fill-primary"
+				/>
+			</button>
+		</fetcher.Form>
 	);
 }
 

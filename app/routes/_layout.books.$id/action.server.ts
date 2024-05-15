@@ -1,29 +1,29 @@
 import { json, type ActionFunctionArgs } from "@vercel/remix";
 import { createServerClient } from "~/supabase/client.server";
 import { requireAuth } from "~/supabase/helpers/auth.server";
+import { isFavoriteBook } from "./loader.server";
 
 export async function action({ request, params }: ActionFunctionArgs) {
-	const formData = await request.formData();
-	const favorite = String(formData.get("favorite"));
-
 	const headers = new Headers();
 	const supabase = createServerClient(request, headers);
 	const user = await requireAuth(supabase, headers);
 
-	const id = Number(params.id);
-	if (favorite === "true") {
+	const bookId = Number(params.id);
+	const favorite = await isFavoriteBook(supabase, user, bookId);
+
+	if (favorite) {
 		await supabase
 			.from("user_library")
 			.delete()
 			.eq("user_id", user.id)
-			.eq("book_id", id)
+			.eq("book_id", bookId)
 			.throwOnError();
-	} else if (favorite === "false") {
+	} else {
 		await supabase
 			.from("user_library")
 			.insert({
 				user_id: user.id,
-				book_id: id,
+				book_id: bookId,
 			})
 			.throwOnError();
 	}
