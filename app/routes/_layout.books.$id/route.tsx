@@ -7,7 +7,7 @@ import { loader, type SimilarBooksResult } from "./loader.server";
 export { loader, action };
 
 export default function Book() {
-	const { book, fav, similarBooks } = useLoaderData<typeof loader>();
+	const { book, favorite, similarBooks } = useLoaderData<typeof loader>();
 	return (
 		<main className="mx-auto max-w-4xl px-8">
 			<section className="flex gap-8 pt-12">
@@ -30,12 +30,12 @@ export default function Book() {
 							Read Book
 						</Link>
 						<Form method="post">
-							<input name="fav" type="hidden" value={fav.toString()} />
-							<button className="icon-button size-12 rounded-xl text-primary">
+							<input name="favorite" type="hidden" value={favorite.toString()} />
+							<button type="submit" className="icon-button size-12 rounded-xl text-primary">
 								<Star
-									data-filled={fav}
+									data-filled={favorite}
 									className="!size-9 data-[filled='true']:fill-primary"
-								></Star>
+								/>
 							</button>
 						</Form>
 					</div>

@@ -1,5 +1,4 @@
 import { defer, type LoaderFunctionArgs } from "@vercel/remix";
-import { Rows } from "lucide-react";
 import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
 import { generateSearchEmbedding, preprocessSearchQuery } from "~/supabase/helpers/search.server";
 import { getBookImageUrl } from "~/supabase/helpers/storage";
@@ -7,9 +6,10 @@ import { getBookImageUrl } from "~/supabase/helpers/storage";
 export async function loader({ params, request }: LoaderFunctionArgs) {
 	const id = Number(params.id);
 	const supabase = createServerClient(request);
-	const { book, fav } = await getBook(supabase, id);
+	const book = await getBook(supabase, id);
+	const favorite = await isFavoriteBook(supabase, book.id);
 	const similarBooks = getSimilarBooks(supabase, book);
-	return defer({ book, fav, similarBooks });
+	return defer({ book, favorite, similarBooks });
 }
 
 async function getBook(supabase: SupabaseClient, id: number) {
@@ -32,19 +32,26 @@ async function getBook(supabase: SupabaseClient, id: number) {
 	}
 
 	book.image = getBookImageUrl(supabase, book.image);
+	return book;
+}
 
+async function isFavoriteBook(supabase: SupabaseClient, bookId: number) {
 	const {
 		data: { user },
 	} = await supabase.auth.getUser();
 
-	const result = await supabase
+	if (user === null) {
+		return false;
+	}
+
+	const { count } = await supabase
 		.from("user_library")
 		.select("*", { count: "exact", head: true })
 		.eq("user_id", user.id)
-		.eq("book_id", book.id)
+		.eq("book_id", bookId)
 		.throwOnError();
 
-	return { fav: result.count > 0, book };
+	return count !== null && count > 0;
 }
 
 async function getSimilarBooks(

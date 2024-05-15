@@ -1,5 +1,4 @@
 import { Link, useLoaderData } from "@remix-run/react";
-import placeholder from "~/assets/placeholder.jpeg";
 import { loader } from "./loader.server";
 
 export { loader };
@@ -13,7 +12,7 @@ export default function Library() {
 			<section className="mt-8">
 				<div className=" mx-auto grid w-fit grid-cols-4 gap-12 pb-8 pt-8">
 					{books.map(({ book }) => (
-						<div className="w-[200px] shrink-0 snap-center">
+						<div key={book.id} className="w-[200px] shrink-0 snap-center">
 							<Link to={`/books/${book.id}`}>
 								<img
 									src={book.image}
@@ -21,7 +20,7 @@ export default function Library() {
 									className="mx-auto h-[285px] w-[200px] rounded-xl object-cover shadow-lg"
 								/>
 							</Link>
-							<Link to={`/books/${book.id}`} className="mt-2 block text-center text-xl ">
+							<Link to={`/books/${book.id}`} className="mt-2 block text-center text-xl">
 								{book.title}
 							</Link>
 						</div>
