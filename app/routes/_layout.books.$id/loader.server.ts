@@ -1,4 +1,5 @@
 import { defer, type LoaderFunctionArgs } from "@vercel/remix";
+import { Rows } from "lucide-react";
 import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
 import { generateSearchEmbedding, preprocessSearchQuery } from "~/supabase/helpers/search.server";
 import { getBookImageUrl } from "~/supabase/helpers/storage";
@@ -6,13 +7,13 @@ import { getBookImageUrl } from "~/supabase/helpers/storage";
 export async function loader({ params, request }: LoaderFunctionArgs) {
 	const id = Number(params.id);
 	const supabase = createServerClient(request);
-	const book = await getBook(supabase, id);
+	const { book, fav } = await getBook(supabase, id);
 	const similarBooks = getSimilarBooks(supabase, book);
-	return defer({ book, similarBooks });
+	return defer({ book, fav, similarBooks });
 }
 
 async function getBook(supabase: SupabaseClient, id: number) {
-	const { data, error } = await supabase
+	const { data: book, error } = await supabase
 		.from("books")
 		.select(
 			"id, title, genres, shortDescription:short_description, description, image:image_file_name",
@@ -24,14 +25,26 @@ async function getBook(supabase: SupabaseClient, id: number) {
 		throw error;
 	}
 
-	if (data === null) {
+	if (book === null) {
 		throw new Response("Book not found", {
 			status: 404,
 		});
 	}
 
-	data.image = getBookImageUrl(supabase, data.image);
-	return data;
+	book.image = getBookImageUrl(supabase, book.image);
+
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
+
+	const result = await supabase
+		.from("user_library")
+		.select("*", { count: "exact", head: true })
+		.eq("user_id", user.id)
+		.eq("book_id", book.id)
+		.throwOnError();
+
+	return { fav: result.count > 0, book };
 }
 
 async function getSimilarBooks(
