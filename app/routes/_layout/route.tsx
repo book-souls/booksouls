@@ -23,7 +23,7 @@ export default function Layout() {
 }
 
 function Header() {
-	const { session } = useLoaderData<typeof loader>();
+	const { user } = useLoaderData<typeof loader>();
 	return (
 		<header className="flex flex-col justify-center bg-surface px-6 text-on-surface">
 			<div className="flex items-center justify-between">
@@ -41,9 +41,11 @@ function Header() {
 						<li>
 							<NavLink to="/authors">Authors</NavLink>
 						</li>
-						<li>
-							<NavLink to="/library">Library</NavLink>
-						</li>
+						{user !== null && (
+							<li>
+								<NavLink to="/library">Library</NavLink>
+							</li>
+						)}
 					</ul>
 				</nav>
 				<div className="flex items-center gap-6">
@@ -54,7 +56,7 @@ function Header() {
 						<span className="text-sm font-medium">Explore</span>
 						<SearchIcon className="size-5" />
 					</Link>
-					{session !== null ? <UserAvatar user={session.user} /> : <SignInLink />}
+					{user !== null ? <UserAvatar user={user} /> : <SignInLink />}
 				</div>
 			</div>
 		</header>

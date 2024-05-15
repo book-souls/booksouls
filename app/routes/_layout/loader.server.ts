@@ -6,13 +6,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
 	const supabase = createServerClient(request, headers);
 
 	const {
-		data: { session },
-		error,
-	} = await supabase.auth.getSession();
+		data: { user },
+	} = await supabase.auth.getUser();
 
-	if (error !== null) {
-		throw error;
-	}
-
-	return json({ session }, { headers });
+	return json({ user }, { headers });
 }

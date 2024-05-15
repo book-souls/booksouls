@@ -1,11 +1,13 @@
-import { Await, Link, useLoaderData } from "@remix-run/react";
+import { Await, Link, useFetcher, useLoaderData } from "@remix-run/react";
+import { Star } from "lucide-react";
 import { Suspense } from "react";
+import { action } from "./action.server";
 import { loader, type SimilarBooksResult } from "./loader.server";
 
-export { loader };
+export { loader, action };
 
 export default function Book() {
-	const { book, similarBooks } = useLoaderData<typeof loader>();
+	const { book, favorite, similarBooks } = useLoaderData<typeof loader>();
 	return (
 		<main className="mx-auto max-w-4xl px-8">
 			<section className="flex gap-8 pt-12">
@@ -20,12 +22,15 @@ export default function Book() {
 						{book.genres.join(", ")}
 					</p>
 					<p className="mt-5 text-lg text-on-background/75">{book.shortDescription}</p>
-					<Link
-						to={`/read/${book.id}`}
-						className="mt-10 flex h-12 w-fit items-center justify-center rounded-xl bg-gradient-to-r from-primary to-primary-light px-8 text-xl font-medium text-on-primary shadow-inner"
-					>
-						Read Book
-					</Link>
+					<div className="mt-10 flex items-center gap-8">
+						<Link
+							to={`/read/${book.id}`}
+							className=" flex h-12 w-fit items-center justify-center rounded-xl bg-gradient-to-r from-primary to-primary-light px-8 text-xl font-medium text-on-primary shadow-inner"
+						>
+							Read Book
+						</Link>
+						<FavoriteButton favorite={favorite} />
+					</div>
 				</div>
 			</section>
 			<section className="pt-8">
@@ -39,6 +44,23 @@ export default function Book() {
 				</Suspense>
 			</section>
 		</main>
+	);
+}
+
+function FavoriteButton({ favorite }: { favorite: boolean }) {
+	const fetcher = useFetcher();
+	const optimisticFavorite =
+		fetcher.state !== "idle" ? fetcher.formData?.get("favorite") === "true" : favorite;
+	return (
+		<fetcher.Form method="post">
+			<input type="hidden" name="favorite" value={String(!optimisticFavorite)} />
+			<button type="submit" className="icon-button size-12 rounded-xl text-primary">
+				<Star
+					data-filled={optimisticFavorite}
+					className="!size-9 data-[filled='true']:fill-primary"
+				/>
+			</button>
+		</fetcher.Form>
 	);
 }
 
