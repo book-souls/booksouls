@@ -21,6 +21,7 @@
 		"@remix-run/server-runtime": "^2.9.1",
 		"@supabase/ssr": "^0.1.0",
 		"@supabase/supabase-js": "^2.40.0",
+		"@vercel/edge-config": "^1.1.0",
 		"@vercel/remix": "^2.9.1",
 		"@zag-js/pin-input": "^0.45.0",
 		"@zag-js/popover": "^0.45.0",
