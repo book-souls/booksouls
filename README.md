@@ -1,36 +1,11 @@
-# Welcome to Remix + Vite!
-
-📖 See the [Remix docs](https://remix.run/docs) and the [Remix Vite docs](https://remix.run/docs/en/main/future/vite) for details on supported features.
+# Welcome to ![alt text](https://github.com/book-souls/booksouls/blob/main/app/assets/logo.svg) !
 
 ## Development
+Our website features two advanced AI models designed to enhance your reading experience with any type of book. The platform is crafted with a minimalist design, ensuring that the content remains the focal point.
 
-Run the Vite dev server:
-
-```shellscript
-npm run dev
-```
+Features
+- **Summarizer Model**: Highlight any part of the text, and this model will generate a concise summary of the selected content.
+- **Recommendation Model**: Provide a description, and this model will suggest books that closely match your specified criteria.
+Our commitment to simplicity and functionality ensures an intuitive and seamless user experience.
 
 ## Deployment
-
-First, build your app for production:
-
-```sh
-npm run build
-```
-
-Then run the app in production mode:
-
-```sh
-npm start
-```
-
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-- `build/server`
-- `build/client`
