@@ -1,17 +1,18 @@
 import { useLoaderData } from "@remix-run/react";
-import epubjs, { Contents, Rendition } from "epubjs";
+import epubjs, { Contents, Rendition, type Location } from "epubjs";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { action } from "./action.server";
 import { loader } from "./loader.server";
 import { useSummarizer, type Summarizer } from "./use-summarizer";
 
-
 export { loader, action };
 
 export default function Page() {
 	const { epubUrl } = useLoaderData<typeof loader>();
 	const summarizer = useSummarizer();
+	const [atStart, setAtStart] = useState(true);
+	const [atEnd, setAtEnd] = useState(false);
 	const [summarizeShown, setSummarizeShown] = useState(false);
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const readerRef = useRef<HTMLDivElement>(null);
@@ -26,10 +27,10 @@ export default function Page() {
 
 	useEffect(() => {
 		const readerEl = readerRef.current;
-
 		if (readerEl === null) {
 			return;
 		}
+
 		const book = epubjs(epubUrl);
 		const rendition = book.renderTo(readerEl, {
 			height: "100%",
@@ -49,7 +50,11 @@ export default function Page() {
 			});
 		});
 
-		rendition.on("relocated", clearSelection);
+		rendition.on("relocated", (location: Location) => {
+			setAtStart(location.atStart);
+			setAtEnd(location.atEnd);
+			clearSelection();
+		});
 
 		return () => {
 			rendition.destroy();
@@ -83,7 +88,7 @@ export default function Page() {
 	return (
 		<>
 			<div className="flex h-screen items-center justify-center gap-5 p-8">
-				<button onClick={goToPrevious} className="icon-button">
+				<button disabled={atStart} className="icon-button" onClick={goToPrevious}>
 					<ChevronLeft />
 				</button>
 				<div
@@ -98,11 +103,10 @@ export default function Page() {
 						Summarize
 					</button>
 				</div>
-				<button onClick={goToNext} className="icon-button">
+				<button disabled={atEnd} className="icon-button" onClick={goToNext}>
 					<ChevronRight />
 				</button>
 			</div>
-
 			<SummaryDialog
 				pending={summarizer.pending}
 				data={summarizer.data}
