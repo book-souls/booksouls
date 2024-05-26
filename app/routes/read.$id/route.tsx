@@ -86,7 +86,7 @@ export default function Page() {
 	}
 
 	return (
-		<div className="flex h-screen w-full items-center justify-center bg-white text-neutral-800">
+		<div className="flex h-screen min-h-[600px] w-full items-center justify-center bg-white text-neutral-800">
 			<div className="relative h-full max-h-[800px] w-full max-w-[1400px]">
 				<div
 					ref={readerRef}
