@@ -56,9 +56,28 @@ export default function Page() {
 			clearSelection();
 		});
 
+		function handleKeyDown(event: KeyboardEvent) {
+			switch (event.key) {
+				case "ArrowLeft":
+					rendition.prev();
+					break;
+				case "ArrowRight":
+					rendition.next();
+					break;
+				default:
+					return;
+			}
+
+			event.preventDefault();
+		}
+
+		rendition.on("keydown", handleKeyDown);
+		document.addEventListener("keydown", handleKeyDown);
+
 		return () => {
 			rendition.destroy();
 			renditionRef.current = null;
+			document.removeEventListener("keydown", handleKeyDown);
 			clearSelection();
 		};
 	}, [epubUrl]);
@@ -72,7 +91,7 @@ export default function Page() {
 	}
 
 	function summarizeSelection() {
-		if (summarizer.pending || selectionRef.current === null) {
+		if (!showSummarize || selectionRef.current === null || summarizer.pending) {
 			return;
 		}
 
@@ -89,7 +108,7 @@ export default function Page() {
 		<div className="flex h-screen min-h-[600px] w-full items-center justify-center bg-white text-neutral-800">
 			<div className="relative h-full max-h-[800px] w-full max-w-[1400px]">
 				<header className="absolute top-0 z-10 flex h-12 w-full items-center border-b border-gray-200 px-4 py-2 text-primary">
-					<Link to="/" className="icon-button h-8 w-8">
+					<Link to="/" aria-label="Home" className="icon-button h-8 w-8">
 						<HomeIcon className="!size-4" />
 					</Link>
 					<h1 className="absolute left-1/2 -translate-x-1/2 font-medium leading-tight">{title}</h1>
@@ -100,6 +119,8 @@ export default function Page() {
 				/>
 				<button
 					aria-disabled={atStart}
+					aria-label="Go to the previous page"
+					tabIndex={-1}
 					className="icon-button absolute left-6 top-1/2 -translate-y-1/2"
 					onClick={goToPrevious}
 				>
@@ -107,6 +128,8 @@ export default function Page() {
 				</button>
 				<button
 					aria-disabled={atEnd}
+					aria-label="Go to the next page"
+					tabIndex={-1}
 					className="icon-button absolute right-6 top-1/2 -translate-y-1/2"
 					onClick={goToNext}
 				>
@@ -114,6 +137,7 @@ export default function Page() {
 				</button>
 				<button
 					aria-hidden={!showSummarize}
+					tabIndex={showSummarize ? 0 : -1}
 					className="absolute bottom-4 left-1/2 flex h-9 -translate-x-1/2 items-center justify-center rounded-md bg-gradient-to-r from-primary to-primary-light px-4 font-medium text-on-primary transition-opacity duration-300 aria-hidden:pointer-events-none aria-hidden:opacity-0"
 					onClick={summarizeSelection}
 				>
