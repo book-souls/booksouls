@@ -1,6 +1,6 @@
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import epubjs, { Contents, Rendition, type Location } from "epubjs";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, HomeIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { action } from "./action.server";
 import { loader } from "./loader.server";
@@ -9,7 +9,7 @@ import { useSummarizer, type Summarizer } from "./use-summarizer";
 export { loader, action };
 
 export default function Page() {
-	const { epubUrl } = useLoaderData<typeof loader>();
+	const { title, epubUrl } = useLoaderData<typeof loader>();
 	const summarizer = useSummarizer();
 	const [atStart, setAtStart] = useState(true);
 	const [atEnd, setAtEnd] = useState(false);
@@ -88,9 +88,15 @@ export default function Page() {
 	return (
 		<div className="flex h-screen min-h-[600px] w-full items-center justify-center bg-white text-neutral-800">
 			<div className="relative h-full max-h-[800px] w-full max-w-[1400px]">
+				<header className="absolute top-0 z-10 flex h-12 w-full items-center border-b border-gray-200 px-4 py-2 text-primary">
+					<Link to="/" className="icon-button h-8 w-8">
+						<HomeIcon className="!size-4" />
+					</Link>
+					<h1 className="absolute left-1/2 -translate-x-1/2 font-medium leading-tight">{title}</h1>
+				</header>
 				<div
 					ref={readerRef}
-					className="relative h-full w-full rounded-lg p-16 after:absolute after:left-1/2 after:top-1/2 after:h-3/4 after:w-px after:-translate-x-1/2 after:-translate-y-1/2 after:bg-gray-400"
+					className="relative z-0 h-full w-full rounded-lg p-16 after:absolute after:left-1/2 after:top-1/2 after:h-3/4 after:w-px after:-translate-x-1/2 after:-translate-y-1/2 after:bg-gray-400"
 				/>
 				<button
 					aria-disabled={atStart}
