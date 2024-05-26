@@ -13,7 +13,7 @@ export default function Page() {
 	const summarizer = useSummarizer();
 	const [atStart, setAtStart] = useState(true);
 	const [atEnd, setAtEnd] = useState(false);
-	const [summarizeShown, setSummarizeShown] = useState(false);
+	const [showSummarize, setShowSummarize] = useState(false);
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const readerRef = useRef<HTMLDivElement>(null);
 	const renditionRef = useRef<Rendition | null>(null);
@@ -22,17 +22,17 @@ export default function Page() {
 	function clearSelection() {
 		selectionRef.current?.empty();
 		selectionRef.current = null;
-		setSummarizeShown(false);
+		setShowSummarize(false);
 	}
 
 	useEffect(() => {
-		const readerEl = readerRef.current;
-		if (readerEl === null) {
+		const reader = readerRef.current;
+		if (reader === null) {
 			return;
 		}
 
 		const book = epubjs(epubUrl);
-		const rendition = book.renderTo(readerEl, {
+		const rendition = book.renderTo(reader, {
 			height: "100%",
 			width: "100%",
 			allowScriptedContent: true,
@@ -46,7 +46,7 @@ export default function Page() {
 			contents.document.addEventListener("selectionchange", function () {
 				const selection = this.getSelection();
 				selectionRef.current = selection;
-				setSummarizeShown(selection !== null && selection.toString().length >= 500);
+				setShowSummarize(selection !== null && selection.toString().length >= 500);
 			});
 		});
 
@@ -86,25 +86,32 @@ export default function Page() {
 	}
 
 	return (
-		<>
-			<div className="flex h-screen items-center justify-center gap-5 p-8">
-				<button disabled={atStart} className="icon-button" onClick={goToPrevious}>
-					<ChevronLeft />
-				</button>
+		<div className="flex h-screen w-full items-center justify-center bg-white text-neutral-800">
+			<div className="relative h-full max-h-[800px] w-full max-w-[1400px]">
 				<div
 					ref={readerRef}
-					className="relative h-[500px] w-[1050px] rounded-lg border bg-white after:absolute after:left-1/2 after:top-0 after:my-8 after:h-[90%] after:w-px after:-translate-x-1/2 after:bg-gray-400"
+					className="relative h-full w-full rounded-lg p-16 after:absolute after:left-1/2 after:top-1/2 after:h-3/4 after:w-px after:-translate-x-1/2 after:-translate-y-1/2 after:bg-gray-400"
+				/>
+				<button
+					aria-disabled={atStart}
+					className="icon-button absolute left-6 top-1/2 -translate-y-1/2"
+					onClick={goToPrevious}
 				>
-					<button
-						aria-hidden={!summarizeShown}
-						className="absolute -bottom-4 left-1/2 flex h-9 -translate-x-1/2 translate-y-full items-center justify-center rounded-md bg-gradient-to-r from-primary to-primary-light px-4 font-medium text-on-primary transition-opacity duration-300 aria-hidden:opacity-0"
-						onClick={summarizeSelection}
-					>
-						Summarize
-					</button>
-				</div>
-				<button disabled={atEnd} className="icon-button" onClick={goToNext}>
+					<ChevronLeft />
+				</button>
+				<button
+					aria-disabled={atEnd}
+					className="icon-button absolute right-6 top-1/2 -translate-y-1/2"
+					onClick={goToNext}
+				>
 					<ChevronRight />
+				</button>
+				<button
+					aria-hidden={!showSummarize}
+					className="absolute bottom-4 left-1/2 flex h-9 -translate-x-1/2 items-center justify-center rounded-md bg-gradient-to-r from-primary to-primary-light px-4 font-medium text-on-primary transition-opacity duration-300 aria-hidden:pointer-events-none aria-hidden:opacity-0"
+					onClick={summarizeSelection}
+				>
+					Summarize
 				</button>
 			</div>
 			<SummaryDialog
@@ -113,7 +120,7 @@ export default function Page() {
 				open={dialogOpen}
 				onClose={closeDialog}
 			/>
-		</>
+		</div>
 	);
 }
 
