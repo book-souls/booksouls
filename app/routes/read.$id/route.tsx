@@ -1,9 +1,11 @@
 import { useLoaderData } from "@remix-run/react";
 import epubjs, { Contents, Rendition } from "epubjs";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { action } from "./action.server";
 import { loader } from "./loader.server";
 import { useSummarizer, type Summarizer } from "./use-summarizer";
+
 
 export { loader, action };
 
@@ -24,14 +26,16 @@ export default function Page() {
 
 	useEffect(() => {
 		const readerEl = readerRef.current;
+
 		if (readerEl === null) {
 			return;
 		}
-
-		const rendition = epubjs(epubUrl).renderTo(readerEl, {
+		const book = epubjs(epubUrl);
+		const rendition = book.renderTo(readerEl, {
 			height: "100%",
 			width: "100%",
 			allowScriptedContent: true,
+			spread: "always",
 		});
 
 		renditionRef.current = rendition;
@@ -78,18 +82,27 @@ export default function Page() {
 
 	return (
 		<>
-			<div className="flex h-screen items-center justify-center gap-8 p-8">
-				<button onClick={goToPrevious}>Previous</button>
-				<div ref={readerRef} className="h-[500px] w-[500px] border border-black" />
-				<button onClick={goToNext}>Next</button>
+			<div className="flex h-screen items-center justify-center gap-5 p-8">
+				<button onClick={goToPrevious} className="icon-button">
+					<ChevronLeft />
+				</button>
+				<div
+					ref={readerRef}
+					className="relative h-[500px] w-[1050px] rounded-lg border bg-white after:absolute after:left-1/2 after:top-0 after:my-8 after:h-[90%] after:w-px after:-translate-x-1/2 after:bg-gray-400"
+				>
+					<button
+						aria-hidden={!summarizeShown}
+						className="absolute -bottom-4 left-1/2 flex h-9 -translate-x-1/2 translate-y-full items-center justify-center rounded-md bg-gradient-to-r from-primary to-primary-light px-4 font-medium text-on-primary transition-opacity duration-300 aria-hidden:opacity-0"
+						onClick={summarizeSelection}
+					>
+						Summarize
+					</button>
+				</div>
+				<button onClick={goToNext} className="icon-button">
+					<ChevronRight />
+				</button>
 			</div>
-			<button
-				aria-hidden={!summarizeShown}
-				className="absolute bottom-6 right-6 flex h-10 items-center justify-center rounded-md bg-gradient-to-r from-primary to-primary-light px-6 text-on-primary transition-opacity duration-300 aria-hidden:opacity-0"
-				onClick={summarizeSelection}
-			>
-				Summarize with AI
-			</button>
+
 			<SummaryDialog
 				pending={summarizer.pending}
 				data={summarizer.data}
