@@ -138,7 +138,7 @@ export default function Page() {
 				<button
 					aria-hidden={!showSummarize}
 					tabIndex={showSummarize ? 0 : -1}
-					className="absolute bottom-4 left-1/2 flex h-9 -translate-x-1/2 items-center justify-center rounded-md bg-gradient-to-r from-primary to-primary-light px-4 font-medium text-on-primary transition-opacity duration-300 aria-hidden:pointer-events-none aria-hidden:opacity-0"
+					className="absolute bottom-4 left-1/2 flex h-9 -translate-x-1/2 items-center justify-center rounded-md bg-gradient-to-r from-primary to-primary-light px-4 font-medium text-on-primary transition-opacity duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary aria-hidden:pointer-events-none aria-hidden:opacity-0"
 					onClick={summarizeSelection}
 				>
 					Summarize
