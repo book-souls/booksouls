@@ -4,7 +4,7 @@ import { getBooksBucketUrl } from "~/supabase/helpers/storage";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
 	const supabase = createServerClient(request);
-	const id = String(params.id);
+	const id = Number(params.id);
 	const book = await getBook(supabase, id);
 
 	if (book === null) {
@@ -16,7 +16,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 	return book;
 }
 
-async function getBook(supabase: SupabaseClient, id: string) {
+async function getBook(supabase: SupabaseClient, id: number) {
 	const { data: book, error } = await supabase
 		.from("books")
 		.select("title, epubUrl:epub_file_name")

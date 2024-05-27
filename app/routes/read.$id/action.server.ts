@@ -4,21 +4,25 @@ import type { ActionFunctionArgs } from "@vercel/remix";
 export async function action({ request }: ActionFunctionArgs) {
 	try {
 		const input = await request.text();
-		const output = await textGeneration({
-			accessToken: process.env.HF_API_KEY,
-			model: "booksouls/long-t5-tglobal-base",
-			inputs: input,
-		});
-
+		const summary = await summarize(input);
 		return {
-			summary: output.generated_text,
-			error: null,
+			summary,
+			error: false as const,
 		};
 	} catch (error) {
-		console.error(error);
+		console.error("Failed to summarize:", error);
 		return {
 			summary: null,
-			error: "Failed to summarize the text. Please try again.",
+			error: true as const,
 		};
 	}
+}
+
+async function summarize(text: string) {
+	const { generated_text: summary } = await textGeneration({
+		model: "booksouls/long-t5-tglobal-base",
+		inputs: text,
+		accessToken: process.env.HF_API_KEY,
+	});
+	return summary;
 }
