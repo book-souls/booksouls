@@ -1,17 +1,18 @@
-import { useLoaderData } from "@remix-run/react";
-import epubjs, { Contents, Rendition } from "epubjs";
-import { useEffect, useRef, useState } from "react";
+import { Link, useFetcher, useLoaderData } from "@remix-run/react";
+import epubjs, { Contents, Rendition, type Location } from "epubjs";
+import { ChevronLeft, ChevronRight, HomeIcon, XIcon } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import BotIcon from "~/assets/bot.svg?react";
 import { action } from "./action.server";
 import { loader } from "./loader.server";
-import { useSummarizer, type Summarizer } from "./use-summarizer";
 
 export { loader, action };
 
 export default function Page() {
-	const { epubUrl } = useLoaderData<typeof loader>();
-	const summarizer = useSummarizer();
-	const [summarizeShown, setSummarizeShown] = useState(false);
-	const [dialogOpen, setDialogOpen] = useState(false);
+	const { epubUrl, title } = useLoaderData<typeof loader>();
+	const [atStart, setAtStart] = useState(true);
+	const [atEnd, setAtEnd] = useState(false);
+	const [showSummarize, setShowSummarize] = useState(false);
 	const readerRef = useRef<HTMLDivElement>(null);
 	const renditionRef = useRef<Rendition | null>(null);
 	const selectionRef = useRef<Selection | null>(null);
@@ -19,19 +20,21 @@ export default function Page() {
 	function clearSelection() {
 		selectionRef.current?.empty();
 		selectionRef.current = null;
-		setSummarizeShown(false);
+		setShowSummarize(false);
 	}
 
 	useEffect(() => {
-		const readerEl = readerRef.current;
-		if (readerEl === null) {
+		const reader = readerRef.current;
+		if (reader === null) {
 			return;
 		}
 
-		const rendition = epubjs(epubUrl).renderTo(readerEl, {
+		const book = epubjs(epubUrl);
+		const rendition = book.renderTo(reader, {
 			height: "100%",
 			width: "100%",
 			allowScriptedContent: true,
+			spread: "always",
 		});
 
 		renditionRef.current = rendition;
@@ -41,15 +44,38 @@ export default function Page() {
 			contents.document.addEventListener("selectionchange", function () {
 				const selection = this.getSelection();
 				selectionRef.current = selection;
-				setSummarizeShown(selection !== null && selection.toString().length >= 500);
+				setShowSummarize(selection !== null && selection.toString().length > 200);
 			});
 		});
 
-		rendition.on("relocated", clearSelection);
+		rendition.on("relocated", (location: Location) => {
+			setAtStart(location.atStart);
+			setAtEnd(location.atEnd);
+			clearSelection();
+		});
+
+		function handleKeyDown(event: KeyboardEvent) {
+			switch (event.key) {
+				case "ArrowLeft":
+					rendition.prev();
+					break;
+				case "ArrowRight":
+					rendition.next();
+					break;
+				default:
+					return;
+			}
+
+			event.preventDefault();
+		}
+
+		rendition.on("keydown", handleKeyDown);
+		document.addEventListener("keydown", handleKeyDown);
 
 		return () => {
 			rendition.destroy();
 			renditionRef.current = null;
+			document.removeEventListener("keydown", handleKeyDown);
 			clearSelection();
 		};
 	}, [epubUrl]);
@@ -62,97 +88,153 @@ export default function Page() {
 		renditionRef.current?.next();
 	}
 
+	return (
+		<div className="flex h-screen min-h-[600px] w-full items-center justify-center bg-white text-neutral-800">
+			<div className="relative h-full max-h-[800px] w-full max-w-[1400px]">
+				<header className="absolute top-0 z-10 flex h-12 w-full items-center border-b border-gray-200 px-4 py-2 text-primary">
+					<Link to="/" aria-label="Home" className="icon-button h-8 w-8">
+						<HomeIcon className="!size-4" />
+					</Link>
+					<h1 className="absolute left-1/2 -translate-x-1/2 font-medium leading-tight">{title}</h1>
+				</header>
+				<div
+					ref={readerRef}
+					className="relative z-0 h-full w-full rounded-lg p-16 after:absolute after:left-1/2 after:top-1/2 after:h-3/4 after:w-px after:-translate-x-1/2 after:-translate-y-1/2 after:bg-gray-400"
+				/>
+				<button
+					aria-disabled={atStart}
+					aria-label="Go to the previous page"
+					tabIndex={-1}
+					className="icon-button absolute left-6 top-1/2 -translate-y-1/2"
+					onClick={goToPrevious}
+				>
+					<ChevronLeft />
+				</button>
+				<button
+					aria-disabled={atEnd}
+					aria-label="Go to the next page"
+					tabIndex={-1}
+					className="icon-button absolute right-6 top-1/2 -translate-y-1/2"
+					onClick={goToNext}
+				>
+					<ChevronRight />
+				</button>
+				<SummarizeButton
+					shown={showSummarize}
+					selection={selectionRef}
+					onSummarize={clearSelection}
+				/>
+			</div>
+		</div>
+	);
+}
+
+function SummarizeButton({
+	shown,
+	selection,
+	onSummarize,
+}: {
+	shown: boolean;
+	selection: React.RefObject<Selection | null>;
+	onSummarize: () => void;
+}) {
+	const fetcher = useFetcher<typeof action>();
+	const dialogRef = useRef<HTMLDialogElement>(null);
+
 	function summarizeSelection() {
-		if (summarizer.pending || selectionRef.current === null) {
+		if (!shown || selection.current === null || dialogRef.current === null) {
 			return;
 		}
 
-		summarizer.summarize(selectionRef.current.toString());
-		setDialogOpen(true);
-		clearSelection();
+		fetcher.submit(selection.current.toString(), {
+			method: "post",
+			encType: "text/plain",
+		});
+
+		dialogRef.current.showModal();
+		onSummarize();
 	}
 
 	function closeDialog() {
-		setDialogOpen(false);
+		dialogRef.current?.close();
 	}
 
 	return (
 		<>
-			<div className="flex h-screen items-center justify-center gap-8 p-8">
-				<button onClick={goToPrevious}>Previous</button>
-				<div ref={readerRef} className="h-[500px] w-[500px] border border-black" />
-				<button onClick={goToNext}>Next</button>
-			</div>
 			<button
-				aria-hidden={!summarizeShown}
-				className="absolute bottom-6 right-6 flex h-10 items-center justify-center rounded-md bg-gradient-to-r from-primary to-primary-light px-6 text-on-primary transition-opacity duration-300 aria-hidden:opacity-0"
+				aria-hidden={!shown}
+				tabIndex={shown ? 0 : -1}
+				className="absolute bottom-4 left-1/2 flex h-9 -translate-x-1/2 items-center justify-center rounded-md bg-gradient-to-r from-primary to-primary-light px-4 font-medium text-on-primary transition-opacity duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary aria-hidden:pointer-events-none aria-hidden:opacity-0"
 				onClick={summarizeSelection}
 			>
-				Summarize with AI
+				Summarize
 			</button>
-			<SummaryDialog
-				pending={summarizer.pending}
-				data={summarizer.data}
-				open={dialogOpen}
-				onClose={closeDialog}
-			/>
+			<dialog
+				ref={dialogRef}
+				className="relative h-[500px] w-[600px] rounded-xl p-6 pt-16 [&::backdrop]:bg-black/50"
+			>
+				<button
+					// eslint-disable-next-line jsx-a11y/no-autofocus
+					autoFocus
+					aria-label="Close dialog"
+					className="icon-button absolute right-3 top-3 size-8"
+					onClick={closeDialog}
+				>
+					<XIcon className="!size-5" />
+				</button>
+				<div className="ml-auto w-fit rounded-3xl bg-primary-light/35 px-5 py-2.5">
+					<p>Summarize the highlighted text</p>
+				</div>
+				<div className="flex gap-4 pt-6">
+					<BotIcon role="img" aria-label="Chatbot" className="shrink-0" />
+					<div className="rounded-3xl bg-primary/35 px-5 py-2.5">
+						{fetcher.state === "submitting" ? (
+							<ChatLoadingIndicator />
+						) : fetcher.data?.error ? (
+							<ChatEffect text="Failed to summarize. Please try again later." />
+						) : fetcher.data?.summary != null ? (
+							<ChatEffect text={fetcher.data.summary} />
+						) : null}
+					</div>
+				</div>
+			</dialog>
 		</>
 	);
 }
 
-type SummaryDialogProps = {
-	pending: boolean;
-	data: Summarizer["data"];
-	open: boolean;
-	onClose: () => void;
-};
-
-function SummaryDialog({ pending, data, open, onClose }: SummaryDialogProps) {
-	const ref = useRef<HTMLDialogElement>(null);
-
-	useEffect(() => {
-		if (ref.current === null) {
-			return;
-		}
-
-		if (open) {
-			ref.current.showModal();
-		} else {
-			ref.current.close();
-		}
-	}, [open]);
-
+function ChatLoadingIndicator() {
 	return (
-		<dialog ref={ref} className="w-[500px] p-6">
-			<SummaryDialogContent pending={pending} data={data} />
-
-			{/* eslint-disable-next-line jsx-a11y/no-autofocus */}
-			<button autoFocus onClick={onClose} className="mx-auto mt-6 block">
-				Close
-			</button>
-		</dialog>
+		<svg width={40} height="1rem" aria-label="Loading" className="translate-y-[12.5%]">
+			<circle r="4" cx="4" cy="50%" className="animate-bounce" />
+			<circle r="4" cx="50%" cy="50%" className="animate-bounce [animation-delay:166ms]" />
+			<circle r="4" cx="36" cy="50%" className="animate-bounce [animation-delay:333ms]" />
+		</svg>
 	);
 }
 
-type SummaryDialogContentProps = {
-	pending: boolean;
-	data: Summarizer["data"];
-};
+function ChatEffect({ text }: { text: string }) {
+	const [index, setIndex] = useState(0);
 
-function SummaryDialogContent({ pending, data }: SummaryDialogContentProps) {
-	if (pending) {
-		return <p>Loading...</p>;
-	}
+	useEffect(() => {
+		let start: number | null = null;
+		const requestId = window.requestAnimationFrame(function update(timestamp) {
+			if (start === null) {
+				start = timestamp;
+			}
 
-	if (data === undefined) {
-		return null;
-	}
+			const delayMs = 17.5;
+			const index = Math.floor((timestamp - start) / delayMs);
+			setIndex(index);
 
-	const { summary, error } = data;
+			if (index < text.length) {
+				window.requestAnimationFrame(update);
+			}
+		});
 
-	if (error) {
-		return <p>Error: {error}</p>;
-	}
+		return () => {
+			window.cancelAnimationFrame(requestId);
+		};
+	}, [text]);
 
-	return <p>Summary: {summary}</p>;
+	return <p>{text.slice(0, index)}</p>;
 }

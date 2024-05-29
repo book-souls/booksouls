@@ -1,27 +1,25 @@
-import { json, type LoaderFunctionArgs } from "@vercel/remix";
+import { type LoaderFunctionArgs } from "@vercel/remix";
 import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
+import { getBooksBucketUrl } from "~/supabase/helpers/storage";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-	const headers = new Headers();
-	const supabase = createServerClient(request, headers);
-	const id = String(params.id);
-	const epubUrl = await getEpubUrl(supabase, id);
+	const supabase = createServerClient(request);
+	const id = Number(params.id);
+	const book = await getBook(supabase, id);
 
-	if (epubUrl === null) {
-		throw new Response(null, {
+	if (book === null) {
+		throw new Response("Book not found", {
 			status: 404,
-			statusText: "Book not found",
-			headers,
 		});
 	}
 
-	return json({ epubUrl }, { headers });
+	return book;
 }
 
-async function getEpubUrl(supabase: SupabaseClient, id: string) {
-	const { data, error } = await supabase
+async function getBook(supabase: SupabaseClient, id: number) {
+	const { data: book, error } = await supabase
 		.from("books")
-		.select("epubFileName:epub_file_name")
+		.select("title, epubUrl:epub_file_name")
 		.eq("id", id)
 		.maybeSingle();
 
@@ -29,9 +27,10 @@ async function getEpubUrl(supabase: SupabaseClient, id: string) {
 		throw error;
 	}
 
-	if (data === null) {
+	if (book === null) {
 		return null;
 	}
 
-	return supabase.storage.from("books").getPublicUrl(data.epubFileName).data.publicUrl;
+	book.epubUrl = getBooksBucketUrl(supabase, book.epubUrl);
+	return book;
 }

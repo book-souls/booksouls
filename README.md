@@ -5,9 +5,11 @@
 # Welcome to BookSouls!
 
 ## Development
+
 Our website features two advanced AI models designed to enhance your reading experience with any type of book. The platform is crafted with a minimalist design, ensuring that the content remains the focal point.
 
 ### Features
-- **Summarizer Model**: Highlight any part of the text, and this model will generate a concise summary of the selected content.
+
+- **Summarization Model**: Highlight any part of the text, and this model will generate a concise summary of the selected content.
 - **Recommendation Model**: Provide a description, and this model will suggest books that closely match your specified criteria.
-Our commitment to simplicity and functionality ensures an intuitive and seamless user experience.
+  Our commitment to simplicity and functionality ensures an intuitive and seamless user experience.

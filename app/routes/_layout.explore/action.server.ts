@@ -1,7 +1,7 @@
 import type { ActionFunctionArgs } from "@vercel/remix";
 import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
 import { generateSearchEmbedding, preprocessSearchQuery } from "~/supabase/helpers/search.server";
-import { getBookImageUrl } from "~/supabase/helpers/storage";
+import { getBooksBucketUrl } from "~/supabase/helpers/storage";
 
 export async function action({ request }: ActionFunctionArgs) {
 	const formData = await request.formData();
@@ -39,7 +39,7 @@ async function getBookSearchResults(supabase: SupabaseClient, query: string) {
 	}
 
 	for (const book of results) {
-		book.image = getBookImageUrl(supabase, book.image);
+		book.image = getBooksBucketUrl(supabase, book.image);
 	}
 
 	return { data: results, error: null };

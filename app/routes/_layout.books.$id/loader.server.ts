@@ -2,7 +2,7 @@ import type { User } from "@supabase/supabase-js";
 import { defer, type LoaderFunctionArgs } from "@vercel/remix";
 import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
 import { generateSearchEmbedding, preprocessSearchQuery } from "~/supabase/helpers/search.server";
-import { getBookImageUrl } from "~/supabase/helpers/storage";
+import { getBooksBucketUrl } from "~/supabase/helpers/storage";
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
 	const headers = new Headers();
@@ -37,7 +37,7 @@ async function getBook(supabase: SupabaseClient, id: number) {
 		});
 	}
 
-	book.image = getBookImageUrl(supabase, book.image);
+	book.image = getBooksBucketUrl(supabase, book.image);
 	return book;
 }
 
@@ -82,7 +82,7 @@ async function getSimilarBooks(
 	}
 
 	for (const book of results) {
-		book.image = getBookImageUrl(supabase, book.image);
+		book.image = getBooksBucketUrl(supabase, book.image);
 	}
 
 	// Don't suggest the same book.
