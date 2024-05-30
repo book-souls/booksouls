@@ -1,48 +1,53 @@
 import type { ActionFunctionArgs } from "@vercel/remix";
 import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
-import { generateSearchEmbedding, preprocessSearchQuery } from "~/supabase/helpers/search.server";
-import { getBooksBucketUrl } from "~/supabase/helpers/storage";
+import { generateSearchEmbedding } from "~/utils/search.server";
+import { getBooksBucketUrl } from "~/utils/storage";
+import { isString } from "~/utils/validate";
 
 export async function action({ request }: ActionFunctionArgs) {
 	const formData = await request.formData();
-	const query = String(formData.get("query"));
+	const query = formData.get("query");
+	if (!isString(query)) {
+		throw new Error(`Invalid query: ${query}`);
+	}
 
-	const supabase = createServerClient(request);
-	const { data, error } = await getBookSearchResults(supabase, query);
-
-	return {
-		query,
-		results: data,
-		error: error?.message,
-	};
+	try {
+		const supabase = createServerClient(request.headers);
+		const results = await getBookSearchResults(supabase, query);
+		return {
+			query,
+			results,
+			error: false,
+		};
+	} catch (error) {
+		console.error("Failed to search:", error);
+		return {
+			query,
+			results: null,
+			error: true,
+		};
+	}
 }
 
 async function getBookSearchResults(supabase: SupabaseClient, query: string) {
-	const preprocessedQuery = preprocessSearchQuery(query);
-	const { data: embedding, error: embeddingError } =
-		await generateSearchEmbedding(preprocessedQuery);
-
-	if (embeddingError !== null) {
-		return { data: null, error: embeddingError };
-	}
-
-	const { data: results, error: resultsError } = await supabase
+	const embedding = await generateSearchEmbedding(query);
+	const { data: results, error } = await supabase
 		.rpc("hybrid_book_search", {
-			query: preprocessedQuery,
+			query,
 			query_embedding: JSON.stringify(embedding),
 			match_limit: 10,
 		})
 		.select("id, title, genres, author, shortDescription:short_description, image:image_file_name");
 
-	if (resultsError !== null) {
-		return { data: null, error: resultsError };
+	if (error !== null) {
+		throw error;
 	}
 
 	for (const book of results) {
 		book.image = getBooksBucketUrl(supabase, book.image);
 	}
 
-	return { data: results, error: null };
+	return results;
 }
 
-export type BookSearchResults = Awaited<ReturnType<typeof getBookSearchResults>>["data"];
+export type BookSearchResults = Awaited<ReturnType<typeof getBookSearchResults>>;

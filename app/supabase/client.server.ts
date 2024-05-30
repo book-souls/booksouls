@@ -2,8 +2,8 @@ import { createServerClient as _createServerClient, parse, serialize } from "@su
 import { supabaseKey, supabaseUrl } from "./env";
 import type { Database } from "./types";
 
-export function createServerClient(request: Request, responseHeaders?: Headers) {
-	const cookies = parse(request.headers.get("Cookie") ?? "");
+export function createServerClient(requestHeaders: Headers, responseHeaders?: Headers) {
+	const cookies = parse(requestHeaders.get("Cookie") ?? "");
 	return _createServerClient<Database>(supabaseUrl, supabaseKey, {
 		cookies: {
 			get(key) {

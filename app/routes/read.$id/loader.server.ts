@@ -1,19 +1,16 @@
 import { type LoaderFunctionArgs } from "@vercel/remix";
 import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
-import { getBooksBucketUrl } from "~/supabase/helpers/storage";
+import { bookNotFound } from "~/utils/not-found";
+import { getBooksBucketUrl } from "~/utils/storage";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
-	const supabase = createServerClient(request);
+export function loader({ request, params }: LoaderFunctionArgs) {
 	const id = Number(params.id);
-	const book = await getBook(supabase, id);
-
-	if (book === null) {
-		throw new Response("Book not found", {
-			status: 404,
-		});
+	if (!Number.isInteger(id)) {
+		throw bookNotFound();
 	}
 
-	return book;
+	const supabase = createServerClient(request.headers);
+	return getBook(supabase, id);
 }
 
 async function getBook(supabase: SupabaseClient, id: number) {
@@ -28,7 +25,7 @@ async function getBook(supabase: SupabaseClient, id: number) {
 	}
 
 	if (book === null) {
-		return null;
+		throw bookNotFound();
 	}
 
 	book.epubUrl = getBooksBucketUrl(supabase, book.epubUrl);

@@ -3,7 +3,8 @@ import type { User } from "@supabase/supabase-js";
 import * as popover from "@zag-js/popover";
 import { normalizeProps, Portal, useMachine } from "@zag-js/react";
 import { Loader2Icon, LogInIcon, LogOutIcon, SearchIcon, XIcon } from "lucide-react";
-import { useId } from "react";
+import { useEffect, useId } from "react";
+import { toast } from "sonner";
 import CrueltyFreeIcon from "~/assets/cruelty-free.svg?react";
 import footerLogo from "~/assets/footer-logo.svg";
 import { Logo } from "~/components/Logo";
@@ -79,17 +80,17 @@ function UserAvatar({ user }: { user: User }) {
 				aria-label="Open profile menu"
 				className="icon-button bg-primary-light text-xl text-on-primary focus-visible:outline-offset-2 focus-visible:outline-primary-light"
 			>
-				{user?.email?.at(0)?.toUpperCase()}
+				{user.email?.at(0)?.toUpperCase()}
 			</button>
 			<Portal>
 				<div {...api.positionerProps}>
 					<div
 						{...api.contentProps}
-						className="relative !block rounded-lg bg-background p-4 text-on-background opacity-0 transition-opacity duration-200 data-[state='open']:opacity-100"
+						className="relative !block rounded-lg bg-neutral-50 p-4 text-neutral-950 opacity-0 shadow-lg transition-opacity duration-200 data-[state='open']:opacity-100"
 					>
 						<div
 							{...api.arrowProps}
-							className="[--arrow-background:theme(colors.background.DEFAULT)] [--arrow-size:8px]"
+							className="[--arrow-background:theme(colors.neutral.50)] [--arrow-size:8px]"
 						>
 							<div {...api.arrowTipProps} />
 						</div>
@@ -112,15 +113,24 @@ function UserAvatar({ user }: { user: User }) {
 }
 
 function SignOutButton() {
-	const { signOut, loading } = useSignOut();
+	const { submit, submitting, error } = useSignOut();
+
+	useEffect(() => {
+		if (submitting || error == null) {
+			return;
+		}
+
+		toast.error("Failed to sign out", { description: error });
+	}, [submitting, error]);
+
 	return (
 		<button
-			aria-disabled={loading}
+			aria-disabled={submitting}
 			className="mx-auto flex h-10 items-center justify-center gap-2 rounded-lg bg-red-700 px-6 text-sm text-red-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 [&_svg]:size-4"
-			onClick={signOut}
+			onClick={submit}
 		>
 			Sign Out
-			{loading ? <Loader2Icon className="animate-spin" /> : <LogOutIcon />}
+			{submitting ? <Loader2Icon className="animate-spin" /> : <LogOutIcon />}
 		</button>
 	);
 }

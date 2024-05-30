@@ -1,24 +1,23 @@
 import { json, redirect, type ActionFunctionArgs } from "@vercel/remix";
-import { array, length, parse, regex, string } from "valibot";
 import { createServerClient } from "~/supabase/client.server";
-import { deleteSignInCookie, getSignInCookie } from "../sign-in/cookie.server";
-
-const DigitSchema = string([regex(/^[0-9]$/)]);
-const OTPSchema = array(DigitSchema, [length(6)]);
+import { isDigit, isEmail } from "~/utils/validate";
+import { deleteEmailCookie, getEmailCookie } from "../sign-in/cookie.server";
 
 export async function action({ request }: ActionFunctionArgs) {
-	const email = await getSignInCookie(request);
-
-	// Make sure the user navigated to this page from the sign in page.
-	if (email === null) {
+	const email = await getEmailCookie(request.headers);
+	if (!isEmail(email)) {
+		// Make sure the user navigated to this page from the sign in page.
 		return redirect("/sign-in");
 	}
 
 	const formData = await request.formData();
-	const otp = parse(OTPSchema, formData.getAll("otp"));
+	const otp = formData.getAll("otp");
+	if (otp.length !== 6 || !otp.every(isDigit)) {
+		throw new Error(`Invalid otp: ${otp}`);
+	}
 
 	const headers = new Headers();
-	const supabase = createServerClient(request, headers);
+	const supabase = createServerClient(request.headers, headers);
 	const { error } = await supabase.auth.verifyOtp({
 		email,
 		token: otp.join(""),
@@ -26,7 +25,7 @@ export async function action({ request }: ActionFunctionArgs) {
 	});
 
 	if (error !== null) {
-		console.error(error);
+		console.error("Failed to verify otp:", error);
 		return json(
 			{
 				error: error.message,
@@ -39,6 +38,6 @@ export async function action({ request }: ActionFunctionArgs) {
 		);
 	}
 
-	await deleteSignInCookie(headers);
+	await deleteEmailCookie(headers);
 	return redirect("/", { headers });
 }

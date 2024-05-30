@@ -30,10 +30,9 @@ export default function SignIn() {
 				<Form method="post">
 					<h1 className="text-3xl font-medium">Sign in to Book Souls</h1>
 					<EmailInput defaultValue={actionData?.email} />
-					<SignInButton />
+					<SignInButton error={actionData?.error} />
 				</Form>
 			</main>
-			<ErrorToast error={actionData?.error} />
 		</div>
 	);
 }
@@ -63,25 +62,10 @@ function EmailInput({ defaultValue }: { defaultValue?: string }) {
 	);
 }
 
-function SignInButton() {
-	const navigation = useNavigation();
-	const loading = navigation.state === "submitting";
-	return (
-		<button
-			type="submit"
-			aria-disabled={loading}
-			aria-label={loading ? "Signing in" : "Sign In"}
-			className="mx-auto flex h-10 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-primary-light to-primary px-10 text-on-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&_svg]:size-5"
-		>
-			<span>Sign In</span>
-			{loading ? <Loader2Icon className="animate-spin" /> : <LogInIcon />}
-		</button>
-	);
-}
-
-function ErrorToast({ error }: { error: string | undefined }) {
+function SignInButton({ error }: { error: string | undefined }) {
 	const navigation = useNavigation();
 	const idle = navigation.state === "idle";
+	const submitting = navigation.state === "submitting";
 
 	useEffect(() => {
 		if (!idle || error === undefined) {
@@ -91,5 +75,15 @@ function ErrorToast({ error }: { error: string | undefined }) {
 		toast.error("Failed to sign in", { description: error });
 	}, [idle, error]);
 
-	return null;
+	return (
+		<button
+			type="submit"
+			aria-disabled={submitting}
+			aria-label={submitting ? "Signing in" : "Sign In"}
+			className="mx-auto flex h-10 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-primary-light to-primary px-10 text-on-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&_svg]:size-5"
+		>
+			<span>Sign In</span>
+			{submitting ? <Loader2Icon className="animate-spin" /> : <LogInIcon />}
+		</button>
+	);
 }

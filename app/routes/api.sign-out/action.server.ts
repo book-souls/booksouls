@@ -3,8 +3,7 @@ import { createServerClient } from "~/supabase/client.server";
 
 export async function action({ request }: ActionFunctionArgs) {
 	const headers = new Headers();
-	const supabase = createServerClient(request, headers);
-
+	const supabase = createServerClient(request.headers, headers);
 	const { error } = await supabase.auth.signOut();
 
 	if (error !== null) {

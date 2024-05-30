@@ -1,20 +1,22 @@
 import { json, redirect, type LoaderFunctionArgs } from "@vercel/remix";
 import { createServerClient } from "~/supabase/client.server";
-import { getSignInCookie } from "../sign-in/cookie.server";
+import { isEmail } from "~/utils/validate";
+import { getEmailCookie } from "../sign-in/cookie.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-	const email = await getSignInCookie(request);
-
-	// Make sure the user navigated to this page from the sign in page.
-	if (email === null) {
+	const email = await getEmailCookie(request.headers);
+	if (!isEmail(email)) {
+		// Make sure the user navigated to this page from the sign in page.
 		return redirect("/sign-in");
 	}
 
 	const headers = new Headers();
-	const supabase = createServerClient(request, headers);
-	const { data } = await supabase.auth.getUser();
+	const supabase = createServerClient(request.headers, headers);
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
 
-	if (data.user !== null) {
+	if (user !== null) {
 		return redirect("/", { headers });
 	}
 
