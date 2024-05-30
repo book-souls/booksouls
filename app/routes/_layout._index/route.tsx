@@ -40,7 +40,6 @@ function FeaturedBooksSection({ books }: { books: Book[] }) {
 				{books.map((book) => (
 					<div key={book.id}>
 						<Link to={`books/${book.id}`}>
-							{" "}
 							<img
 								src={book.image}
 								alt=""
@@ -97,8 +96,8 @@ function FeaturedBooksCarousel({ books }: { books: Book[] }) {
 								/>
 							</Link>
 							<div className="w-[400px]">
-								<Link to={`books/${book.id}`} className="hover:underline">
-									<h3 className="text-3xl">{book.title}</h3>
+								<Link to={`books/${book.id}`} className="text-3xl hover:underline">
+									{book.title}
 								</Link>
 								<p className="mt-4">{book.shortDescription}</p>
 							</div>

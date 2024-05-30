@@ -1,11 +1,11 @@
 import { json, type LoaderFunctionArgs } from "@vercel/remix";
 import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
-import { requireAuth } from "~/supabase/helpers/auth.server";
-import { getBooksBucketUrl } from "~/supabase/helpers/storage";
+import { requireAuth } from "~/utils/auth.server";
+import { getBooksBucketUrl } from "~/utils/storage";
 
 export async function loader({ request }: LoaderFunctionArgs) {
 	const headers = new Headers();
-	const supabase = createServerClient(request, headers);
+	const supabase = createServerClient(request.headers, headers);
 	const user = await requireAuth(supabase, headers);
 	const books = await getLibraryBooks(supabase, user.id);
 	return json({ books }, { headers });

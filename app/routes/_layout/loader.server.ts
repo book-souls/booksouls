@@ -3,7 +3,7 @@ import { createServerClient } from "~/supabase/client.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
 	const headers = new Headers();
-	const supabase = createServerClient(request, headers);
+	const supabase = createServerClient(request.headers, headers);
 
 	const {
 		data: { user },

@@ -1,12 +1,12 @@
-import { Link, useFetcher, useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import epubjs, { Contents, Rendition, type Location } from "epubjs";
 import { ChevronLeft, ChevronRight, HomeIcon, XIcon } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import BotIcon from "~/assets/bot.svg?react";
-import { action } from "./action.server";
+import { useSummarize } from "../api.summarize/use-summarize";
 import { loader } from "./loader.server";
 
-export { loader, action };
+export { loader };
 
 export default function Page() {
 	const { epubUrl, title } = useLoaderData<typeof loader>();
@@ -119,11 +119,7 @@ export default function Page() {
 				>
 					<ChevronRight />
 				</button>
-				<SummarizeButton
-					shown={showSummarize}
-					selection={selectionRef}
-					onSummarize={clearSelection}
-				/>
+				<SummarizeButton shown={showSummarize} selection={selectionRef} />
 			</div>
 		</div>
 	);
@@ -132,13 +128,11 @@ export default function Page() {
 function SummarizeButton({
 	shown,
 	selection,
-	onSummarize,
 }: {
 	shown: boolean;
 	selection: React.RefObject<Selection | null>;
-	onSummarize: () => void;
 }) {
-	const fetcher = useFetcher<typeof action>();
+	const { submit, submitting, summary, error } = useSummarize();
 	const dialogRef = useRef<HTMLDialogElement>(null);
 
 	function summarizeSelection() {
@@ -146,13 +140,8 @@ function SummarizeButton({
 			return;
 		}
 
-		fetcher.submit(selection.current.toString(), {
-			method: "post",
-			encType: "text/plain",
-		});
-
+		submit(selection.current.toString());
 		dialogRef.current.showModal();
-		onSummarize();
 	}
 
 	function closeDialog() {
@@ -188,12 +177,12 @@ function SummarizeButton({
 				<div className="flex gap-4 pt-6">
 					<BotIcon role="img" aria-label="Chatbot" className="shrink-0" />
 					<div className="rounded-3xl bg-primary/35 px-5 py-2.5">
-						{fetcher.state === "submitting" ? (
+						{submitting ? (
 							<ChatLoadingIndicator />
-						) : fetcher.data?.error ? (
+						) : error ? (
 							<ChatEffect text="Failed to summarize. Please try again later." />
-						) : fetcher.data?.summary != null ? (
-							<ChatEffect text={fetcher.data.summary} />
+						) : summary != null ? (
+							<ChatEffect text={summary} />
 						) : null}
 					</div>
 				</div>

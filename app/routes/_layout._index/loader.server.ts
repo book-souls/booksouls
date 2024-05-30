@@ -1,9 +1,9 @@
 import type { LoaderFunctionArgs } from "@vercel/remix";
 import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
-import { getBooksBucketUrl } from "~/supabase/helpers/storage";
+import { getBooksBucketUrl } from "~/utils/storage";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-	const supabase = createServerClient(request);
+	const supabase = createServerClient(request.headers);
 	const books = await getBooks(supabase);
 	return {
 		books: groupBooksByGenre(books),

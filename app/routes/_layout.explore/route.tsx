@@ -13,18 +13,17 @@ export default function Explore() {
 	return (
 		<main>
 			<div className="px-8 pt-16">
-				<SearchForm query={actionData?.query} />
+				<SearchForm query={actionData?.query} error={actionData?.error} />
 				<div aria-live="polite">
 					<SearchResults results={actionData?.results} />
 				</div>
 			</div>
 			<div className="line-gradient" />
-			<ErrorToast error={actionData?.error} />
 		</main>
 	);
 }
 
-function SearchForm({ query }: { query: string | undefined }) {
+function SearchForm({ query, error }: { query: string | undefined; error: boolean | undefined }) {
 	const descriptionId = useId();
 	return (
 		<Form method="post">
@@ -39,7 +38,7 @@ function SearchForm({ query }: { query: string | undefined }) {
 					aria-describedby={descriptionId}
 					className="w-full bg-transparent px-3 placeholder:text-primary/60 focus:outline-none"
 				/>
-				<SearchSubmit />
+				<SearchSubmit error={error} />
 			</div>
 			<p id={descriptionId} className="mx-auto mt-3 w-[400px] text-center">
 				Our <strong className="font-medium">AI-Powered Search</strong> helps you discover books
@@ -49,9 +48,19 @@ function SearchForm({ query }: { query: string | undefined }) {
 	);
 }
 
-function SearchSubmit() {
+function SearchSubmit({ error }: { error: boolean | undefined }) {
 	const navigation = useNavigation();
+	const idle = navigation.state === "idle";
 	const submitting = navigation.state === "submitting";
+
+	useEffect(() => {
+		if (!idle || !error) {
+			return;
+		}
+
+		toast.error("Failed to search. Please try again later.");
+	}, [idle, error]);
+
 	return (
 		<button
 			type="submit"
@@ -65,7 +74,7 @@ function SearchSubmit() {
 	);
 }
 
-function SearchResults({ results }: { results: BookSearchResults | undefined }) {
+function SearchResults({ results }: { results: BookSearchResults | null | undefined }) {
 	if (results == null) {
 		return <SearchResultsPlaceholder />;
 	}
@@ -139,19 +148,4 @@ function SearchResultsList({ results }: { results: NonNullable<BookSearchResults
 			</ul>
 		</section>
 	);
-}
-
-function ErrorToast({ error }: { error: string | undefined }) {
-	const navigation = useNavigation();
-	const idle = navigation.state === "idle";
-
-	useEffect(() => {
-		if (!idle || !error) {
-			return;
-		}
-
-		toast.error("Failed to load search results", { description: error });
-	}, [idle, error]);
-
-	return null;
 }

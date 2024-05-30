@@ -1,19 +1,21 @@
 import { json, redirect, type ActionFunctionArgs } from "@vercel/remix";
-import { parse } from "valibot";
 import { createServerClient } from "~/supabase/client.server";
-import { setSignInCookie } from "./cookie.server";
-import { EmailSchema } from "./validate";
+import { isEmail } from "~/utils/validate";
+import { setEmailCookie } from "./cookie.server";
 
 export async function action({ request }: ActionFunctionArgs) {
 	const formData = await request.formData();
-	const email = parse(EmailSchema, formData.get("email"));
+	const email = formData.get("email");
+	if (!isEmail(email)) {
+		throw new Error(`Invalid email: ${email}`);
+	}
 
 	const headers = new Headers();
-	const supabase = createServerClient(request, headers);
+	const supabase = createServerClient(request.headers, headers);
 	const { error } = await supabase.auth.signInWithOtp({ email });
 
 	if (error !== null) {
-		console.error(error);
+		console.error("Failed to sign in:", error);
 		return json(
 			{
 				error: error.message,
@@ -26,6 +28,6 @@ export async function action({ request }: ActionFunctionArgs) {
 		);
 	}
 
-	await setSignInCookie(headers, email);
+	await setEmailCookie(headers, email);
 	return redirect("/otp", { headers });
 }

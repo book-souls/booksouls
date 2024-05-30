@@ -1,21 +1,28 @@
 import type { User } from "@supabase/supabase-js";
 import { defer, type LoaderFunctionArgs } from "@vercel/remix";
 import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
-import { generateSearchEmbedding, preprocessSearchQuery } from "~/supabase/helpers/search.server";
-import { getBooksBucketUrl } from "~/supabase/helpers/storage";
+import { bookNotFound } from "~/utils/not-found";
+import { generateSearchEmbedding } from "~/utils/search.server";
+import { getBooksBucketUrl } from "~/utils/storage";
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
+	const id = Number(params.id);
+	if (!Number.isInteger(id)) {
+		throw bookNotFound();
+	}
+
 	const headers = new Headers();
-	const supabase = createServerClient(request, headers);
+	const supabase = createServerClient(request.headers, headers);
 	const {
 		data: { user },
 	} = await supabase.auth.getUser();
 
-	const bookId = Number(params.id);
-	const book = await getBook(supabase, bookId);
-	const favorite = await isFavoriteBook(supabase, user, bookId);
+	const [book, favorite] = await Promise.all([
+		getBook(supabase, id),
+		isFavoriteBook(supabase, user, id),
+	]);
 	const similarBooks = getSimilarBooks(supabase, book);
-	return defer({ book, favorite, similarBooks }, { headers });
+	return defer({ book, favorite, user, similarBooks }, { headers });
 }
 
 async function getBook(supabase: SupabaseClient, id: number) {
@@ -41,7 +48,7 @@ async function getBook(supabase: SupabaseClient, id: number) {
 	return book;
 }
 
-export async function isFavoriteBook(supabase: SupabaseClient, user: User | null, bookId: number) {
+export async function isFavoriteBook(supabase: SupabaseClient, user: User | null, id: number) {
 	if (user === null) {
 		return false;
 	}
@@ -50,7 +57,7 @@ export async function isFavoriteBook(supabase: SupabaseClient, user: User | null
 		.from("user_library")
 		.select("*", { count: "exact", head: true })
 		.eq("user_id", user.id)
-		.eq("book_id", bookId)
+		.eq("book_id", id)
 		.throwOnError();
 
 	return count !== null && count > 0;
@@ -60,15 +67,8 @@ async function getSimilarBooks(
 	supabase: SupabaseClient,
 	book: { id: number; description: string },
 ) {
-	const query = preprocessSearchQuery(book.description);
-	const { data: embedding, error: embeddingError } = await generateSearchEmbedding(query);
-
-	if (embeddingError !== null) {
-		// TODO: handle error
-		throw embeddingError;
-	}
-
-	const { data: results, error: resultsError } = await supabase
+	const embedding = await generateSearchEmbedding(book.description);
+	const { data: results, error } = await supabase
 		.rpc("book_search", {
 			query_embedding: JSON.stringify(embedding),
 			match_threshold: 0.5,
@@ -76,9 +76,8 @@ async function getSimilarBooks(
 		})
 		.select("id, title, image:image_file_name");
 
-	if (resultsError !== null) {
-		// TODO: handle error
-		throw resultsError;
+	if (error !== null) {
+		throw error;
 	}
 
 	for (const book of results) {

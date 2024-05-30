@@ -1,8 +1,6 @@
 import { createCookie } from "@vercel/remix";
-import { safeParse } from "valibot";
-import { EmailSchema } from "./validate";
 
-const signInCookie = createCookie("sign-in", {
+const emailCookie = createCookie("sign-in-email", {
 	maxAge: 60 * 30, // 30 minutes
 	httpOnly: true,
 	path: "/",
@@ -10,23 +8,16 @@ const signInCookie = createCookie("sign-in", {
 	secure: process.env.NODE_ENV === "production",
 });
 
-export async function getSignInCookie(request: Request) {
-	const cookie = await signInCookie.parse(request.headers.get("Cookie"));
-	const parsed = safeParse(EmailSchema, cookie);
-
-	if (!parsed.success) {
-		return null;
-	}
-
-	return parsed.output;
+export function getEmailCookie(headers: Headers) {
+	return emailCookie.parse(headers.get("Cookie"));
 }
 
-export async function setSignInCookie(headers: Headers, email: string) {
-	const cookie = await signInCookie.serialize(email);
+export async function setEmailCookie(headers: Headers, email: string) {
+	const cookie = await emailCookie.serialize(email);
 	headers.append("Set-Cookie", cookie);
 }
 
-export async function deleteSignInCookie(headers: Headers) {
-	const cookie = await signInCookie.serialize("", { maxAge: 0 });
+export async function deleteEmailCookie(headers: Headers) {
+	const cookie = await emailCookie.serialize("", { maxAge: 0 });
 	headers.append("Set-Cookie", cookie);
 }

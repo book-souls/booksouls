@@ -1,13 +1,15 @@
 import { Await, Link, useFetcher, useLoaderData } from "@remix-run/react";
-import { Star } from "lucide-react";
-import { Suspense } from "react";
+import type { User } from "@supabase/supabase-js";
+import { AlertCircleIcon, Star } from "lucide-react";
+import React, { Suspense, useEffect } from "react";
+import { toast } from "sonner";
 import { action } from "./action.server";
 import { loader, type SimilarBooksResult } from "./loader.server";
 
 export { loader, action };
 
 export default function Book() {
-	const { book, favorite, similarBooks } = useLoaderData<typeof loader>();
+	const { book, favorite, user, similarBooks } = useLoaderData<typeof loader>();
 	return (
 		<main className="mx-auto max-w-4xl px-8">
 			<section className="flex gap-8 pt-12">
@@ -29,7 +31,7 @@ export default function Book() {
 						>
 							Read Book
 						</Link>
-						<FavoriteButton favorite={favorite} />
+						<FavoriteButton favorite={favorite} user={user} />
 					</div>
 				</div>
 			</section>
@@ -40,21 +42,48 @@ export default function Book() {
 			<section className="pb-6 pt-8">
 				<h2 className="text-2xl font-medium">Similar Books</h2>
 				<Suspense fallback={<SimilarBooksPlaceholder />}>
-					<Await resolve={similarBooks}>{(books) => <SimilarBooks books={books} />}</Await>
+					<Await resolve={similarBooks} errorElement={<SimilarBooksError />}>
+						{(books) => <SimilarBooks books={books} />}
+					</Await>
 				</Suspense>
 			</section>
 		</main>
 	);
 }
 
-function FavoriteButton({ favorite }: { favorite: boolean }) {
-	const fetcher = useFetcher();
-	const optimisticFavorite =
-		fetcher.state !== "idle" ? fetcher.formData?.get("favorite") === "true" : favorite;
+function FavoriteButton({ favorite, user }: { favorite: boolean; user: User | null }) {
+	const fetcher = useFetcher<typeof action>();
+	const submitting = fetcher.state === "submitting";
+	const error = fetcher.data?.error;
+	const optimisticFavorite = submitting ? fetcher.formData?.get("favorite") === "true" : favorite;
+
+	useEffect(() => {
+		if (submitting || !error) {
+			return;
+		}
+
+		if (favorite) {
+			toast.error("Failed to remove from library");
+		} else {
+			toast.error("Failed to add to library");
+		}
+	}, [submitting, error, favorite]);
+
+	function onClick(event: React.MouseEvent) {
+		if (user === null) {
+			toast.info("You have to be signed in");
+			event.preventDefault();
+		}
+	}
+
 	return (
 		<fetcher.Form method="post">
 			<input type="hidden" name="favorite" value={String(!optimisticFavorite)} />
-			<button type="submit" className="icon-button size-12 rounded-xl text-primary">
+			<button
+				type="submit"
+				className="icon-button size-12 rounded-xl text-primary"
+				onClick={onClick}
+			>
 				<Star
 					data-filled={optimisticFavorite}
 					className="!size-9 data-[filled='true']:fill-primary"
@@ -74,6 +103,17 @@ function SimilarBooksPlaceholder() {
 						<div className="mx-auto h-[270px] w-[180px] animate-pulse rounded bg-neutral-400 shadow-md" />
 					</div>
 				))}
+		</div>
+	);
+}
+
+function SimilarBooksError() {
+	return (
+		<div className="py-4">
+			<div className="h-[270px]">
+				<AlertCircleIcon size={32} className="text-red-600" />
+				<p className="text-center text-xl">An error has occured</p>
+			</div>
 		</div>
 	);
 }
