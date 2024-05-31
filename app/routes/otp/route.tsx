@@ -77,7 +77,7 @@ function OTPInput({
 function VerifyButton({ error }: { error: string | undefined }) {
 	const navigation = useNavigation();
 	const idle = navigation.state === "idle";
-	const loading = navigation.state === "submitting";
+	const submitting = navigation.state === "submitting";
 
 	useEffect(() => {
 		if (!idle || error === undefined) {
@@ -90,12 +90,12 @@ function VerifyButton({ error }: { error: string | undefined }) {
 	return (
 		<button
 			type="submit"
-			aria-disabled={loading}
-			aria-label={loading ? "Verifying" : "Verify"}
+			aria-disabled={submitting}
+			aria-label={submitting ? "Verifying" : "Verify"}
 			className="mx-auto flex h-10 w-32 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-primary-light to-primary px-10 text-on-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&_svg]:size-5"
 		>
 			<span>Verify</span>
-			{loading && <Loader2Icon className="shrink-0 animate-spin" />}
+			{submitting && <Loader2Icon className="shrink-0 animate-spin" />}
 		</button>
 	);
 }
