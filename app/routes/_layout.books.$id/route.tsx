@@ -81,6 +81,8 @@ function FavoriteButton({ favorite, user }: { favorite: boolean; user: User | nu
 			<input type="hidden" name="favorite" value={String(!optimisticFavorite)} />
 			<button
 				type="submit"
+				aria-label="Add to library"
+				title="Add to library"
 				className="icon-button size-12 rounded-xl text-primary"
 				onClick={onClick}
 			>

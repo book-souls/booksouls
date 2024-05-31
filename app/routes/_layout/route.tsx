@@ -96,6 +96,7 @@ function UserAvatar({ user }: { user: User }) {
 						</div>
 						<button
 							{...api.closeTriggerProps}
+							aria-label="Close profile menu"
 							className="icon-button absolute right-2 top-2 size-8 [&_svg]:size-5"
 						>
 							<XIcon />
@@ -138,7 +139,7 @@ function SignOutButton() {
 function SignInLink() {
 	return (
 		<Link to="/sign-in" title="Sign in" className="icon-button">
-			<LogInIcon />
+			<LogInIcon aria-label="Sign in" />
 		</Link>
 	);
 }
