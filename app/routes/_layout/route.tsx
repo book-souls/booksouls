@@ -96,6 +96,7 @@ function UserAvatar({ user }: { user: User }) {
 						</div>
 						<button
 							{...api.closeTriggerProps}
+							aria-label="Close profile menu"
 							className="icon-button absolute right-2 top-2 size-8 [&_svg]:size-5"
 						>
 							<XIcon />
@@ -113,15 +114,17 @@ function UserAvatar({ user }: { user: User }) {
 }
 
 function SignOutButton() {
-	const { submit, submitting, error } = useSignOut();
+	const { submit, state, error } = useSignOut();
+	const idle = state === "idle";
+	const submitting = state === "submitting";
 
 	useEffect(() => {
-		if (submitting || error == null) {
+		if (!idle || error == null) {
 			return;
 		}
 
 		toast.error("Failed to sign out", { description: error });
-	}, [submitting, error]);
+	}, [idle, error]);
 
 	return (
 		<button
@@ -138,7 +141,7 @@ function SignOutButton() {
 function SignInLink() {
 	return (
 		<Link to="/sign-in" title="Sign in" className="icon-button">
-			<LogInIcon />
+			<LogInIcon aria-label="Sign in" />
 		</Link>
 	);
 }

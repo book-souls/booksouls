@@ -92,8 +92,8 @@ export default function Page() {
 		<div className="flex h-screen min-h-[600px] w-full items-center justify-center bg-white text-neutral-800">
 			<div className="relative h-full max-h-[800px] w-full max-w-[1400px]">
 				<header className="absolute top-0 z-10 flex h-12 w-full items-center border-b border-gray-200 px-4 py-2 text-primary">
-					<Link to="/" aria-label="Home" className="icon-button h-8 w-8">
-						<HomeIcon className="!size-4" />
+					<Link to="/" className="icon-button h-8 w-8">
+						<HomeIcon aria-label="Home" className="!size-4" />
 					</Link>
 					<h1 className="absolute left-1/2 -translate-x-1/2 font-medium leading-tight">{title}</h1>
 				</header>
@@ -132,7 +132,7 @@ function SummarizeButton({
 	shown: boolean;
 	selection: React.RefObject<Selection | null>;
 }) {
-	const { submit, submitting, summary, error } = useSummarize();
+	const { submit, state, summary, error } = useSummarize();
 	const dialogRef = useRef<HTMLDialogElement>(null);
 
 	function summarizeSelection() {
@@ -177,7 +177,7 @@ function SummarizeButton({
 				<div className="flex gap-4 pt-6">
 					<BotIcon role="img" aria-label="Chatbot" className="shrink-0" />
 					<div className="rounded-3xl bg-primary/35 px-5 py-2.5">
-						{submitting ? (
+						{state === "submitting" ? (
 							<ChatLoadingIndicator />
 						) : error ? (
 							<ChatEffect text="Failed to summarize. Please try again later." />
