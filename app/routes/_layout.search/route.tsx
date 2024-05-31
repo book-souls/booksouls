@@ -91,7 +91,7 @@ function SearchResultsPlaceholder() {
 		<SearchBooks
 			role="img"
 			aria-label="A woman searching for books"
-			className="mx-auto mt-12 h-auto w-[500px] max-w-full"
+			className="mx-auto mt-12 h-auto w-[400px] max-w-full"
 		/>
 	);
 }
@@ -106,7 +106,7 @@ function EmptySearchResults() {
 			<SearchNotFound
 				role="img"
 				aria-label="No results found"
-				className="mx-auto mt-8 h-auto w-[500px] max-w-full"
+				className="mx-auto mt-8 h-auto w-[400px] max-w-full"
 			/>
 		</section>
 	);

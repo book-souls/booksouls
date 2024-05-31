@@ -21,9 +21,10 @@ async function getLibraryBooks(supabase: SupabaseClient, userId: string) {
 		throw error;
 	}
 
-	for (const { book } of books) {
+	return books.map(({ book }) => {
 		book.image = getBooksBucketUrl(supabase, book.image);
-	}
-
-	return books;
+		return book;
+	});
 }
+
+export type Books = Awaited<ReturnType<typeof getLibraryBooks>>;
