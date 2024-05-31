@@ -124,25 +124,25 @@ function TeamSection() {
 			<div className="grid grid-cols-3 gap-x-20 gap-y-12 pt-14">
 				<Creator linkedin="https://linkedin.com/in/deena-fathi/" image={deena} name="Deena Fathi" />
 				<Creator
-					linkedin="https://linkedin.com/in/abdelrahman-bahaa/"
-					image={bahaa}
-					name="Abdelrahman Bahaa"
-				/>
-				<Creator
 					linkedin="https://linkedin.com/in/ahmed-saied02/"
 					image={ahmed}
 					name="Ahmed Mohamed"
 				/>
 				<Creator linkedin="https://linkedin.com/in/nour-yasser-/" image={nour} name="Nour Yasser" />
 				<Creator
+					linkedin="https://linkedin.com/in/zeyad-bassiouny-653907246/"
+					image={zeyad}
+					name="Zeyad Mahmoud"
+				/>
+				<Creator
 					linkedin="https://linkedin.com/in/abdelrahman-essmat-b525761b2/"
 					image={essmat}
 					name="Abdelrahman Essmat"
 				/>
 				<Creator
-					linkedin="https://linkedin.com/in/zeyad-bassiouny-653907246/"
-					image={zeyad}
-					name="Zeyad Mahmoud"
+					linkedin="https://linkedin.com/in/abdelrahman-bahaa/"
+					image={bahaa}
+					name="Abdelrahman Bahaa"
 				/>
 			</div>
 		</section>
