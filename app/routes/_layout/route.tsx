@@ -49,7 +49,7 @@ function Header() {
 						)}
 					</ul>
 				</nav>
-				<div className="flex items-center gap-6">
+				<div className="flex items-center gap-4">
 					<Link to="/search" title="Search" className="icon-button">
 						<SearchIcon />
 					</Link>
