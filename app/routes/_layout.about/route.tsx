@@ -35,13 +35,13 @@ function AboutUsSection({ visionSectionId }: { visionSectionId: string }) {
 	return (
 		<section
 			aria-labelledby={headerId}
-			className="flex items-center gap-24 bg-surface px-20 py-10 text-on-surface"
+			className="flex items-center justify-center gap-24 bg-surface px-20 py-10 text-on-surface"
 		>
 			<div className="flex flex-col items-center gap-10">
 				<h1 id={headerId} className="text-center text-4xl font-light uppercase tracking-widest">
 					About Us
 				</h1>
-				<p className="text-lg font-light leading-loose">
+				<p className="max-w-2xl text-lg font-light leading-loose">
 					Welcome to <span className="font-medium">Book Souls</span> — the digital crossroads where
 					innovative technology meets the love of books. This platform is not only our virtual
 					bookshelf but also a capstone of our academic journey, a graduation project designed with
@@ -54,13 +54,11 @@ function AboutUsSection({ visionSectionId }: { visionSectionId: string }) {
 					Learn More
 				</Link>
 			</div>
-			<div>
-				<TeamIcon
-					role="img"
-					aria-label="Four people working on a project"
-					className="h-[500px] w-[500px]"
-				/>
-			</div>
+			<TeamIcon
+				role="img"
+				aria-label="Four people working on a project"
+				className="h-[500px] w-[500px]"
+			/>
 		</section>
 	);
 }

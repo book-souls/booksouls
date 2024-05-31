@@ -5,7 +5,6 @@ import { normalizeProps, Portal, useMachine } from "@zag-js/react";
 import { Loader2Icon, LogInIcon, LogOutIcon, SearchIcon, XIcon } from "lucide-react";
 import { useEffect, useId } from "react";
 import { toast } from "sonner";
-import CrueltyFreeIcon from "~/assets/cruelty-free.svg?react";
 import footerLogo from "~/assets/footer-logo.svg";
 import { Logo } from "~/components/Logo";
 import { useSignOut } from "../api.sign-out/use-sign-out";
@@ -26,21 +25,22 @@ export default function Layout() {
 function Header() {
 	const { user } = useLoaderData<typeof loader>();
 	return (
-		<header className="flex flex-col justify-center bg-surface px-6 text-on-surface">
-			<div className="flex items-center justify-between">
+		<header className="flex items-center bg-surface px-6 text-on-surface">
+			<div className="mx-auto flex max-w-7xl grow items-center justify-between">
 				<Link to="/">
 					<Logo scale={0.75} />
 				</Link>
 				<nav>
-					<ul className="flex items-center justify-center gap-16">
+					<ul className="flex items-center justify-center gap-14">
 						<li>
 							<NavLink to="/">Home</NavLink>
 						</li>
-						<li>
+						{/* TODO: uncomment when the /categories page is implemented */}
+						{/* <li>
 							<NavLink to="/categories">Categories</NavLink>
-						</li>
+						</li> */}
 						<li>
-							<NavLink to="/authors">Authors</NavLink>
+							<NavLink to="/about">About Us</NavLink>
 						</li>
 						{user !== null && (
 							<li>
@@ -49,18 +49,31 @@ function Header() {
 						)}
 					</ul>
 				</nav>
-				<div className="flex items-center gap-6">
-					<Link
-						to="/explore"
-						className="flex h-10 items-center justify-center gap-2 rounded-lg bg-on-surface px-3 text-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-surface"
-					>
-						<span className="text-sm font-medium">Explore</span>
-						<SearchIcon className="size-5" />
+				<div className="flex items-center gap-4">
+					<Link to="/search" title="Search" className="icon-button">
+						<SearchIcon />
 					</Link>
 					{user !== null ? <UserAvatar user={user} /> : <SignInLink />}
 				</div>
 			</div>
 		</header>
+	);
+}
+
+function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
+	return (
+		<Link
+			to={to}
+			className="
+				relative select-none text-lg
+				before:absolute before:-bottom-0.5 before:right-1/2 before:h-px before:w-1/2 before:origin-right before:scale-x-0 before:bg-current before:transition-transform before:duration-500
+				after:absolute after:-bottom-0.5 after:left-1/2 after:h-px after:w-1/2 after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-500
+				hover:before:scale-x-100 hover:after:scale-x-100
+				focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current focus-visible:before:hidden focus-visible:after:hidden
+			"
+		>
+			{children}
+		</Link>
 	);
 }
 
@@ -146,88 +159,22 @@ function SignInLink() {
 	);
 }
 
-function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
-	return (
-		<Link
-			to={to}
-			className="
-				relative select-none text-lg
-				before:absolute before:-bottom-0.5 before:right-1/2 before:h-px before:w-1/2 before:origin-right before:scale-x-0 before:bg-current before:transition-transform before:duration-500
-				after:absolute after:-bottom-0.5 after:left-1/2 after:h-px after:w-1/2 after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-500
-				hover:before:scale-x-100 hover:after:scale-x-100
-				focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current focus-visible:before:hidden focus-visible:after:hidden
-			"
-		>
-			{children}
-		</Link>
-	);
-}
-
 function Footer() {
 	return (
-		<footer className="relative bg-surface p-5 text-on-surface">
-			<div className="flex justify-between">
-				<div className="w-[200px]">
-					<img
-						src={footerLogo}
-						alt="Book Souls"
-						width={158.25}
-						height={148.5}
-						className="mx-auto"
-					/>
-					<p className="text-center text-sm font-light">
-						Get Engulphed and Explore a New Magical World
+		<footer className="bg-surface p-6 text-on-surface">
+			<div className="mx-auto flex max-w-7xl justify-between">
+				<div>
+					<img src={footerLogo} alt="Book Souls" width={158.25} height={148.5} />
+					<p className="mt-3 font-light">Get engulphed and explore a new magical world</p>
+				</div>
+				<div className="flex flex-col items-end justify-between pt-4">
+					<EmailContactForm />
+					<p className="mt-12 text-sm font-light">
+						Copyright © 2024 Book Souls Inc. All rights reserved.
 					</p>
 				</div>
-				<div className="mt-6 flex justify-center gap-20">
-					<FooterAboutNav />
-					<FooterCustomerCareNav />
-				</div>
-				<div className="mt-6">
-					<EmailContactForm />
-				</div>
 			</div>
-			<p className="mt-12 font-light">Copyright © 2024 Book Souls Inc. All rights reserved.</p>
-			<CrueltyFreeIcon role="img" aria-label="Cruelty free" className="absolute bottom-5 right-5" />
 		</footer>
-	);
-}
-
-function FooterAboutNav() {
-	const headerId = useId();
-	return (
-		<nav aria-labelledby={headerId}>
-			<h3 id={headerId} className="text-xl font-medium uppercase">
-				About
-			</h3>
-			<ul className="mt-6 flex flex-col gap-3">
-				<li>
-					<NavLink to="/about">About Us</NavLink>
-				</li>
-				<li>
-					<NavLink to="/terms-and-privacy">Terms & Privacy</NavLink>
-				</li>
-			</ul>
-		</nav>
-	);
-}
-
-function FooterCustomerCareNav() {
-	const headerId = useId();
-	return (
-		<nav aria-labelledby={headerId}>
-			<h3 id={headerId} className="text-xl font-medium uppercase">
-				Customer Care
-			</h3>
-			<ul className="mt-6 flex flex-col gap-3">
-				<li>
-					<NavLink to="/contact-us">Contact Us</NavLink>
-				</li>
-				<li>
-					<NavLink to="/faq">Frequently Asked Questions</NavLink>
-				</li>
-			</ul>
-		</nav>
 	);
 }
 
