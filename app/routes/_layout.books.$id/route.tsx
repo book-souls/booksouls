@@ -112,9 +112,9 @@ function SimilarBooksPlaceholder() {
 function SimilarBooksError() {
 	return (
 		<div className="py-4">
-			<div className="h-[270px]">
+			<div className="flex h-[270px] flex-col items-center justify-center">
 				<AlertCircleIcon size={32} className="text-red-600" />
-				<p className="text-center text-xl">An error has occured</p>
+				<p className="mt-3 text-xl">An error has occured</p>
 			</div>
 		</div>
 	);
