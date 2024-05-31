@@ -53,12 +53,12 @@ export default function Book() {
 
 function FavoriteButton({ favorite, user }: { favorite: boolean; user: User | null }) {
 	const fetcher = useFetcher<typeof action>();
-	const submitting = fetcher.state === "submitting";
+	const idle = fetcher.state === "idle";
 	const error = fetcher.data?.error;
-	const optimisticFavorite = submitting ? fetcher.formData?.get("favorite") === "true" : favorite;
+	const optimisticFavorite = idle ? favorite : fetcher.formData?.get("favorite") === "true";
 
 	useEffect(() => {
-		if (submitting || !error) {
+		if (!idle || !error) {
 			return;
 		}
 
@@ -67,7 +67,7 @@ function FavoriteButton({ favorite, user }: { favorite: boolean; user: User | nu
 		} else {
 			toast.error("Failed to add to library");
 		}
-	}, [submitting, error, favorite]);
+	}, [idle, error, favorite]);
 
 	function onClick(event: React.MouseEvent) {
 		if (user === null) {

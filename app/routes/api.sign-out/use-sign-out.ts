@@ -3,11 +3,11 @@ import type { action } from "./action.server";
 
 export function useSignOut() {
 	const fetcher = useFetcher<typeof action>();
-	const submitting = fetcher.state === "submitting";
+	const state = fetcher.state;
 	const error = fetcher.data?.error;
 
 	function submit() {
-		if (submitting) {
+		if (state === "submitting") {
 			return;
 		}
 
@@ -17,5 +17,5 @@ export function useSignOut() {
 		});
 	}
 
-	return { submit, submitting, error };
+	return { submit, state, error };
 }
