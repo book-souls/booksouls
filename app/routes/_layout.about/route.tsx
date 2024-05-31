@@ -74,7 +74,7 @@ function VisionSection({ id }: { id: string }) {
 			<h2 id={headerId} className="text-lg uppercase">
 				Our Vision
 			</h2>
-			<p className="pt-5 text-4xl font-bold text-surface">Easy, Simple, and Delightful!</p>
+			<p className="pt-5 text-4xl font-medium text-surface">Easy, Simple, and Delightful!</p>
 			<div className="flex flex-row gap-28 py-24 text-lg">
 				<LabeledIcon Icon={BookStackIcon} label="Variety of Books" />
 				<LabeledIcon Icon={SummaryIcon} label="Fast Summarization" />
@@ -82,7 +82,8 @@ function VisionSection({ id }: { id: string }) {
 				<LabeledIcon Icon={UiIcon} label="Minimalist UI" />
 			</div>
 			<p className="text-center text-xl">
-				<span className="font-bold">Book Souls</span> aims to make a difference in readers’ journeys
+				<span className="font-medium">Book Souls</span> aims to make a difference in readers{"' "}
+				journeys
 				<br />
 				through embedding of AI in our platform making reading
 				<br />
@@ -102,23 +103,14 @@ function FutureWorkSection() {
 			<h2 id={headerId} className="text-lg uppercase">
 				Future Work
 			</h2>
-			<p className="pt-5 text-4xl font-bold text-surface">Shaping the Future: Ongoing Work</p>
+			<p className="pt-5 text-4xl font-medium text-surface">Shaping the Future: Ongoing Work</p>
 			{/* Upcoming Features: A sneak peek into future updates */}
-			<div className="flex flex-row gap-28 py-24 text-lg">
+			<div className="flex flex-row gap-28 pt-24 text-lg">
 				<LabeledIcon Icon={MobileIcon} label="Mobile App" />
 				<LabeledIcon Icon={FasterIcon} label="Faster Response" />
 				<LabeledIcon Icon={CheckerIcon} label="Pronounciation Checker" />
 				<LabeledIcon Icon={MultiLangIcon} label="Multi-Language Support" />
 			</div>
-			<p className="text-center text-xl">
-				<span className="font-bold">Book Souls</span> Lorem ipsum dolor sit amet consectetur,
-				adipisicing elit.
-				<br />
-				Eaque unde accusamus voluptatibus fuga, explicabo blanditiis, placeat doloribus,
-				<br />
-				cupiditate beatae possimus amet praesentium sunt quia?
-				{/* TODO: IDK What to write ;-; */}
-			</p>
 		</section>
 	);
 }
@@ -130,7 +122,7 @@ function TeamSection() {
 			<h2 id={headerId} className="text-lg uppercase">
 				The Team
 			</h2>
-			<p className="pt-5 text-4xl font-bold text-surface">Meet The Creators</p>
+			<p className="pt-5 text-4xl font-medium text-surface">Meet The Creators</p>
 			<div className="grid grid-cols-3 gap-x-20 gap-y-12 pt-14">
 				<Creator linkedin="https://linkedin.com/in/deena-fathi/" image={deena} name="Deena Fathi" />
 				<Creator
@@ -143,7 +135,7 @@ function TeamSection() {
 					image={ahmed}
 					name="Ahmed Mohamed"
 				/>
-				<Creator linkedin="#" image={nour} name="Nour Yasser" />
+				<Creator linkedin="https://linkedin.com/in/nour-yasser-/" image={nour} name="Nour Yasser" />
 				<Creator
 					linkedin="https://linkedin.com/in/abdelrahman-essmat-b525761b2/"
 					image={essmat}
