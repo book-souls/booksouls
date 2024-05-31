@@ -132,7 +132,7 @@ function SummarizeButton({
 	shown: boolean;
 	selection: React.RefObject<Selection | null>;
 }) {
-	const { submit, submitting, summary, error } = useSummarize();
+	const { submit, state, summary, error } = useSummarize();
 	const dialogRef = useRef<HTMLDialogElement>(null);
 
 	function summarizeSelection() {
@@ -177,7 +177,7 @@ function SummarizeButton({
 				<div className="flex gap-4 pt-6">
 					<BotIcon role="img" aria-label="Chatbot" className="shrink-0" />
 					<div className="rounded-3xl bg-primary/35 px-5 py-2.5">
-						{submitting ? (
+						{state === "submitting" ? (
 							<ChatLoadingIndicator />
 						) : error ? (
 							<ChatEffect text="Failed to summarize. Please try again later." />
