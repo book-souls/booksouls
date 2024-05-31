@@ -50,7 +50,7 @@ function Header() {
 					</ul>
 				</nav>
 				<div className="flex items-center gap-6">
-					<Link to="/explore" title="Search" className="icon-button">
+					<Link to="/search" title="Search" className="icon-button">
 						<SearchIcon />
 					</Link>
 					{user !== null ? <UserAvatar user={user} /> : <SignInLink />}
