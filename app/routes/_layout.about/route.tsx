@@ -1,21 +1,21 @@
 import { Link } from "@remix-run/react";
 import { LinkedinIcon } from "lucide-react";
 import { useId } from "react";
-import ahmed from "~/assets/Ahmed.png";
+import ahmed from "~/assets/Ahmed.webp";
 import SearchIcon from "~/assets/Ai-search.svg?react";
-import bahaa from "~/assets/Bahaa.jpg";
+import bahaa from "~/assets/Bahaa.webp";
 import BookStackIcon from "~/assets/bookstack.svg?react";
 import CheckerIcon from "~/assets/checker.svg?react";
 import deena from "~/assets/Deena.webp";
-import essmat from "~/assets/Essmat.jpg";
+import essmat from "~/assets/Essmat.webp";
 import SummaryIcon from "~/assets/fast-summerization.svg?react";
 import FasterIcon from "~/assets/faster.svg?react";
 import UiIcon from "~/assets/minimalist-ui.svg?react";
 import MobileIcon from "~/assets/mobile.svg?react";
 import MultiLangIcon from "~/assets/multi-lang.svg?react";
-import nour from "~/assets/Nour.jpg";
+import nour from "~/assets/Nour.webp";
 import TeamIcon from "~/assets/team.svg?react";
-import zeyad from "~/assets/Zeyad.jpg";
+import zeyad from "~/assets/Zeyad.webp";
 
 export default function About() {
 	const visionSectionId = useId();
@@ -161,8 +161,8 @@ function TeamSection() {
 
 function Creator({ linkedin, image, name }: { linkedin: string; image: string; name: string }) {
 	return (
-		<div className="group flex flex-col items-center">
-			<Link to={linkedin} target="_blank" rel="noreferrer noopener" className="relative">
+		<div className="flex flex-col items-center">
+			<Link to={linkedin} target="_blank" rel="noreferrer noopener" className="group relative">
 				<img
 					src={image}
 					alt={name}
