@@ -166,7 +166,7 @@ function Creator({ linkedin, image, name }: { linkedin: string; image: string; n
 				<img
 					src={image}
 					alt={name}
-					className="h-[150px] w-[150px] rounded-full bg-blend-normal shadow-lg group-hover:bg-blend-darken"
+					className="h-[150px] w-[150px] rounded-full border border-gray-400 bg-blend-normal group-hover:bg-blend-darken"
 				/>
 				<div className="absolute inset-0 rounded-full bg-gradient-to-t from-stone-800/50 via-stone-800/10 to-transparent opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100" />
 				<LinkedinIcon
