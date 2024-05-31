@@ -42,7 +42,7 @@ function OTPInput({
 			type: "numeric",
 			otp: true,
 			value: otp,
-			onValueComplete: onValueComplete,
+			onValueComplete,
 		}),
 	);
 	const api = pinInput.connect(state, send, normalizeProps);
