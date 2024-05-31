@@ -31,7 +31,7 @@ function Header() {
 					<Logo scale={0.75} />
 				</Link>
 				<nav>
-					<ul className="flex items-center justify-center gap-16">
+					<ul className="flex items-center justify-center gap-14">
 						<li>
 							<NavLink to="/">Home</NavLink>
 						</li>
@@ -50,12 +50,8 @@ function Header() {
 					</ul>
 				</nav>
 				<div className="flex items-center gap-6">
-					<Link
-						to="/explore"
-						className="flex h-10 items-center justify-center gap-2 rounded-lg bg-on-surface px-3 text-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-surface"
-					>
-						<span className="text-sm font-medium">Explore</span>
-						<SearchIcon className="size-5" />
+					<Link to="/explore" title="Search" className="icon-button">
+						<SearchIcon />
 					</Link>
 					{user !== null ? <UserAvatar user={user} /> : <SignInLink />}
 				</div>
