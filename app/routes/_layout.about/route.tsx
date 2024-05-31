@@ -18,56 +18,54 @@ import TeamIcon from "~/assets/team.svg?react";
 import zeyad from "~/assets/Zeyad.webp";
 
 export default function About() {
-	const visionSectionId = useId();
 	return (
 		<main>
-			<AboutUsSection visionSectionId={visionSectionId} />
-			<div className="line-gradient" />
-			<VisionSection id={visionSectionId} />
+			<AboutUsSection />
+			<VisionSection />
 			<FutureWorkSection />
 			<TeamSection />
 		</main>
 	);
 }
 
-function AboutUsSection({ visionSectionId }: { visionSectionId: string }) {
+function AboutUsSection() {
 	const headerId = useId();
 	return (
-		<section
-			aria-labelledby={headerId}
-			className="flex items-center justify-center gap-24 bg-surface px-20 py-10 text-on-surface"
-		>
-			<div className="flex flex-col items-center gap-10">
-				<h1 id={headerId} className="text-center text-4xl font-light uppercase tracking-widest">
-					About Us
-				</h1>
-				<p className="max-w-2xl text-lg font-light leading-loose">
-					Welcome to <span className="font-medium">Book Souls</span> — the digital crossroads where
-					innovative technology meets the love of books. This platform is not only our virtual
-					bookshelf but also a capstone of our academic journey, a graduation project designed with
-					readers in mind.
-				</p>
-				<Link
-					to={`#${visionSectionId}`}
-					className="w-[150px] rounded-xl bg-gradient-to-l from-primary to-primary-light p-4 py-3 text-center text-lg tracking-wider text-on-primary shadow-inner"
-				>
-					Learn More
-				</Link>
+		<section aria-labelledby={headerId} className="bg-surface text-on-surface">
+			<div className="flex items-center justify-center gap-24 px-20 py-10">
+				<div className="flex flex-col items-center gap-10">
+					<h1 id={headerId} className="text-center text-4xl font-light uppercase tracking-widest">
+						About Us
+					</h1>
+					<p className="max-w-2xl text-lg font-light leading-loose">
+						Welcome to <span className="font-medium">Book Souls</span> — the digital crossroads
+						where innovative technology meets the love of books. This platform is not only our
+						virtual bookshelf but also a capstone of our academic journey, a graduation project
+						designed with readers in mind.
+					</p>
+					<Link
+						to="#vision"
+						className="w-[150px] rounded-xl bg-gradient-to-l from-primary to-primary-light px-4 py-3 text-center text-lg text-on-primary shadow-inner"
+					>
+						Learn More
+					</Link>
+				</div>
+				<TeamIcon
+					role="img"
+					aria-label="Four people working on a project"
+					className="h-auto w-[350px] shrink-0"
+				/>
 			</div>
-			<TeamIcon
-				role="img"
-				aria-label="Four people working on a project"
-				className="h-[500px] w-[500px]"
-			/>
+			<div className="line-gradient" />
 		</section>
 	);
 }
 
-function VisionSection({ id }: { id: string }) {
+function VisionSection() {
 	const headerId = useId();
 	return (
 		<section
-			id={id}
+			id="vision"
 			aria-labelledby={headerId}
 			className="flex flex-col items-center px-20 pb-16 pt-10 text-primary"
 		>
