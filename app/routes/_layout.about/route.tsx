@@ -6,7 +6,7 @@ import SearchIcon from "~/assets/Ai-search.svg?react";
 import bahaa from "~/assets/Bahaa.jpg";
 import BookStackIcon from "~/assets/bookstack.svg?react";
 import CheckerIcon from "~/assets/checker.svg?react";
-import deena from "~/assets/Deena.png";
+import deena from "~/assets/Deena.webp";
 import essmat from "~/assets/Essmat.jpg";
 import SummaryIcon from "~/assets/fast-summerization.svg?react";
 import FasterIcon from "~/assets/faster.svg?react";
