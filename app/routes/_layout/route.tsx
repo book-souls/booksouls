@@ -1,12 +1,14 @@
 import { Link, Outlet, useLoaderData } from "@remix-run/react";
 import type { User } from "@supabase/supabase-js";
+import * as menu from "@zag-js/menu";
 import * as popover from "@zag-js/popover";
 import { normalizeProps, Portal, useMachine } from "@zag-js/react";
-import { Loader2Icon, LogInIcon, LogOutIcon, SearchIcon, XIcon } from "lucide-react";
+import { ChevronDown, Loader2Icon, LogInIcon, LogOutIcon, SearchIcon, XIcon } from "lucide-react";
 import { useEffect, useId } from "react";
 import { toast } from "sonner";
 import footerLogo from "~/assets/footer-logo.svg";
 import { Logo } from "~/components/Logo";
+import { genres } from "~/utils/genres";
 import { useSignOut } from "../api.sign-out/use-sign-out";
 import { loader } from "./loader.server";
 
@@ -35,10 +37,9 @@ function Header() {
 						<li>
 							<NavLink to="/">Home</NavLink>
 						</li>
-						{/* TODO: uncomment when the /categories page is implemented */}
-						{/* <li>
-							<NavLink to="/categories">Categories</NavLink>
-						</li> */}
+						<li>
+							<GenresMenu />
+						</li>
 						<li>
 							<NavLink to="/about">About Us</NavLink>
 						</li>
@@ -77,6 +78,35 @@ function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
 	);
 }
 
+function GenresMenu() {
+	const [state, send] = useMachine(menu.machine({ id: useId() }));
+	const api = menu.connect(state, send, normalizeProps);
+
+	return (
+		<div>
+			<button className="flex items-center gap-1 text-lg " {...api.getTriggerProps()}>
+				Genres
+				<span {...api.getIndicatorProps()}>
+					<ChevronDown className="size-4" />
+				</span>
+			</button>
+			<div {...api.getPositionerProps()}>
+				<ul className="rounded-xl bg-on-primary px-4 py-2" {...api.getContentProps()}>
+					{genres.map((genre) => (
+						<li
+							className=" font-medium text-primary"
+							key={genre}
+							{...api.getItemProps({ value: genre })}
+						>
+							<NavLink to={`/genres/${genre}`}>{genre}</NavLink>
+						</li>
+					))}
+				</ul>
+			</div>
+		</div>
+	);
+}
+
 function UserAvatar({ user }: { user: User }) {
 	const id = useId();
 	const [state, send] = useMachine(
@@ -89,26 +119,26 @@ function UserAvatar({ user }: { user: User }) {
 	return (
 		<div>
 			<button
-				{...api.triggerProps}
+				{...api.getTriggerProps()}
 				aria-label="Open profile menu"
 				className="icon-button bg-primary-light text-xl text-on-primary focus-visible:outline-offset-2 focus-visible:outline-primary-light"
 			>
 				{user.email?.at(0)?.toUpperCase()}
 			</button>
 			<Portal>
-				<div {...api.positionerProps}>
+				<div {...api.getPositionerProps()}>
 					<div
-						{...api.contentProps}
+						{...api.getContentProps()}
 						className="relative !block rounded-lg bg-neutral-50 p-4 text-neutral-950 opacity-0 shadow-lg transition-opacity duration-200 data-[state='open']:opacity-100"
 					>
 						<div
-							{...api.arrowProps}
+							{...api.getArrowProps()}
 							className="[--arrow-background:theme(colors.neutral.50)] [--arrow-size:8px]"
 						>
-							<div {...api.arrowTipProps} />
+							<div {...api.getArrowTipProps()} />
 						</div>
 						<button
-							{...api.closeTriggerProps}
+							{...api.getCloseTriggerProps()}
 							aria-label="Close profile menu"
 							className="icon-button absolute right-2 top-2 size-8 [&_svg]:size-5"
 						>

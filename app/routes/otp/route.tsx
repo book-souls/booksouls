@@ -56,7 +56,7 @@ function OTPInput({
 	}, []);
 
 	return (
-		<div {...api.rootProps} className="flex items-center justify-center gap-2 pb-6 pt-8">
+		<div {...api.getRootProps()} className="flex items-center justify-center gap-2 pb-6 pt-8">
 			{Array(6)
 				.fill(null)
 				.map((_, i) => (
