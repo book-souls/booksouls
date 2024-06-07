@@ -2,9 +2,9 @@ import { Link, useLoaderData } from "@remix-run/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useId } from "react";
 import Read from "~/assets/read.svg?react";
+import { BookData } from "~/components/BookData";
 import { useSnapCarousel } from "~/hooks/snap-carousel";
 import { loader, type Book } from "./loader.server";
-import { BookData } from "~/components/BookData";
 
 export { loader };
 
