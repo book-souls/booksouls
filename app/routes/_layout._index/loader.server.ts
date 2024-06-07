@@ -15,7 +15,7 @@ async function getBooks(supabase: SupabaseClient) {
 	const { data, error } = await supabase
 		.from("books")
 		.select(
-			"id,image:image_file_name, title, genres, shortDescription:short_description, featured:is_featured",
+			"id,image:image_file_name, title, genres, author, shortDescription:short_description, featured:is_featured",
 		)
 		.order("title");
 

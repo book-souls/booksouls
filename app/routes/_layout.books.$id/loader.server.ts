@@ -74,7 +74,7 @@ async function getSimilarBooks(
 			match_threshold: 0.5,
 			match_limit: 9,
 		})
-		.select("id, title, image:image_file_name");
+		.select("id, title, image:image_file_name, author, shortDescription:short_description");
 
 	if (error !== null) {
 		throw error;

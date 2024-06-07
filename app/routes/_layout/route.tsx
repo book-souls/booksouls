@@ -89,26 +89,26 @@ function UserAvatar({ user }: { user: User }) {
 	return (
 		<div>
 			<button
-				{...api.triggerProps}
+				{...api.getTriggerProps()}
 				aria-label="Open profile menu"
 				className="icon-button bg-primary-light text-xl text-on-primary focus-visible:outline-offset-2 focus-visible:outline-primary-light"
 			>
 				{user.email?.at(0)?.toUpperCase()}
 			</button>
 			<Portal>
-				<div {...api.positionerProps}>
+				<div {...api.getPositionerProps()}>
 					<div
-						{...api.contentProps}
+						{...api.getContentProps()}
 						className="relative !block rounded-lg bg-neutral-50 p-4 text-neutral-950 opacity-0 shadow-lg transition-opacity duration-200 data-[state='open']:opacity-100"
 					>
 						<div
-							{...api.arrowProps}
+							{...api.getArrowProps()}
 							className="[--arrow-background:theme(colors.neutral.50)] [--arrow-size:8px]"
 						>
-							<div {...api.arrowTipProps} />
+							<div {...api.getArrowTipProps()} />
 						</div>
 						<button
-							{...api.closeTriggerProps}
+							{...api.getCloseTriggerProps()}
 							aria-label="Close profile menu"
 							className="icon-button absolute right-2 top-2 size-8 [&_svg]:size-5"
 						>
