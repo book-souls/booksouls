@@ -91,7 +91,7 @@ function GenresMenu() {
 				</span>
 			</button>
 			<div {...api.getPositionerProps()}>
-				<ul className="rounded-xl bg-on-primary px-4 py-2" {...api.getContentProps()}>
+				<ul className="rounded-xl bg-on-primary px-4 py-2 shadow-xl" {...api.getContentProps()}>
 					{genres.map((genre) => (
 						<li
 							className=" font-medium text-primary"
