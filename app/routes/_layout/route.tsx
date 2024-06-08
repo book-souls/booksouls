@@ -91,21 +91,30 @@ function GenresMenu() {
 	const api = menu.connect(state, send, normalizeProps);
 	return (
 		<div>
-			<button {...api.getTriggerProps()} className="flex items-center gap-1 text-lg">
+			<button
+				{...api.getTriggerProps()}
+				className="flex items-center gap-1 text-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
+			>
 				Genres
 				<span {...api.getIndicatorProps()}>
 					<ChevronDownIcon className="size-4" />
 				</span>
 			</button>
 			<div {...api.getPositionerProps()}>
-				<ul {...api.getContentProps()} className="rounded-xl bg-on-primary px-4 py-2 shadow-xl">
+				<ul
+					{...api.getContentProps()}
+					className="!block rounded-xl bg-neutral-50 p-2 opacity-0 shadow-xl transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary-light data-[state='open']:opacity-100"
+				>
 					{genres.map((genre) => (
-						<li
-							{...api.getItemProps({ value: genre })}
-							key={genre}
-							className="font-medium text-primary"
-						>
-							<NavLink to={`/genres/${genre}`}>{genre}</NavLink>
+						<li key={genre}>
+							<Link
+								{...api.getItemProps({ value: genre })}
+								to={`/genres/${genre}`}
+								tabIndex={-1}
+								className="!block rounded p-2 font-medium text-primary data-[highlighted]:bg-primary data-[highlighted]:text-on-primary"
+							>
+								{genre}
+							</Link>
 						</li>
 					))}
 				</ul>
