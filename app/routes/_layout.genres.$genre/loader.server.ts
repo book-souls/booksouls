@@ -4,13 +4,12 @@ import { genres } from "~/utils/genres";
 import { getBooksBucketUrl } from "~/utils/storage";
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
-	const supabase = createServerClient(request.headers);
 	const genre = String(params.genre);
-
 	if (!genres.includes(genre)) {
 		throw new Response("Genre not found", { status: 404 });
 	}
 
+	const supabase = createServerClient(request.headers);
 	const books = await getBooksByGenre(supabase, genre);
 	return { books };
 }
