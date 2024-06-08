@@ -12,10 +12,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 	}
 
 	const books = await getBooksByGenre(supabase, genre);
-
-	return {
-		books,
-	};
+	return { books };
 }
 
 async function getBooksByGenre(supabase: SupabaseClient, genre: string) {

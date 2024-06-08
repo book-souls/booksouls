@@ -3,7 +3,14 @@ import type { User } from "@supabase/supabase-js";
 import * as menu from "@zag-js/menu";
 import * as popover from "@zag-js/popover";
 import { normalizeProps, Portal, useMachine } from "@zag-js/react";
-import { ChevronDown, Loader2Icon, LogInIcon, LogOutIcon, SearchIcon, XIcon } from "lucide-react";
+import {
+	ChevronDownIcon,
+	Loader2Icon,
+	LogInIcon,
+	LogOutIcon,
+	SearchIcon,
+	XIcon,
+} from "lucide-react";
 import { useEffect, useId } from "react";
 import { toast } from "sonner";
 import footerLogo from "~/assets/footer-logo.svg";
@@ -79,24 +86,24 @@ function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
 }
 
 function GenresMenu() {
-	const [state, send] = useMachine(menu.machine({ id: useId() }));
+	const id = useId();
+	const [state, send] = useMachine(menu.machine({ id }));
 	const api = menu.connect(state, send, normalizeProps);
-
 	return (
 		<div>
-			<button className="flex items-center gap-1 text-lg " {...api.getTriggerProps()}>
+			<button {...api.getTriggerProps()} className="flex items-center gap-1 text-lg">
 				Genres
 				<span {...api.getIndicatorProps()}>
-					<ChevronDown className="size-4" />
+					<ChevronDownIcon className="size-4" />
 				</span>
 			</button>
 			<div {...api.getPositionerProps()}>
-				<ul className="rounded-xl bg-on-primary px-4 py-2 shadow-xl" {...api.getContentProps()}>
+				<ul {...api.getContentProps()} className="rounded-xl bg-on-primary px-4 py-2 shadow-xl">
 					{genres.map((genre) => (
 						<li
-							className=" font-medium text-primary"
-							key={genre}
 							{...api.getItemProps({ value: genre })}
+							key={genre}
+							className="font-medium text-primary"
 						>
 							<NavLink to={`/genres/${genre}`}>{genre}</NavLink>
 						</li>

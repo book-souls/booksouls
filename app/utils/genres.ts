@@ -1,4 +1,4 @@
-export const genres = [
+export const genres: readonly string[] = [
 	"Adventure",
 	"Comedy",
 	"Drama",
@@ -9,4 +9,4 @@ export const genres = [
 	"Science Fiction",
 	"Shorts",
 	"Travel",
-] as const;
+];
