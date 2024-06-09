@@ -32,6 +32,19 @@ export default function Layout() {
 }
 
 function Header() {
+	useEffect(() => {
+		function logActiveElement() {
+			console.log(document.activeElement);
+		}
+
+		document.addEventListener("focusin", logActiveElement);
+		document.addEventListener("focusout", logActiveElement);
+		return () => {
+			document.removeEventListener("focusin", logActiveElement);
+			document.removeEventListener("focusout", logActiveElement);
+		};
+	});
+
 	const { user } = useLoaderData<typeof loader>();
 	return (
 		<header className="flex items-center bg-surface px-6 text-on-surface">
@@ -90,7 +103,7 @@ function GenresMenu() {
 	const [state, send] = useMachine(menu.machine({ id }));
 	const api = menu.connect(state, send, normalizeProps);
 	return (
-		<div>
+		<>
 			<button
 				{...api.getTriggerProps()}
 				className="flex items-center gap-1 text-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
@@ -100,26 +113,28 @@ function GenresMenu() {
 					<ChevronDownIcon className="size-4" />
 				</span>
 			</button>
-			<div {...api.getPositionerProps()}>
-				<ul
-					{...api.getContentProps()}
-					className="!block rounded-xl bg-neutral-50 p-2 opacity-0 shadow-xl transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary-light data-[state='open']:opacity-100"
-				>
-					{genres.map((genre) => (
-						<li key={genre}>
-							<Link
-								{...api.getItemProps({ value: genre })}
-								to={`/genres/${genre}`}
-								tabIndex={-1}
-								className="!block rounded p-2 font-medium text-primary data-[highlighted]:bg-primary data-[highlighted]:text-on-primary"
-							>
-								{genre}
-							</Link>
-						</li>
-					))}
-				</ul>
-			</div>
-		</div>
+			<Portal>
+				<div {...api.getPositionerProps()}>
+					<ul
+						{...api.getContentProps()}
+						className="!block rounded-xl bg-neutral-50 p-2 opacity-0 shadow-xl transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary-light data-[state='open']:opacity-100"
+					>
+						{genres.map((genre) => (
+							<li key={genre}>
+								<Link
+									{...api.getItemProps({ value: genre })}
+									to={`/genres/${genre}`}
+									tabIndex={-1}
+									className="!block rounded p-2 font-medium text-primary data-[highlighted]:bg-primary data-[highlighted]:text-on-primary"
+								>
+									{genre}
+								</Link>
+							</li>
+						))}
+					</ul>
+				</div>
+			</Portal>
+		</>
 	);
 }
 
