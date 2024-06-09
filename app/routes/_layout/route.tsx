@@ -32,19 +32,6 @@ export default function Layout() {
 }
 
 function Header() {
-	useEffect(() => {
-		function logActiveElement() {
-			console.log(document.activeElement);
-		}
-
-		document.addEventListener("focusin", logActiveElement);
-		document.addEventListener("focusout", logActiveElement);
-		return () => {
-			document.removeEventListener("focusin", logActiveElement);
-			document.removeEventListener("focusout", logActiveElement);
-		};
-	});
-
 	const { user } = useLoaderData<typeof loader>();
 	return (
 		<header className="flex items-center bg-surface px-6 text-on-surface">
