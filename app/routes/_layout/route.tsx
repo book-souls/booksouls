@@ -1,3 +1,4 @@
+import { Transition } from "@headlessui/react";
 import { Link, Outlet, useLoaderData } from "@remix-run/react";
 import type { User } from "@supabase/supabase-js";
 import * as menu from "@zag-js/menu";
@@ -102,23 +103,33 @@ function GenresMenu() {
 			</button>
 			<Portal>
 				<div {...api.getPositionerProps()}>
-					<ul
-						{...api.getContentProps()}
-						className="!block rounded-xl bg-neutral-50 p-2 opacity-0 shadow-xl transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary-light data-[state='open']:opacity-100"
+					<Transition
+						show={api.open}
+						enter="transition-opacity duration-300"
+						enterFrom="opacity-0"
+						enterTo="opacity-100"
+						leave="transition-opacity"
+						leaveFrom="opacity-100"
+						leaveTo="opacity-0"
 					>
-						{genres.map((genre) => (
-							<li key={genre}>
-								<Link
-									{...api.getItemProps({ value: genre })}
-									to={`/genres/${genre}`}
-									tabIndex={-1}
-									className="!block rounded p-2 font-medium text-primary data-[highlighted]:bg-primary data-[highlighted]:text-on-primary"
-								>
-									{genre}
-								</Link>
-							</li>
-						))}
-					</ul>
+						<ul
+							{...api.getContentProps()}
+							className="!block rounded-xl bg-neutral-50 p-2 shadow-xl transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary-light"
+						>
+							{genres.map((genre) => (
+								<li key={genre}>
+									<Link
+										{...api.getItemProps({ value: genre })}
+										to={`/genres/${genre}`}
+										tabIndex={-1}
+										className="!block rounded p-2 font-medium text-primary data-[highlighted]:bg-primary data-[highlighted]:text-on-primary"
+									>
+										{genre}
+									</Link>
+								</li>
+							))}
+						</ul>
+					</Transition>
 				</div>
 			</Portal>
 		</>
@@ -145,29 +156,39 @@ function UserAvatar({ user }: { user: User }) {
 			</button>
 			<Portal>
 				<div {...api.getPositionerProps()}>
-					<div
-						{...api.getContentProps()}
-						className="relative !block rounded-lg bg-neutral-50 p-4 text-neutral-950 opacity-0 shadow-lg transition-opacity duration-200 data-[state='open']:opacity-100"
+					<Transition
+						show={api.open}
+						enter="transition-opacity duration-300"
+						enterFrom="opacity-0"
+						enterTo="opacity-100"
+						leave="transition-opacity"
+						leaveFrom="opacity-100"
+						leaveTo="opacity-0"
 					>
 						<div
-							{...api.getArrowProps()}
-							className="[--arrow-background:theme(colors.neutral.50)] [--arrow-size:8px]"
+							{...api.getContentProps()}
+							className="relative !block rounded-lg bg-neutral-50 p-4 text-neutral-950 shadow-lg"
 						>
-							<div {...api.getArrowTipProps()} />
+							<div
+								{...api.getArrowProps()}
+								className="[--arrow-background:theme(colors.neutral.50)] [--arrow-size:8px]"
+							>
+								<div {...api.getArrowTipProps()} />
+							</div>
+							<button
+								{...api.getCloseTriggerProps()}
+								aria-label="Close profile menu"
+								className="icon-button absolute right-2 top-2 size-8 [&_svg]:size-5"
+							>
+								<XIcon />
+							</button>
+							<div className="pb-6 pt-4">
+								<p className="font-medium">Email</p>
+								<p className="text-sm">{user.email}</p>
+							</div>
+							<SignOutButton />
 						</div>
-						<button
-							{...api.getCloseTriggerProps()}
-							aria-label="Close profile menu"
-							className="icon-button absolute right-2 top-2 size-8 [&_svg]:size-5"
-						>
-							<XIcon />
-						</button>
-						<div className="pb-6 pt-4">
-							<p className="font-medium">Email</p>
-							<p className="text-sm">{user.email}</p>
-						</div>
-						<SignOutButton />
-					</div>
+					</Transition>
 				</div>
 			</Portal>
 		</div>
