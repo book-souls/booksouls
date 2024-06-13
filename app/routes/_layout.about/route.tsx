@@ -18,7 +18,7 @@ import TeamIcon from "~/assets/team.svg?react";
 import zeyad from "~/assets/Zeyad.webp";
 import { prefersReducedMotion } from "~/utils/media-query";
 
-export default function About() {
+export default function Page() {
 	return (
 		<main>
 			<AboutUsSection />

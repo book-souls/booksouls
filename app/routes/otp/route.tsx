@@ -9,7 +9,7 @@ import { loader } from "./loader.server";
 
 export { action, loader };
 
-export default function OTP() {
+export default function Page() {
 	const { email } = useLoaderData<typeof loader>();
 	const actionData = useActionData<typeof action>();
 

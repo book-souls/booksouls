@@ -8,7 +8,7 @@ import { action, type BookSearchResults } from "./action.server";
 
 export { action };
 
-export default function Explore() {
+export default function Page() {
 	const actionData = useActionData<typeof action>();
 	return (
 		<main>

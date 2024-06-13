@@ -10,7 +10,7 @@ import { loader, type SimilarBook } from "./loader.server";
 
 export { loader, action };
 
-export default function Book() {
+export default function Page() {
 	const { book, favorite, user, similarBooks } = useLoaderData<typeof loader>();
 	return (
 		<main className="mx-auto max-w-4xl px-8">

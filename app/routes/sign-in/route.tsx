@@ -9,7 +9,7 @@ import { loader } from "./loader.server";
 
 export { action, loader };
 
-export default function SignIn() {
+export default function Page() {
 	const actionData = useActionData<typeof action>();
 	return (
 		<div className="flex h-screen min-h-[400px]">

@@ -3,7 +3,7 @@ import { loader } from "./loader.server";
 
 export { loader };
 
-export default function GenreBooksPage() {
+export default function Page() {
 	const { books } = useLoaderData<typeof loader>();
 	const { genre } = useParams();
 	return (

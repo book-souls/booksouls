@@ -5,7 +5,7 @@ import { loader, type FavoriteBook } from "./loader.server";
 
 export { loader };
 
-export default function Library() {
+export default function Page() {
 	const { books } = useLoaderData<typeof loader>();
 	return (
 		<main>
