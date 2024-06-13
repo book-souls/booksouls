@@ -23,7 +23,7 @@ export default {
 					primary: palette.background,
 					background: palette.primary.DEFAULT,
 					surface: palette.background,
-					floating: palette.primary.DEFAULT,
+					floating: colors.neutral[950],
 				},
 			},
 			fontFamily: {
