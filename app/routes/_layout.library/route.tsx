@@ -1,6 +1,7 @@
-import { Link, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import LibraryPlaceholderIcon from "~/assets/library-placeholder.svg?react";
-import { loader, type Books } from "./loader.server";
+import { BookCard } from "~/components/BookCard";
+import { loader, type FavoriteBook } from "./loader.server";
 
 export { loader };
 
@@ -15,26 +16,15 @@ export default function Library() {
 	);
 }
 
-export function Books({ books }: { books: Books }) {
+export function Books({ books }: { books: FavoriteBook[] }) {
 	if (books.length === 0) {
 		return <EmptyBooks />;
 	}
 
 	return (
-		<div className="mx-auto grid w-fit grid-cols-4 gap-12 pb-8 pt-16">
+		<div className="mx-auto grid w-fit grid-cols-4 gap-8 pb-8 pt-12">
 			{books.map((book) => (
-				<div key={book.id} className="w-[200px] shrink-0 snap-center">
-					<Link to={`/books/${book.id}`}>
-						<img
-							src={book.image}
-							alt={book.title}
-							className="mx-auto h-[285px] w-[200px] rounded-xl object-cover shadow-lg"
-						/>
-					</Link>
-					<Link to={`/books/${book.id}`} className="mt-2 block text-center text-xl">
-						{book.title}
-					</Link>
-				</div>
+				<BookCard key={book.id} book={book} />
 			))}
 		</div>
 	);

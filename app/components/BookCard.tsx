@@ -3,6 +3,7 @@ import { Link } from "@remix-run/react";
 import { normalizeProps, Portal, useMachine } from "@zag-js/react";
 import * as tooltip from "@zag-js/tooltip";
 import { useId } from "react";
+import { BookImage } from "./BookImage";
 
 type BookCardProps = {
 	book: {
@@ -36,14 +37,7 @@ export function BookCard({ book }: BookCardProps) {
 				to={`/books/${book.id}`}
 				className="rounded-lg transition-transform duration-300 hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
 			>
-				<picture className="rounded-[inherit]">
-					<source srcSet={`${book.image} 1x, ${book.imageScaled} 2x`} type="image/avif" />
-					<img
-						src={book.image}
-						alt={`${book.title} by ${book.author}`}
-						className="h-[240px] w-[160px] rounded-[inherit] shadow-md"
-					/>
-				</picture>
+				<BookImage book={book} className="h-[240px] w-[160px] rounded-lg shadow-md" />
 			</Link>
 			<Portal>
 				<Transition

@@ -27,7 +27,9 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 async function getBook(supabase: SupabaseClient, id: number) {
 	const { data: book, error } = await supabase
 		.from("books")
-		.select("id, title, genres, shortDescription:short_description, description, image")
+		.select(
+			"id, title, genres, shortDescription:short_description, description, image, imageScaled:image_scaled, author",
+		)
 		.eq("id", id)
 		.maybeSingle();
 
@@ -70,7 +72,9 @@ async function getSimilarBooks(
 			match_threshold: 0.5,
 			match_limit: 9,
 		})
-		.select("id, title, image");
+		.select(
+			"id, title, image, imageScaled:image_scaled, author, shortDescription:short_description, author",
+		);
 
 	if (error !== null) {
 		throw error;
@@ -80,4 +84,4 @@ async function getSimilarBooks(
 	return results.filter(({ id }) => book.id !== id);
 }
 
-export type SimilarBooksResult = Awaited<ReturnType<typeof getSimilarBooks>>;
+export type SimilarBook = Awaited<ReturnType<typeof getSimilarBooks>>[number];
