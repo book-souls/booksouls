@@ -19,7 +19,7 @@ export default function Page() {
 					<BookImage book={book} className="h-[270px] w-[180px] rounded-xl shadow-md" />
 				</div>
 				<div>
-					<h1 className="text-3xl font-medium uppercase">{book.title}</h1>
+					<h1 className="text-3xl font-medium">{book.title}</h1>
 					<p className="mt-2 text-xl font-medium text-on-background/75">{book.genres.join(", ")}</p>
 					<p className="mt-4 text-on-background/75">{book.shortDescription}</p>
 					<div className="mt-8 flex items-center gap-8">
