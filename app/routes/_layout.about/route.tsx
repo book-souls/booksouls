@@ -48,7 +48,7 @@ function AboutUsSection() {
 						About Us
 					</h1>
 					<p className="max-w-2xl text-lg font-light leading-loose">
-						Welcome to <span className="font-medium">Book Souls</span> — the digital crossroads
+						Welcome to <strong className="font-medium">Book Souls</strong> — the digital crossroads
 						where innovative technology meets the love of books. This platform is not only our
 						virtual bookshelf but also a capstone of our academic journey, a graduation project
 						designed with readers in mind.
@@ -91,7 +91,8 @@ function VisionSection() {
 				<LabeledIcon Icon={UiIcon} label="Minimalist UI" />
 			</div>
 			<p className="text-center text-xl">
-				<span className="font-medium">Book Souls</span> aims to make a difference in readers{"' "}
+				<strong className="font-medium">Book Souls</strong> aims to make a difference in readers
+				{"' "}
 				journeys
 				<br />
 				through embedding of AI in our platform making reading
