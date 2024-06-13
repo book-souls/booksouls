@@ -1,7 +1,6 @@
 import { json, type LoaderFunctionArgs } from "@vercel/remix";
 import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
 import { requireAuth } from "~/utils/auth.server";
-import { getBooksBucketUrl } from "~/utils/storage";
 
 export async function loader({ request }: LoaderFunctionArgs) {
 	const headers = new Headers();
@@ -14,17 +13,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
 async function getLibraryBooks(supabase: SupabaseClient, userId: string) {
 	const { data: books, error } = await supabase
 		.from("user_library")
-		.select("book:books!inner (id, title, image:image_file_name)")
+		.select("book:books!inner (id, title, image)")
 		.eq("user_id", userId);
 
 	if (error !== null) {
 		throw error;
 	}
 
-	return books.map(({ book }) => {
-		book.image = getBooksBucketUrl(supabase, book.image);
-		return book;
-	});
+	return books.map(({ book }) => book);
 }
 
 export type Books = Awaited<ReturnType<typeof getLibraryBooks>>;
