@@ -1,6 +1,6 @@
 import { Link } from "@remix-run/react";
 import { LinkedinIcon } from "lucide-react";
-import { useId } from "react";
+import React, { useId } from "react";
 import ahmed from "~/assets/Ahmed.webp";
 import SearchIcon from "~/assets/Ai-search.svg?react";
 import bahaa from "~/assets/Bahaa.webp";
@@ -16,6 +16,7 @@ import MultiLangIcon from "~/assets/multi-lang.svg?react";
 import nour from "~/assets/Nour.webp";
 import TeamIcon from "~/assets/team.svg?react";
 import zeyad from "~/assets/Zeyad.webp";
+import { prefersReducedMotion } from "~/utils/media-query";
 
 export default function About() {
 	return (
@@ -30,6 +31,15 @@ export default function About() {
 
 function AboutUsSection() {
 	const headerId = useId();
+
+	function navigateToVisionSection(event: React.MouseEvent) {
+		const vision = document.getElementById("vision");
+		if (vision !== null) {
+			event.preventDefault();
+			vision.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth" });
+		}
+	}
+
 	return (
 		<section aria-labelledby={headerId} className="bg-surface text-on-surface">
 			<div className="flex items-center justify-center gap-24 px-20 py-10">
@@ -46,6 +56,7 @@ function AboutUsSection() {
 					<Link
 						to="#vision"
 						className="w-[150px] rounded-xl bg-gradient-to-l from-primary to-primary-light px-4 py-3 text-center text-lg text-on-primary shadow-inner"
+						onClick={navigateToVisionSection}
 					>
 						Learn More
 					</Link>
@@ -102,7 +113,6 @@ function FutureWorkSection() {
 				Future Work
 			</h2>
 			<p className="pt-5 text-4xl font-medium text-surface">Shaping the Future: Ongoing Work</p>
-			{/* Upcoming Features: A sneak peek into future updates */}
 			<div className="flex flex-row gap-28 pt-24 text-lg">
 				<LabeledIcon Icon={MobileIcon} label="Mobile App" />
 				<LabeledIcon Icon={FasterIcon} label="Faster Response" />
