@@ -58,7 +58,7 @@ export function BookCard({ book }: BookCardProps) {
 						</div>
 						<p
 							{...api.getContentProps()}
-							className="bg-floating text-on-floating !block max-w-64 rounded-lg p-3 text-sm shadow-lg"
+							className="!block max-w-64 rounded-lg bg-floating p-3 text-sm text-on-floating shadow-lg"
 						>
 							{book.shortDescription}
 						</p>

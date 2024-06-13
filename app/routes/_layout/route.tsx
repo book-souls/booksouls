@@ -117,7 +117,7 @@ function GenresMenu() {
 					>
 						<ul
 							{...api.getContentProps()}
-							className="bg-floating text-on-floating !block rounded-xl p-2 shadow-xl transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary-light"
+							className="!block rounded-xl bg-floating p-2 text-on-floating shadow-xl transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary-light"
 						>
 							{genres.map((genre) => (
 								<li key={genre}>
@@ -170,7 +170,7 @@ function UserAvatar({ user }: { user: User }) {
 					>
 						<div
 							{...api.getContentProps()}
-							className="bg-floating text-on-floating relative !block rounded-lg p-4 shadow-lg"
+							className="relative !block rounded-lg bg-floating p-4 text-on-floating shadow-lg"
 						>
 							<div
 								{...api.getArrowProps()}
