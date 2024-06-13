@@ -127,31 +127,29 @@ function SearchResultsList({ results }: { results: Book[] }) {
 								className="h-[180px] w-[120px] rounded shadow-md transition-transform duration-300 hover:scale-105"
 							/>
 						</Link>
-						<div className="flex-grow">
+						<div className="grow">
 							<div className="flex justify-between">
 								<div>
-									<h2 className="text-xl font-medium">
-										<Link
-											to={`/books/${book.id}`}
-											className="focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
-										>
-											{book.title}
-										</Link>
-									</h2>
-									<p className="mt-2 text-on-background/85">{book.author}</p>
+									<Link
+										to={`/books/${book.id}`}
+										className="text-xl font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
+									>
+										{book.title}
+									</Link>
+									<p className="mt-2">{book.author}</p>
 								</div>
 								<div className="flex gap-2">
 									{book.genres.map((genre) => (
 										<p
 											key={genre}
-											className="h-fit rounded bg-primary px-2 py-1 text-sm text-on-primary"
+											className="h-fit text-nowrap rounded bg-primary px-2 py-1 text-sm text-on-primary"
 										>
 											{genre}
 										</p>
 									))}
 								</div>
 							</div>
-							<p className="mt-5 text-gray-800">{book.shortDescription}</p>
+							<p className="mt-4 text-gray-800">{book.shortDescription}</p>
 						</div>
 					</li>
 				))}

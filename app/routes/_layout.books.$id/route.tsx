@@ -19,9 +19,23 @@ export default function Page() {
 					<BookImage book={book} className="h-[270px] w-[180px] rounded-xl shadow-md" />
 				</div>
 				<div>
-					<h1 className="text-3xl font-medium">{book.title}</h1>
-					<p className="mt-2 text-xl font-medium text-on-background/75">{book.genres.join(", ")}</p>
-					<p className="mt-4 text-on-background/75">{book.shortDescription}</p>
+					<div className="flex justify-between gap-8">
+						<div>
+							<h1 className="text-2xl font-medium">{book.title}</h1>
+							<p className="mt-2 text-lg">{book.author}</p>
+						</div>
+						<div className="flex gap-2">
+							{book.genres.map((genre) => (
+								<p
+									key={genre}
+									className="h-fit text-nowrap rounded bg-primary px-2 py-1 text-sm text-on-primary"
+								>
+									{genre}
+								</p>
+							))}
+						</div>
+					</div>
+					<p className="mt-4 text-gray-800">{book.shortDescription}</p>
 					<div className="mt-8 flex items-center gap-8">
 						<Link
 							to={`/read/${book.id}`}
@@ -35,7 +49,7 @@ export default function Page() {
 			</section>
 			<section className="pt-8">
 				<h2 className="text-2xl font-medium">Description</h2>
-				<p className="mt-4 leading-7 text-on-background/75">{book.description}</p>
+				<p className="mt-4 leading-7 text-gray-800">{book.description}</p>
 			</section>
 			<section className="py-8">
 				<h2 className="text-2xl font-medium">Similar Books</h2>
