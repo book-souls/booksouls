@@ -9,8 +9,7 @@ export default function Page() {
 	const { books } = useLoaderData<typeof loader>();
 	return (
 		<main>
-			<h1 className="mb-4 mt-8 text-center text-4xl font-medium">Library</h1>
-			<div className="mx-auto h-px w-[600px] max-w-full bg-primary/20" />
+			<h1 className="mt-10 text-center text-4xl font-medium">Library</h1>
 			<Books books={books} />
 		</main>
 	);
@@ -22,7 +21,7 @@ export function Books({ books }: { books: FavoriteBook[] }) {
 	}
 
 	return (
-		<div className="mx-auto grid w-fit grid-cols-4 gap-8 pb-8 pt-12">
+		<div className="mx-auto grid w-fit grid-cols-4 gap-8 p-8">
 			{books.map((book) => (
 				<BookCard key={book.id} book={book} />
 			))}
@@ -33,7 +32,7 @@ export function Books({ books }: { books: FavoriteBook[] }) {
 function EmptyBooks() {
 	return (
 		<>
-			<p className="mb-8 mt-12 text-center text-xl">Looks like your library is empty</p>
+			<p className="mb-6 mt-8 text-center text-xl">Looks like your library is empty</p>
 			<LibraryPlaceholderIcon
 				role="img"
 				aria-label="A person sitting on a chair reading a book"

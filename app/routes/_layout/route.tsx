@@ -262,7 +262,7 @@ function EmailContactForm() {
 					id={inputId}
 					type="email"
 					placeholder="Email..."
-					className="h-10 w-[200px] bg-transparent px-2 py-1 placeholder:text-on-surface/50 focus:outline-none"
+					className="h-10 w-[300px] bg-transparent px-2 py-1 placeholder:text-on-surface/50 focus:outline-none"
 				/>
 				<button
 					type="submit"

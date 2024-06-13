@@ -162,7 +162,13 @@ function TeamSection() {
 function Creator({ linkedin, image, name }: { linkedin: string; image: string; name: string }) {
 	return (
 		<div className="flex flex-col items-center">
-			<Link to={linkedin} target="_blank" rel="noreferrer noopener" className="group relative">
+			<Link
+				to={linkedin}
+				target="_blank"
+				rel="noreferrer noopener"
+				tabIndex={-1}
+				className="group relative"
+			>
 				<img
 					src={image}
 					alt={name}
@@ -179,7 +185,7 @@ function Creator({ linkedin, image, name }: { linkedin: string; image: string; n
 				to={linkedin}
 				target="_blank"
 				rel="noreferrer noopener"
-				className="mt-4 text-center text-xl font-medium hover:underline"
+				className="mt-4 text-center text-xl font-medium hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
 			>
 				{name}
 			</Link>
@@ -194,10 +200,13 @@ function LabeledIcon({
 	Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 	label: string;
 }) {
+	const labelId = useId();
 	return (
 		<div className="flex flex-col items-center gap-5">
-			<Icon aria-hidden className="h-[100px] w-[100px]" />
-			<p className="text-center">{label}</p>
+			<Icon aria-labelledby={labelId} className="h-[100px] w-[100px]" />
+			<p id={labelId} className="text-center">
+				{label}
+			</p>
 		</div>
 	);
 }
