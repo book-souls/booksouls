@@ -117,7 +117,7 @@ function GenresMenu() {
 					<div {...api.getPositionerProps()}>
 						<ul
 							{...api.getContentProps()}
-							className="!block rounded-xl bg-floating p-2 text-on-floating shadow-xl transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary-light"
+							className="!block rounded-xl bg-floating p-2 text-on-floating shadow-lg transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary-light"
 						>
 							{genres.map((genre) => (
 								<li key={genre}>

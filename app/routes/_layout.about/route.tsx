@@ -172,7 +172,7 @@ function Creator({ linkedin, image, name }: { linkedin: string; image: string; n
 				<LinkedinIcon
 					role="img"
 					aria-label="LinkedIn"
-					className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-md fill-white p-0.5 text-white opacity-0 drop-shadow-2xl transition-opacity duration-500 ease-in-out group-hover:opacity-100"
+					className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-md fill-white p-0.5 text-white opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100"
 				/>
 			</Link>
 			<Link

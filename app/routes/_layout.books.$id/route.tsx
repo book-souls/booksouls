@@ -16,7 +16,7 @@ export default function Book() {
 		<main className="mx-auto max-w-4xl px-8">
 			<section className="flex items-center gap-8 pt-12">
 				<div className="shrink-0">
-					<BookImage book={book} className="h-[270px] w-[180px] rounded-xl" />
+					<BookImage book={book} className="h-[270px] w-[180px] rounded-xl shadow-md" />
 				</div>
 				<div>
 					<h1 className="text-3xl font-medium uppercase">{book.title}</h1>
