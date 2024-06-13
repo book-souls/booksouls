@@ -1,30 +1,21 @@
-import type { ActionFunctionArgs } from "@vercel/remix";
+import type { LoaderFunctionArgs } from "@remix-run/server-runtime";
 import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
 import { generateSearchEmbedding } from "~/utils/search.server";
-import { isString } from "~/utils/validate";
 
-export async function action({ request }: ActionFunctionArgs) {
-	const formData = await request.formData();
-	const query = formData.get("query");
-	if (!isString(query)) {
-		throw new Error(`Invalid query: ${query}`);
+export async function loader({ request }: LoaderFunctionArgs) {
+	const url = new URL(request.url);
+	const query = url.searchParams.get("query");
+	if (!query) {
+		return { results: null, error: null };
 	}
 
 	try {
 		const supabase = createServerClient(request.headers);
 		const results = await getBookSearchResults(supabase, query);
-		return {
-			query,
-			results,
-			error: false,
-		};
+		return { results, error: null };
 	} catch (error) {
-		console.error("Failed to search:", error);
-		return {
-			query,
-			results: null,
-			error: true,
-		};
+		console.error("Failed to get search results:", error);
+		return { results: null, error: true };
 	}
 }
 
@@ -47,4 +38,4 @@ async function getBookSearchResults(supabase: SupabaseClient, query: string) {
 	return results;
 }
 
-export type BookSearchResults = Awaited<ReturnType<typeof getBookSearchResults>>;
+export type Book = Awaited<ReturnType<typeof getBookSearchResults>>[number];
