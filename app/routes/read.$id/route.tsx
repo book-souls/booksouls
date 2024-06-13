@@ -1,7 +1,7 @@
 import { Transition } from "@headlessui/react";
 import { Link, useLoaderData } from "@remix-run/react";
 import epubjs, { Contents, Rendition, type Location } from "epubjs";
-import { ChevronLeft, ChevronRight, HomeIcon, XIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight, HomeIcon, Loader2Icon, XIcon } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import BotIcon from "~/assets/bot.svg?react";
 import { useSummarize } from "../api.summarize/use-summarize";
@@ -11,6 +11,7 @@ export { loader };
 
 export default function Page() {
 	const { epub, title } = useLoaderData<typeof loader>();
+	const [loading, setLoading] = useState(true);
 	const [atStart, setAtStart] = useState(true);
 	const [atEnd, setAtEnd] = useState(false);
 	const [showSummarize, setShowSummarize] = useState(false);
@@ -39,7 +40,9 @@ export default function Page() {
 		});
 
 		renditionRef.current = rendition;
-		rendition.display();
+		rendition.display().then(() => {
+			setLoading(false);
+		});
 
 		rendition.hooks.content.register((contents: Contents) => {
 			contents.document.addEventListener("selectionchange", function () {
@@ -78,6 +81,7 @@ export default function Page() {
 			renditionRef.current = null;
 			document.removeEventListener("keydown", handleKeyDown);
 			clearSelection();
+			setLoading(true);
 		};
 	}, [epub]);
 
@@ -100,10 +104,16 @@ export default function Page() {
 				</header>
 				<div
 					ref={readerRef}
+					data-loading={loading}
 					className="relative z-0 h-full w-full rounded-lg p-16 after:absolute after:left-1/2 after:top-1/2 after:h-3/4 after:w-px after:-translate-x-1/2 after:-translate-y-1/2 after:bg-gray-400"
 				/>
+				{loading && (
+					<div className="absolute left-1/4 top-1/2 -translate-x-1/2 -translate-y-1/2">
+						<Loader2Icon aria-label="Loading" className="size-10 animate-spin text-primary" />
+					</div>
+				)}
 				<button
-					aria-disabled={atStart}
+					aria-disabled={loading || atStart}
 					aria-label="Go to the previous page"
 					tabIndex={-1}
 					className="icon-button absolute left-6 top-1/2 -translate-y-1/2"
@@ -112,7 +122,7 @@ export default function Page() {
 					<ChevronLeft />
 				</button>
 				<button
-					aria-disabled={atEnd}
+					aria-disabled={loading || atEnd}
 					aria-label="Go to the next page"
 					tabIndex={-1}
 					className="icon-button absolute right-6 top-1/2 -translate-y-1/2"
