@@ -7,46 +7,49 @@ export type Database = {
 				Row: {
 					author: string;
 					description: string;
-					description_embeddings: string | null;
+					description_embedding: string | null;
+					epub: string;
 					epub_file_name: string;
-					fts: unknown | null;
+					fts: unknown;
 					genres: string[];
 					id: number;
+					image: string;
 					image_file_name: string;
+					image_scaled: string;
 					is_featured: boolean;
-					language: string;
 					short_description: string;
-					skipgram_description_embedding: string;
 					title: string;
 				};
 				Insert: {
 					author: string;
 					description: string;
-					description_embeddings?: string | null;
+					description_embedding?: string | null;
+					epub: string;
 					epub_file_name: string;
-					fts?: unknown | null;
+					fts?: unknown;
 					genres: string[];
 					id?: number;
+					image: string;
 					image_file_name: string;
+					image_scaled: string;
 					is_featured?: boolean;
-					language: string;
 					short_description: string;
-					skipgram_description_embedding: string;
 					title: string;
 				};
 				Update: {
 					author?: string;
 					description?: string;
-					description_embeddings?: string | null;
+					description_embedding?: string | null;
+					epub?: string;
 					epub_file_name?: string;
-					fts?: unknown | null;
+					fts?: unknown;
 					genres?: string[];
 					id?: number;
+					image?: string;
 					image_file_name?: string;
+					image_scaled?: string;
 					is_featured?: boolean;
-					language?: string;
 					short_description?: string;
-					skipgram_description_embedding?: string;
 					title?: string;
 				};
 				Relationships: [];
@@ -95,18 +98,25 @@ export type Database = {
 				Returns: {
 					author: string;
 					description: string;
-					description_embeddings: string | null;
+					description_embedding: string | null;
+					epub: string;
 					epub_file_name: string;
-					fts: unknown | null;
+					fts: unknown;
 					genres: string[];
 					id: number;
+					image: string;
 					image_file_name: string;
+					image_scaled: string;
 					is_featured: boolean;
-					language: string;
 					short_description: string;
-					skipgram_description_embedding: string;
 					title: string;
 				}[];
+			};
+			comma_join: {
+				Args: {
+					"": string[];
+				};
+				Returns: string;
 			};
 			hybrid_book_search: {
 				Args: {
@@ -120,38 +130,17 @@ export type Database = {
 				Returns: {
 					author: string;
 					description: string;
-					description_embeddings: string | null;
+					description_embedding: string | null;
+					epub: string;
 					epub_file_name: string;
-					fts: unknown | null;
+					fts: unknown;
 					genres: string[];
 					id: number;
+					image: string;
 					image_file_name: string;
+					image_scaled: string;
 					is_featured: boolean;
-					language: string;
 					short_description: string;
-					skipgram_description_embedding: string;
-					title: string;
-				}[];
-			};
-			search_books: {
-				Args: {
-					query_embeddings: string;
-					match_threshold: number;
-					match_limit: number;
-				};
-				Returns: {
-					author: string;
-					description: string;
-					description_embeddings: string | null;
-					epub_file_name: string;
-					fts: unknown | null;
-					genres: string[];
-					id: number;
-					image_file_name: string;
-					is_featured: boolean;
-					language: string;
-					short_description: string;
-					skipgram_description_embedding: string;
 					title: string;
 				}[];
 			};

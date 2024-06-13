@@ -1,6 +1,5 @@
 import type { LoaderFunctionArgs } from "@vercel/remix";
 import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
-import { getBooksBucketUrl } from "~/utils/storage";
 
 export async function loader({ request }: LoaderFunctionArgs) {
 	const supabase = createServerClient(request.headers);
@@ -21,10 +20,6 @@ async function getBooks(supabase: SupabaseClient) {
 
 	if (error !== null) {
 		throw error;
-	}
-
-	for (const book of data) {
-		book.image = getBooksBucketUrl(supabase, book.image);
 	}
 
 	return data;

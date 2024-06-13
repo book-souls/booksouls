@@ -10,7 +10,7 @@ import { loader } from "./loader.server";
 export { loader };
 
 export default function Page() {
-	const { epubUrl, title } = useLoaderData<typeof loader>();
+	const { epub, title } = useLoaderData<typeof loader>();
 	const [atStart, setAtStart] = useState(true);
 	const [atEnd, setAtEnd] = useState(false);
 	const [showSummarize, setShowSummarize] = useState(false);
@@ -30,7 +30,7 @@ export default function Page() {
 			return;
 		}
 
-		const book = epubjs(epubUrl);
+		const book = epubjs(epub);
 		const rendition = book.renderTo(reader, {
 			height: "100%",
 			width: "100%",
@@ -79,7 +79,7 @@ export default function Page() {
 			document.removeEventListener("keydown", handleKeyDown);
 			clearSelection();
 		};
-	}, [epubUrl]);
+	}, [epub]);
 
 	function goToPrevious() {
 		renditionRef.current?.prev();
