@@ -11,7 +11,7 @@ async function getFeaturedBooks(supabase: SupabaseClient) {
 	const { data, error } = await supabase
 		.from("books")
 		.select(
-			"id, image, title, genres, author, shortDescription:short_description, featured:is_featured",
+			"id, image, imageScaled:image_scaled, title, genres, author, shortDescription:short_description, featured:is_featured",
 		)
 		.eq("is_featured", true)
 		.order("title");

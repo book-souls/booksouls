@@ -1,14 +1,13 @@
 import type { Config } from "tailwindcss";
+import colors from "tailwindcss/colors";
 import plugin from "tailwindcss/plugin";
 
-const colors = {
+const palette = {
 	primary: {
 		DEFAULT: "#1f5f8b",
 		light: "#1891ac",
 	},
-	background: {
-		DEFAULT: "#d2ecf9",
-	},
+	background: "#d2ecf9",
 	surface: "#253b6e",
 };
 
@@ -18,11 +17,13 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				...colors,
+				...palette,
+				floating: colors.neutral[50],
 				on: {
-					primary: colors.background,
-					background: colors.primary.DEFAULT,
-					surface: colors.background,
+					primary: palette.background,
+					background: palette.primary.DEFAULT,
+					surface: palette.background,
+					floating: palette.primary.DEFAULT,
 				},
 			},
 			fontFamily: {

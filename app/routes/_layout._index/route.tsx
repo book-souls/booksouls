@@ -1,7 +1,7 @@
 import { useLoaderData } from "@remix-run/react";
 import { useId } from "react";
 import Read from "~/assets/read.svg?react";
-import { BookData } from "~/components/BookData";
+import { BookCard } from "~/components/BookCard";
 import { loader, type FeaturedBook } from "./loader.server";
 
 export { loader };
@@ -29,9 +29,9 @@ function FeaturedBooksSection({ books }: { books: FeaturedBook[] }) {
 			<h2 id={headerId} className="mb-8 text-center text-4xl font-medium uppercase">
 				Featured Books
 			</h2>
-			<div className="mx-auto grid w-fit grid-cols-5 gap-8">
+			<div className="mx-auto grid w-fit grid-cols-4 gap-8">
 				{books.map((book) => (
-					<BookData key={book.id} book={book} />
+					<BookCard key={book.id} book={book} />
 				))}
 			</div>
 		</section>

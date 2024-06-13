@@ -117,7 +117,7 @@ function GenresMenu() {
 					>
 						<ul
 							{...api.getContentProps()}
-							className="!block rounded-xl bg-neutral-50 p-2 shadow-xl transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary-light"
+							className="bg-floating text-on-floating !block rounded-xl p-2 shadow-xl transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary-light"
 						>
 							{genres.map((genre) => (
 								<li key={genre}>
@@ -125,7 +125,7 @@ function GenresMenu() {
 										{...api.getItemProps({ value: genre })}
 										to={`/genres/${genre}`}
 										tabIndex={-1}
-										className="!block rounded p-2 font-medium text-primary data-[highlighted]:bg-primary data-[highlighted]:text-on-primary"
+										className="!block rounded p-2 font-medium data-[highlighted]:bg-primary data-[highlighted]:text-on-primary"
 									>
 										{genre}
 									</Link>
@@ -170,11 +170,11 @@ function UserAvatar({ user }: { user: User }) {
 					>
 						<div
 							{...api.getContentProps()}
-							className="relative !block rounded-lg bg-neutral-50 p-4 text-neutral-950 shadow-lg"
+							className="bg-floating text-on-floating relative !block rounded-lg p-4 shadow-lg"
 						>
 							<div
 								{...api.getArrowProps()}
-								className="[--arrow-background:theme(colors.neutral.50)] [--arrow-size:8px]"
+								className="[--arrow-background:theme(colors.floating)] [--arrow-size:8px]"
 							>
 								<div {...api.getArrowTipProps()} />
 							</div>
