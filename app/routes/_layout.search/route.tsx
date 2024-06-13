@@ -4,6 +4,7 @@ import { useEffect, useId } from "react";
 import { toast } from "sonner";
 import SearchBooks from "~/assets/search-books.svg?react";
 import SearchNotFound from "~/assets/search-not-found.svg?react";
+import { BookImage } from "~/components/BookImage";
 import { action, type BookSearchResults } from "./action.server";
 
 export { action };
@@ -122,24 +123,35 @@ function SearchResultsList({ results }: { results: NonNullable<BookSearchResults
 			<ul className="flex flex-col gap-8 pt-8">
 				{results.map((book) => (
 					<li key={book.id} className="flex gap-8">
-						<Link to={`/books/${book.id}`} className="shrink-0">
-							<img
-								alt=""
-								src={book.image}
-								className="h-[180px] w-[120px] rounded object-cover shadow-md"
+						<Link to={`/books/${book.id}`} tabIndex={-1} className="shrink-0">
+							<BookImage
+								book={book}
+								className="h-[180px] w-[120px] rounded shadow-md transition-transform duration-300 hover:scale-105"
 							/>
 						</Link>
 						<div className="flex-grow">
 							<div className="flex justify-between">
 								<div>
 									<h2 className="text-xl font-medium">
-										<Link to={`/books/${book.id}`}>{book.title}</Link>
+										<Link
+											to={`/books/${book.id}`}
+											className="focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
+										>
+											{book.title}
+										</Link>
 									</h2>
 									<p className="mt-2 text-on-background/85">{book.author}</p>
 								</div>
-								<p className="h-fit shrink-0 rounded bg-primary px-2 py-1 text-sm text-on-primary">
-									{book.genres.join(", ")}
-								</p>
+								<div className="flex gap-2">
+									{book.genres.map((genre) => (
+										<p
+											key={genre}
+											className="h-fit rounded bg-primary px-2 py-1 text-sm text-on-primary"
+										>
+											{genre}
+										</p>
+									))}
+								</div>
 							</div>
 							<p className="mt-5 text-gray-800">{book.shortDescription}</p>
 						</div>
