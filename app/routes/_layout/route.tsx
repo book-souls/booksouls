@@ -105,16 +105,16 @@ function GenresMenu() {
 				</span>
 			</button>
 			<Portal>
-				<div {...api.getPositionerProps()}>
-					<Transition
-						show={api.open}
-						enter="transition-opacity duration-300"
-						enterFrom="opacity-0"
-						enterTo="opacity-100"
-						leave="transition-opacity"
-						leaveFrom="opacity-100"
-						leaveTo="opacity-0"
-					>
+				<Transition
+					show={api.open}
+					enter="transition-opacity duration-300"
+					enterFrom="opacity-0"
+					enterTo="opacity-100"
+					leave="transition-opacity"
+					leaveFrom="opacity-100"
+					leaveTo="opacity-0"
+				>
+					<div {...api.getPositionerProps()}>
 						<ul
 							{...api.getContentProps()}
 							className="!block rounded-xl bg-floating p-2 text-on-floating shadow-xl transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary-light"
@@ -132,8 +132,8 @@ function GenresMenu() {
 								</li>
 							))}
 						</ul>
-					</Transition>
-				</div>
+					</div>
+				</Transition>
 			</Portal>
 		</>
 	);
@@ -158,16 +158,16 @@ function UserAvatar({ user }: { user: User }) {
 				{user.email?.at(0)?.toUpperCase()}
 			</button>
 			<Portal>
-				<div {...api.getPositionerProps()}>
-					<Transition
-						show={api.open}
-						enter="transition-opacity duration-300"
-						enterFrom="opacity-0"
-						enterTo="opacity-100"
-						leave="transition-opacity"
-						leaveFrom="opacity-100"
-						leaveTo="opacity-0"
-					>
+				<Transition
+					show={api.open}
+					enter="transition-opacity duration-300"
+					enterFrom="opacity-0"
+					enterTo="opacity-100"
+					leave="transition-opacity"
+					leaveFrom="opacity-100"
+					leaveTo="opacity-0"
+				>
+					<div {...api.getPositionerProps()}>
 						<div
 							{...api.getContentProps()}
 							className="relative !block rounded-lg bg-floating p-4 text-on-floating shadow-lg"
@@ -191,8 +191,8 @@ function UserAvatar({ user }: { user: User }) {
 							</div>
 							<SignOutButton />
 						</div>
-					</Transition>
-				</div>
+					</div>
+				</Transition>
 			</Portal>
 		</div>
 	);

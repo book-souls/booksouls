@@ -86,7 +86,7 @@ function FavoriteButton({ favorite, user }: { favorite: boolean; user: User | nu
 			>
 				<Star
 					data-filled={optimisticFavorite}
-					className="!size-9 data-[filled='true']:fill-primary"
+					className="size-9 data-[filled='true']:fill-primary"
 				/>
 			</button>
 		</fetcher.Form>

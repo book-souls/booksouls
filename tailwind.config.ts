@@ -71,7 +71,7 @@ export default {
 					width: "2.5rem",
 					height: "2.5rem",
 					borderRadius: "9999px",
-					"& svg": {
+					"& :where(svg)": {
 						width: "1.5rem",
 						height: "1.5rem",
 					},

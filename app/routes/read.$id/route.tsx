@@ -98,7 +98,7 @@ export default function Page() {
 			<div className="relative h-full max-h-[800px] w-full max-w-[1400px]">
 				<header className="absolute top-0 z-10 flex h-12 w-full items-center border-b border-gray-200 px-4 py-2 text-primary">
 					<Link to="/" className="icon-button h-8 w-8">
-						<HomeIcon aria-label="Home" className="!size-4" />
+						<HomeIcon aria-label="Home" className="size-4" />
 					</Link>
 					<h1 className="absolute left-1/2 -translate-x-1/2 font-medium leading-tight">{title}</h1>
 				</header>
@@ -188,7 +188,7 @@ function SummarizeButton({
 					className="icon-button absolute right-3 top-3 size-8"
 					onClick={closeDialog}
 				>
-					<XIcon className="!size-5" />
+					<XIcon className="size-5" />
 				</button>
 				<div className="ml-auto w-fit rounded-3xl bg-primary-light/35 px-5 py-2.5">
 					<p>Summarize the highlighted text</p>
