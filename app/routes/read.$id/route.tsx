@@ -1,3 +1,4 @@
+import { Transition } from "@headlessui/react";
 import { Link, useLoaderData } from "@remix-run/react";
 import epubjs, { Contents, Rendition, type Location } from "epubjs";
 import { ChevronLeft, ChevronRight, HomeIcon, XIcon } from "lucide-react";
@@ -150,14 +151,22 @@ function SummarizeButton({
 
 	return (
 		<>
-			<button
-				aria-hidden={!shown}
-				tabIndex={shown ? 0 : -1}
-				className="absolute bottom-4 left-1/2 flex h-9 -translate-x-1/2 items-center justify-center rounded-md bg-gradient-to-r from-primary to-primary-light px-4 font-medium text-on-primary transition-opacity duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary aria-hidden:pointer-events-none aria-hidden:opacity-0"
-				onClick={summarizeSelection}
+			<Transition
+				show={shown}
+				enter="transition-opacity duration-300"
+				enterFrom="opacity-0"
+				enterTo="opacity-100"
+				leave="transition-opacity"
+				leaveFrom="opacity-100"
+				leaveTo="opacity-0"
 			>
-				Summarize
-			</button>
+				<button
+					className="absolute bottom-4 left-1/2 flex h-9 -translate-x-1/2 items-center justify-center rounded-md bg-gradient-to-r from-primary to-primary-light px-4 font-medium text-on-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+					onClick={summarizeSelection}
+				>
+					Summarize
+				</button>
+			</Transition>
 			<dialog
 				ref={dialogRef}
 				className="relative h-[500px] w-[600px] rounded-xl p-6 pt-16 [&::backdrop]:bg-black/50"
