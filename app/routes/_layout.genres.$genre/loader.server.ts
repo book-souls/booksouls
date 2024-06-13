@@ -16,7 +16,9 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 async function getBooksByGenre(supabase: SupabaseClient, genre: string) {
 	const { data, error } = await supabase
 		.from("books")
-		.select("id, image, title, genres, shortDescription:short_description")
+		.select(
+			"id, image, imageScaled:image_scaled, author, title, genres, shortDescription:short_description",
+		)
 		.contains("genres", [genre])
 		.order("title");
 
