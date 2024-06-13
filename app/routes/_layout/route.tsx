@@ -37,7 +37,10 @@ function Header() {
 	return (
 		<header className="flex items-center bg-surface px-6 text-on-surface">
 			<div className="mx-auto flex max-w-7xl grow items-center justify-between">
-				<Link to="/">
+				<Link
+					to="/"
+					className="focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
+				>
 					<Logo scale={0.75} />
 				</Link>
 				<nav>
