@@ -35,7 +35,7 @@ export function BookCard({ book }: BookCardProps) {
 			<Link
 				{...api.getTriggerProps()}
 				to={`/books/${book.id}`}
-				className="rounded-lg transition-transform duration-300 hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+				className="rounded-lg transition-transform duration-300 hover:scale-105 focus-visible:scale-105 focus-visible:outline-none"
 			>
 				<BookImage book={book} className="h-[240px] w-[160px] rounded-lg shadow-md" />
 			</Link>
