@@ -47,7 +47,7 @@ function EmptyBooks() {
 			<LibraryPlaceholderIcon
 				role="img"
 				aria-label="A person sitting on a chair reading a book"
-				className="mx-auto h-auto w-[400px]"
+				className="mx-auto h-auto w-[300px]"
 			/>
 		</>
 	);
