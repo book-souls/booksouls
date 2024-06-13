@@ -23,17 +23,16 @@
 		"@supabase/ssr": "^0.1.0",
 		"@supabase/supabase-js": "^2.40.0",
 		"@vercel/remix": "^2.9.1",
+		"@zag-js/menu": "^0.55.0",
 		"@zag-js/pin-input": "^0.55.0",
 		"@zag-js/popover": "^0.55.0",
 		"@zag-js/react": "^0.55.0",
 		"@zag-js/tooltip": "^0.55.0",
-		"@zag-js/menu": "^0.55.0",
 		"epubjs": "^0.3.93",
 		"isbot": "^3.6.8",
 		"lucide-react": "^0.341.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
-		"react-snap-carousel": "^0.4.0",
 		"sonner": "^1.4.41"
 	},
 	"devDependencies": {

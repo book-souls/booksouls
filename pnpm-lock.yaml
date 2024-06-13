@@ -18,16 +18,16 @@ importers:
         specifier: ^2.6.6
         version: 2.7.0
       '@remix-run/node':
-        specifier: ^2.9.2
+        specifier: ^2.9.1
         version: 2.9.2(typescript@5.3.3)
       '@remix-run/react':
-        specifier: ^2.9.2
+        specifier: ^2.9.1
         version: 2.9.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.3.3)
       '@remix-run/serve':
-        specifier: ^2.9.2
+        specifier: ^2.9.1
         version: 2.9.2(typescript@5.3.3)
       '@remix-run/server-runtime':
-        specifier: ^2.9.2
+        specifier: ^2.9.1
         version: 2.9.2(typescript@5.3.3)
       '@supabase/ssr':
         specifier: ^0.1.0
@@ -68,9 +68,6 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
-      react-snap-carousel:
-        specifier: ^0.4.0
-        version: 0.4.0(react@18.2.0)
       sonner:
         specifier: ^1.4.41
         version: 1.4.41(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -3922,11 +3919,6 @@ packages:
     engines: {node: '>=14.0.0'}
     peerDependencies:
       react: '>=16.8'
-
-  react-snap-carousel@0.4.0:
-    resolution: {integrity: sha512-uPrXbH2BxJnPodQ+GwEYnbygGZ368RpnAJkNYyiOfko3i0D5cIAuSA4mz+pv9r/O5WhIMo5WOuP4DU56sO7QeA==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
   react@18.2.0:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
@@ -9133,10 +9125,6 @@ snapshots:
   react-router@6.23.1(react@18.2.0):
     dependencies:
       '@remix-run/router': 1.16.1
-      react: 18.2.0
-
-  react-snap-carousel@0.4.0(react@18.2.0):
-    dependencies:
       react: 18.2.0
 
   react@18.2.0:
