@@ -1,7 +1,6 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
 import { genres } from "~/utils/genres";
-import { getBooksBucketUrl } from "~/utils/storage";
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
 	const genre = String(params.genre);
@@ -17,16 +16,12 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 async function getBooksByGenre(supabase: SupabaseClient, genre: string) {
 	const { data, error } = await supabase
 		.from("books")
-		.select("id, image:image_file_name, title, genres, shortDescription:short_description")
+		.select("id, image, title, genres, shortDescription:short_description")
 		.contains("genres", [genre])
 		.order("title");
 
 	if (error !== null) {
 		throw error;
-	}
-
-	for (const book of data) {
-		book.image = getBooksBucketUrl(supabase, book.image);
 	}
 
 	return data;

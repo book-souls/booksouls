@@ -3,7 +3,6 @@ import { defer, type LoaderFunctionArgs } from "@vercel/remix";
 import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
 import { bookNotFound } from "~/utils/not-found";
 import { generateSearchEmbedding } from "~/utils/search.server";
-import { getBooksBucketUrl } from "~/utils/storage";
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
 	const id = Number(params.id);
@@ -28,9 +27,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 async function getBook(supabase: SupabaseClient, id: number) {
 	const { data: book, error } = await supabase
 		.from("books")
-		.select(
-			"id, title, genres, shortDescription:short_description, description, image:image_file_name",
-		)
+		.select("id, title, genres, shortDescription:short_description, description, image")
 		.eq("id", id)
 		.maybeSingle();
 
@@ -44,7 +41,6 @@ async function getBook(supabase: SupabaseClient, id: number) {
 		});
 	}
 
-	book.image = getBooksBucketUrl(supabase, book.image);
 	return book;
 }
 
@@ -74,14 +70,10 @@ async function getSimilarBooks(
 			match_threshold: 0.5,
 			match_limit: 9,
 		})
-		.select("id, title, image:image_file_name");
+		.select("id, title, image");
 
 	if (error !== null) {
 		throw error;
-	}
-
-	for (const book of results) {
-		book.image = getBooksBucketUrl(supabase, book.image);
 	}
 
 	// Don't suggest the same book.
