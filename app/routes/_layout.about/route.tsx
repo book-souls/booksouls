@@ -176,11 +176,7 @@ function Creator({ linkedin, image, name }: { linkedin: string; image: string; n
 					className="h-[150px] w-[150px] rounded-full border border-slate-400 bg-blend-normal group-hover:bg-blend-darken"
 				/>
 				<div className="absolute inset-0 rounded-full bg-gradient-to-t from-stone-800/50 via-stone-800/10 to-transparent opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100" />
-				<LinkedinIcon
-					role="img"
-					aria-label="LinkedIn"
-					className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-md fill-white p-0.5 text-white opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100"
-				/>
+				<LinkedinIcon className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-md fill-white p-0.5 text-white opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100" />
 			</Link>
 			<Link
 				to={linkedin}
@@ -204,7 +200,7 @@ function LabeledIcon({
 	const labelId = useId();
 	return (
 		<div className="flex flex-col items-center gap-5">
-			<Icon aria-labelledby={labelId} className="h-[100px] w-[100px]" />
+			<Icon className="h-[100px] w-[100px]" />
 			<p id={labelId} className="text-center">
 				{label}
 			</p>

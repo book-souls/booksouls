@@ -44,7 +44,7 @@ function Header() {
 					<Logo scale={0.75} />
 				</Link>
 				<nav>
-					<ul className="flex items-center justify-center gap-14">
+					<ul role="list" className="flex items-center justify-center gap-14">
 						<li>
 							<NavLink to="/">Home</NavLink>
 						</li>
@@ -117,6 +117,7 @@ function GenresMenu() {
 					<div {...api.getPositionerProps()}>
 						<ul
 							{...api.getContentProps()}
+							role="list"
 							className="!block rounded-xl bg-floating p-2 text-on-floating shadow-lg transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary-light"
 						>
 							{genres.map((genre) => (
@@ -180,7 +181,6 @@ function UserAvatar({ user }: { user: User }) {
 							</div>
 							<button
 								{...api.getCloseTriggerProps()}
-								aria-label="Close profile menu"
 								className="icon-button absolute right-2 top-2 size-8 [&_svg]:size-5"
 							>
 								<XIcon />
@@ -225,8 +225,8 @@ function SignOutButton() {
 
 function SignInLink() {
 	return (
-		<Link to="/sign-in" title="Sign in" className="icon-button">
-			<LogInIcon aria-label="Sign in" />
+		<Link to="/sign-in" aria-label="Sign in" title="Sign in" className="icon-button">
+			<LogInIcon />
 		</Link>
 	);
 }

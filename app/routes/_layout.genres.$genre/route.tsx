@@ -10,11 +10,13 @@ export default function Page() {
 	return (
 		<main>
 			<h1 className="mt-10 text-center text-4xl font-medium">{genre}</h1>
-			<div className="mx-auto grid w-fit grid-cols-4 gap-8 p-8">
+			<ul role="list" className="mx-auto grid w-fit grid-cols-4 gap-8 p-8">
 				{books.map((book) => (
-					<BookCard key={book.id} book={book} />
+					<li key={book.id}>
+						<BookCard book={book} />
+					</li>
 				))}
-			</div>
+			</ul>
 		</main>
 	);
 }

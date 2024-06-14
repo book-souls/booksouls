@@ -118,7 +118,7 @@ function SearchResultsList({ results }: { results: Book[] }) {
 			<h1 id={headerId} className="text-2xl font-medium">
 				{results.length} Results Found
 			</h1>
-			<ul className="flex flex-col gap-8 pt-8">
+			<ul role="list" className="flex flex-col gap-8 pt-8">
 				{results.map((book) => (
 					<li key={book.id} className="flex gap-8">
 						<Link to={`/books/${book.id}`} tabIndex={-1} className="shrink-0">
@@ -138,16 +138,15 @@ function SearchResultsList({ results }: { results: Book[] }) {
 									</Link>
 									<p className="mt-2">{book.author}</p>
 								</div>
-								<div className="flex gap-2">
+								<ul role="list" aria-label="Genres" className="flex gap-2">
 									{book.genres.map((genre) => (
-										<p
-											key={genre}
-											className="h-fit text-nowrap rounded bg-primary px-2 py-1 text-sm text-on-primary"
-										>
-											{genre}
-										</p>
+										<li key={genre}>
+											<p className="h-fit text-nowrap rounded bg-primary px-2 py-1 text-sm text-on-primary">
+												{genre}
+											</p>
+										</li>
 									))}
-								</div>
+								</ul>
 							</div>
 							<p className="mt-4 text-gray-800">{book.shortDescription}</p>
 						</div>

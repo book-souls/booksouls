@@ -24,16 +24,15 @@ export default function Page() {
 							<h1 className="text-2xl font-medium">{book.title}</h1>
 							<p className="mt-2 text-lg">{book.author}</p>
 						</div>
-						<div className="flex gap-2">
+						<ul role="list" aria-label="Genres" className="flex gap-2">
 							{book.genres.map((genre) => (
-								<p
-									key={genre}
-									className="h-fit text-nowrap rounded bg-primary px-2 py-1 text-sm text-on-primary"
-								>
-									{genre}
-								</p>
+								<li key={genre}>
+									<p className="h-fit text-nowrap rounded bg-primary px-2 py-1 text-sm text-on-primary">
+										{genre}
+									</p>
+								</li>
 							))}
-						</div>
+						</ul>
 					</div>
 					<p className="mt-4 text-gray-800">{book.shortDescription}</p>
 					<div className="mt-8 flex items-center gap-8">
@@ -132,16 +131,16 @@ function SimilarBooksError() {
 
 function SimilarBooks({ books }: { books: SimilarBook[] }) {
 	return (
-		<div className="flex snap-x snap-mandatory overflow-x-auto pb-6 pt-4">
+		<ul role="list" className="flex snap-x snap-mandatory overflow-x-auto pb-6 pt-4">
 			{books.map((book, i) => (
-				<div
+				<li
 					key={book.id}
 					data-snap-point={i % 4 === 0}
 					className="flex shrink-0 basis-1/4 justify-center data-[snap-point='true']:snap-start"
 				>
 					<BookCard book={book} />
-				</div>
+				</li>
 			))}
-		</div>
+		</ul>
 	);
 }

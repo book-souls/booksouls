@@ -29,11 +29,13 @@ function FeaturedBooksSection({ books }: { books: FeaturedBook[] }) {
 			<h2 id={headerId} className="mb-8 text-center text-4xl font-medium uppercase">
 				Featured Books
 			</h2>
-			<div className="mx-auto grid w-fit grid-cols-4 gap-8">
+			<ul role="list" className="mx-auto grid w-fit grid-cols-4 gap-8">
 				{books.map((book) => (
-					<BookCard key={book.id} book={book} />
+					<li key={book.id}>
+						<BookCard book={book} />
+					</li>
 				))}
-			</div>
+			</ul>
 		</section>
 	);
 }
