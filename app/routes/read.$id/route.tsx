@@ -166,12 +166,12 @@ function SummarizeButton({
 				enter="transition-opacity duration-300"
 				enterFrom="opacity-0"
 				enterTo="opacity-100"
-				leave="transition-opacity"
+				leave="transition-opacity duration-300"
 				leaveFrom="opacity-100"
 				leaveTo="opacity-0"
 			>
 				<button
-					className="absolute bottom-4 left-1/2 flex h-9 -translate-x-1/2 items-center justify-center rounded-md bg-gradient-to-r from-primary to-primary-light px-4 font-medium text-on-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+					className="button absolute bottom-4 left-1/2 -translate-x-1/2"
 					onClick={summarizeSelection}
 				>
 					Summarize

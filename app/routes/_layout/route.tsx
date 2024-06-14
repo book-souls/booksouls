@@ -214,7 +214,7 @@ function SignOutButton() {
 	return (
 		<button
 			aria-disabled={submitting}
-			className="mx-auto flex h-10 items-center justify-center gap-2 rounded-lg bg-red-700 px-6 text-sm text-red-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 [&_svg]:size-4"
+			className="button mx-auto flex bg-red-700 bg-none text-red-50 focus-visible:outline-red-700"
 			onClick={submit}
 		>
 			Sign Out

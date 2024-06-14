@@ -32,7 +32,7 @@ export default {
 		},
 	},
 	plugins: [
-		plugin(({ addComponents, addUtilities }) => {
+		plugin(({ addComponents, addUtilities, theme }) => {
 			addComponents({
 				".line-gradient": {
 					height: "16px",
@@ -95,6 +95,43 @@ export default {
 					"&:disabled, &[aria-disabled='true']": {
 						pointerEvents: "none",
 						opacity: "0.5",
+					},
+				},
+			});
+
+			addComponents({
+				".button": {
+					position: "relative",
+					display: "inline-flex",
+					alignItems: "center",
+					justifyContent: "center",
+					gap: "0.5rem",
+					height: "2.75rem",
+					padding: "0 1.5rem",
+					borderRadius: theme("borderRadius.lg"),
+					backgroundImage: `linear-gradient(to right, ${theme("colors.primary.DEFAULT")}, ${theme("colors.primary.light")})`,
+					color: theme("colors.on.primary"),
+					"& :where(svg)": {
+						width: "1.125rem",
+						height: "1.125rem",
+					},
+					"&::before": {
+						content: "''",
+						position: "absolute",
+						inset: "0",
+						borderRadius: "inherit",
+						backgroundColor: "currentColor",
+						opacity: "0",
+					},
+					"&:hover::before": {
+						opacity: "0.1",
+					},
+					"&:active::before": {
+						opacity: "0.15",
+					},
+					"&:focus-visible": {
+						outline: `2px solid ${theme("colors.primary.DEFAULT")}`,
+						outlineOffset: "2px",
 					},
 				},
 			});

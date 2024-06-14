@@ -55,7 +55,7 @@ function AboutUsSection() {
 					</p>
 					<Link
 						to="#vision"
-						className="w-[150px] rounded-xl bg-gradient-to-l from-primary to-primary-light px-4 py-3 text-center text-lg text-on-primary shadow-inner"
+						className="button focus-visible:outline-primary-light"
 						onClick={navigateToVisionSection}
 					>
 						Learn More

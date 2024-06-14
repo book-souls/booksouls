@@ -36,10 +36,7 @@ export default function Page() {
 					</div>
 					<p className="mt-4 text-gray-800">{book.shortDescription}</p>
 					<div className="mt-8 flex items-center gap-8">
-						<Link
-							to={`/read/${book.id}`}
-							className=" flex h-12 w-fit items-center justify-center rounded-xl bg-gradient-to-r from-primary to-primary-light px-8 text-xl font-medium text-on-primary shadow-inner"
-						>
+						<Link to={`/read/${book.id}`} className="button">
 							Read Book
 						</Link>
 						<FavoriteButton favorite={favorite} user={user} />
@@ -94,12 +91,12 @@ function FavoriteButton({ favorite, user }: { favorite: boolean; user: User | nu
 				type="submit"
 				aria-label="Add to library"
 				title="Add to library"
-				className="icon-button size-12 rounded-xl text-primary"
+				className="icon-button size-11 rounded-lg text-primary"
 				onClick={onClick}
 			>
 				<Star
 					data-filled={optimisticFavorite}
-					className="size-9 data-[filled='true']:fill-primary"
+					className="size-8 data-[filled='true']:fill-primary"
 				/>
 			</button>
 		</fetcher.Form>
