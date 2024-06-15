@@ -41,8 +41,11 @@ function AboutUsSection() {
 	}
 
 	return (
-		<section aria-labelledby={headerId} className="bg-surface text-on-surface">
-			<div className="flex items-center justify-center gap-24 px-20 py-10">
+		<section
+			aria-labelledby={headerId}
+			className="flex h-[calc(100vh-var(--header-h))] max-h-[800px] min-h-[500px] flex-col bg-surface text-on-surface"
+		>
+			<div className="flex flex-grow items-center justify-center gap-24 px-20">
 				<div className="flex flex-col items-center gap-10">
 					<h1 id={headerId} className="text-center text-4xl font-light uppercase tracking-widest">
 						About Us
