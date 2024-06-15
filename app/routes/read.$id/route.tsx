@@ -1,7 +1,7 @@
 import { Transition } from "@headlessui/react";
 import { Link, useLoaderData } from "@remix-run/react";
 import epubjs, { Contents, Rendition, type Location } from "epubjs";
-import { ChevronLeft, ChevronRight, HomeIcon, XIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight, HomeIcon, Loader2Icon, XIcon } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import BotIcon from "~/assets/bot.svg?react";
 import { useSummarize } from "../api.summarize/use-summarize";
@@ -11,6 +11,7 @@ export { loader };
 
 export default function Page() {
 	const { epub, title } = useLoaderData<typeof loader>();
+	const [loading, setLoading] = useState(true);
 	const [atStart, setAtStart] = useState(true);
 	const [atEnd, setAtEnd] = useState(false);
 	const [showSummarize, setShowSummarize] = useState(false);
@@ -39,7 +40,9 @@ export default function Page() {
 		});
 
 		renditionRef.current = rendition;
-		rendition.display();
+		rendition.display().then(() => {
+			setLoading(false);
+		});
 
 		rendition.hooks.content.register((contents: Contents) => {
 			contents.document.addEventListener("selectionchange", function () {
@@ -78,6 +81,7 @@ export default function Page() {
 			renditionRef.current = null;
 			document.removeEventListener("keydown", handleKeyDown);
 			clearSelection();
+			setLoading(true);
 		};
 	}, [epub]);
 
@@ -90,20 +94,26 @@ export default function Page() {
 	}
 
 	return (
-		<div className="flex h-screen min-h-[600px] w-full items-center justify-center bg-white text-neutral-800">
-			<div className="relative h-full max-h-[800px] w-full max-w-[1400px]">
+		<div className="flex h-screen w-full items-center justify-center bg-white text-neutral-800">
+			<div className="relative h-full max-h-[800px] min-h-[600px] w-full max-w-[1400px]">
 				<header className="absolute top-0 z-10 flex h-12 w-full items-center border-b border-gray-200 px-4 py-2 text-primary">
-					<Link to="/" className="icon-button h-8 w-8">
-						<HomeIcon aria-label="Home" className="!size-4" />
+					<Link to="/" aria-label="Home" className="icon-button h-8 w-8">
+						<HomeIcon className="size-4" />
 					</Link>
 					<h1 className="absolute left-1/2 -translate-x-1/2 font-medium leading-tight">{title}</h1>
 				</header>
 				<div
 					ref={readerRef}
+					data-loading={loading}
 					className="relative z-0 h-full w-full rounded-lg p-16 after:absolute after:left-1/2 after:top-1/2 after:h-3/4 after:w-px after:-translate-x-1/2 after:-translate-y-1/2 after:bg-gray-400"
 				/>
+				{loading && (
+					<div className="absolute left-1/4 top-1/2 -translate-x-1/2 -translate-y-1/2">
+						<Loader2Icon aria-label="Loading" className="size-10 animate-spin text-primary" />
+					</div>
+				)}
 				<button
-					aria-disabled={atStart}
+					aria-disabled={loading || atStart}
 					aria-label="Go to the previous page"
 					tabIndex={-1}
 					className="icon-button absolute left-6 top-1/2 -translate-y-1/2"
@@ -112,7 +122,7 @@ export default function Page() {
 					<ChevronLeft />
 				</button>
 				<button
-					aria-disabled={atEnd}
+					aria-disabled={loading || atEnd}
 					aria-label="Go to the next page"
 					tabIndex={-1}
 					className="icon-button absolute right-6 top-1/2 -translate-y-1/2"
@@ -156,12 +166,12 @@ function SummarizeButton({
 				enter="transition-opacity duration-300"
 				enterFrom="opacity-0"
 				enterTo="opacity-100"
-				leave="transition-opacity"
+				leave="transition-opacity duration-300"
 				leaveFrom="opacity-100"
 				leaveTo="opacity-0"
 			>
 				<button
-					className="absolute bottom-4 left-1/2 flex h-9 -translate-x-1/2 items-center justify-center rounded-md bg-gradient-to-r from-primary to-primary-light px-4 font-medium text-on-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+					className="button absolute bottom-4 left-1/2 -translate-x-1/2"
 					onClick={summarizeSelection}
 				>
 					Summarize
@@ -169,7 +179,7 @@ function SummarizeButton({
 			</Transition>
 			<dialog
 				ref={dialogRef}
-				className="relative h-[500px] w-[600px] rounded-xl p-6 pt-16 [&::backdrop]:bg-black/50"
+				className="relative h-[500px] w-[600px] rounded-xl p-6 pt-16 backdrop:bg-black/50 backdrop:backdrop-blur-sm"
 			>
 				<button
 					// eslint-disable-next-line jsx-a11y/no-autofocus
@@ -178,14 +188,14 @@ function SummarizeButton({
 					className="icon-button absolute right-3 top-3 size-8"
 					onClick={closeDialog}
 				>
-					<XIcon className="!size-5" />
+					<XIcon className="size-5" />
 				</button>
 				<div className="ml-auto w-fit rounded-3xl bg-primary-light/35 px-5 py-2.5">
 					<p>Summarize the highlighted text</p>
 				</div>
 				<div className="flex gap-4 pt-6">
 					<BotIcon role="img" aria-label="Chatbot" className="shrink-0" />
-					<div className="rounded-3xl bg-primary/35 px-5 py-2.5">
+					<div aria-live="polite" className="rounded-3xl bg-primary/35 px-5 py-2.5">
 						{state === "submitting" ? (
 							<ChatLoadingIndicator />
 						) : error ? (

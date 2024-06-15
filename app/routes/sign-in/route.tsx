@@ -9,7 +9,7 @@ import { loader } from "./loader.server";
 
 export { action, loader };
 
-export default function SignIn() {
+export default function Page() {
 	const actionData = useActionData<typeof action>();
 	return (
 		<div className="flex h-screen min-h-[400px]">
@@ -80,7 +80,7 @@ function SignInButton({ error }: { error: string | undefined }) {
 			type="submit"
 			aria-disabled={submitting}
 			aria-label={submitting ? "Signing in" : "Sign In"}
-			className="mx-auto flex h-10 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-primary-light to-primary px-10 text-on-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&_svg]:size-5"
+			className="button mx-auto flex"
 		>
 			<span>Sign In</span>
 			{submitting ? <Loader2Icon className="animate-spin" /> : <LogInIcon />}

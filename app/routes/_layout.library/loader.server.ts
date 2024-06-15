@@ -13,7 +13,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 async function getLibraryBooks(supabase: SupabaseClient, userId: string) {
 	const { data: books, error } = await supabase
 		.from("user_library")
-		.select("book:books!inner (id, title, image)")
+		.select(
+			"book:books!inner (id, title, author, image, imageScaled:image_scaled, shortDescription:short_description)",
+		)
 		.eq("user_id", userId);
 
 	if (error !== null) {
@@ -23,4 +25,4 @@ async function getLibraryBooks(supabase: SupabaseClient, userId: string) {
 	return books.map(({ book }) => book);
 }
 
-export type Books = Awaited<ReturnType<typeof getLibraryBooks>>;
+export type FavoriteBook = Awaited<ReturnType<typeof getLibraryBooks>>[number];

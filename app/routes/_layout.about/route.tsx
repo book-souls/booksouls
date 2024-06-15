@@ -1,6 +1,6 @@
 import { Link } from "@remix-run/react";
 import { LinkedinIcon } from "lucide-react";
-import { useId } from "react";
+import React, { useId } from "react";
 import ahmed from "~/assets/Ahmed.webp";
 import SearchIcon from "~/assets/Ai-search.svg?react";
 import bahaa from "~/assets/Bahaa.webp";
@@ -16,8 +16,9 @@ import MultiLangIcon from "~/assets/multi-lang.svg?react";
 import nour from "~/assets/Nour.webp";
 import TeamIcon from "~/assets/team.svg?react";
 import zeyad from "~/assets/Zeyad.webp";
+import { prefersReducedMotion } from "~/utils/media-query";
 
-export default function About() {
+export default function Page() {
 	return (
 		<main>
 			<AboutUsSection />
@@ -30,22 +31,35 @@ export default function About() {
 
 function AboutUsSection() {
 	const headerId = useId();
+
+	function navigateToVisionSection(event: React.MouseEvent) {
+		const vision = document.getElementById("vision");
+		if (vision !== null) {
+			event.preventDefault();
+			vision.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth" });
+		}
+	}
+
 	return (
-		<section aria-labelledby={headerId} className="bg-surface text-on-surface">
-			<div className="flex items-center justify-center gap-24 px-20 py-10">
+		<section
+			aria-labelledby={headerId}
+			className="flex h-[calc(100vh-var(--header-h))] max-h-[800px] min-h-[500px] flex-col bg-surface text-on-surface"
+		>
+			<div className="flex flex-grow items-center justify-center gap-24 px-20">
 				<div className="flex flex-col items-center gap-10">
 					<h1 id={headerId} className="text-center text-4xl font-light uppercase tracking-widest">
 						About Us
 					</h1>
 					<p className="max-w-2xl text-lg font-light leading-loose">
-						Welcome to <span className="font-medium">Book Souls</span> — the digital crossroads
+						Welcome to <strong className="font-medium">Book Souls</strong> — the digital crossroads
 						where innovative technology meets the love of books. This platform is not only our
 						virtual bookshelf but also a capstone of our academic journey, a graduation project
 						designed with readers in mind.
 					</p>
 					<Link
 						to="#vision"
-						className="w-[150px] rounded-xl bg-gradient-to-l from-primary to-primary-light px-4 py-3 text-center text-lg text-on-primary shadow-inner"
+						className="button focus-visible:outline-primary-light"
+						onClick={navigateToVisionSection}
 					>
 						Learn More
 					</Link>
@@ -80,7 +94,8 @@ function VisionSection() {
 				<LabeledIcon Icon={UiIcon} label="Minimalist UI" />
 			</div>
 			<p className="text-center text-xl">
-				<span className="font-medium">Book Souls</span> aims to make a difference in readers{"' "}
+				<strong className="font-medium">Book Souls</strong> aims to make a difference in readers
+				{"' "}
 				journeys
 				<br />
 				through embedding of AI in our platform making reading
@@ -102,7 +117,6 @@ function FutureWorkSection() {
 				Future Work
 			</h2>
 			<p className="pt-5 text-4xl font-medium text-surface">Shaping the Future: Ongoing Work</p>
-			{/* Upcoming Features: A sneak peek into future updates */}
 			<div className="flex flex-row gap-28 pt-24 text-lg">
 				<LabeledIcon Icon={MobileIcon} label="Mobile App" />
 				<LabeledIcon Icon={FasterIcon} label="Faster Response" />
@@ -152,24 +166,26 @@ function TeamSection() {
 function Creator({ linkedin, image, name }: { linkedin: string; image: string; name: string }) {
 	return (
 		<div className="flex flex-col items-center">
-			<Link to={linkedin} target="_blank" rel="noreferrer noopener" className="group relative">
+			<Link
+				to={linkedin}
+				target="_blank"
+				rel="noreferrer noopener"
+				tabIndex={-1}
+				className="group relative"
+			>
 				<img
 					src={image}
 					alt={name}
 					className="h-[150px] w-[150px] rounded-full border border-slate-400 bg-blend-normal group-hover:bg-blend-darken"
 				/>
 				<div className="absolute inset-0 rounded-full bg-gradient-to-t from-stone-800/50 via-stone-800/10 to-transparent opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100" />
-				<LinkedinIcon
-					role="img"
-					aria-label="LinkedIn"
-					className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-md fill-white p-0.5 text-white opacity-0 drop-shadow-2xl transition-opacity duration-500 ease-in-out group-hover:opacity-100"
-				/>
+				<LinkedinIcon className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-md fill-white p-0.5 text-white opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100" />
 			</Link>
 			<Link
 				to={linkedin}
 				target="_blank"
 				rel="noreferrer noopener"
-				className="mt-4 text-center text-xl font-medium hover:underline"
+				className="mt-4 text-center text-xl font-medium hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
 			>
 				{name}
 			</Link>
@@ -184,10 +200,13 @@ function LabeledIcon({
 	Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 	label: string;
 }) {
+	const labelId = useId();
 	return (
 		<div className="flex flex-col items-center gap-5">
-			<Icon aria-hidden className="h-[100px] w-[100px]" />
-			<p className="text-center">{label}</p>
+			<Icon className="h-[100px] w-[100px]" />
+			<p id={labelId} className="text-center">
+				{label}
+			</p>
 		</div>
 	);
 }

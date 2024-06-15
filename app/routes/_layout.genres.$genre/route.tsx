@@ -1,25 +1,22 @@
 import { useLoaderData, useParams } from "@remix-run/react";
+import { BookCard } from "~/components/BookCard";
 import { loader } from "./loader.server";
 
 export { loader };
 
-export default function GenreBooksPage() {
+export default function Page() {
 	const { books } = useLoaderData<typeof loader>();
 	const { genre } = useParams();
 	return (
-		<main className="flex flex-col items-center p-8">
-			<h1 className="mb-8 text-center text-3xl font-medium">{genre}</h1>
-			<div className="grid grid-cols-5 gap-10">
+		<main>
+			<h1 className="mt-10 text-center text-4xl font-medium">{genre}</h1>
+			<ul role="list" className="mx-auto grid w-fit grid-cols-4 gap-8 p-8">
 				{books.map((book) => (
-					<div key={book.id}>
-						<img
-							src={book.image}
-							alt={book.title}
-							className="h-48 w-32 rounded-lg object-cover shadow-md"
-						/>
-					</div>
+					<li key={book.id}>
+						<BookCard book={book} />
+					</li>
 				))}
-			</div>
+			</ul>
 		</main>
 	);
 }

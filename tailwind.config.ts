@@ -1,14 +1,13 @@
 import type { Config } from "tailwindcss";
+import colors from "tailwindcss/colors";
 import plugin from "tailwindcss/plugin";
 
-const colors = {
+const palette = {
 	primary: {
 		DEFAULT: "#1f5f8b",
 		light: "#1891ac",
 	},
-	background: {
-		DEFAULT: "#d2ecf9",
-	},
+	background: "#d2ecf9",
 	surface: "#253b6e",
 };
 
@@ -18,11 +17,13 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				...colors,
+				...palette,
+				floating: colors.neutral[50],
 				on: {
-					primary: colors.background,
-					background: colors.primary.DEFAULT,
-					surface: colors.background,
+					primary: palette.background,
+					background: palette.primary.DEFAULT,
+					surface: palette.background,
+					floating: colors.neutral[950],
 				},
 			},
 			fontFamily: {
@@ -31,7 +32,7 @@ export default {
 		},
 	},
 	plugins: [
-		plugin(({ addComponents, addUtilities }) => {
+		plugin(({ addComponents, addUtilities, theme }) => {
 			addComponents({
 				".line-gradient": {
 					height: "16px",
@@ -70,7 +71,7 @@ export default {
 					width: "2.5rem",
 					height: "2.5rem",
 					borderRadius: "9999px",
-					"& svg": {
+					"& :where(svg)": {
 						width: "1.5rem",
 						height: "1.5rem",
 					},
@@ -94,6 +95,43 @@ export default {
 					"&:disabled, &[aria-disabled='true']": {
 						pointerEvents: "none",
 						opacity: "0.5",
+					},
+				},
+			});
+
+			addComponents({
+				".button": {
+					position: "relative",
+					display: "inline-flex",
+					alignItems: "center",
+					justifyContent: "center",
+					gap: "0.5rem",
+					height: "2.75rem",
+					padding: "0 1.5rem",
+					borderRadius: theme("borderRadius.lg"),
+					backgroundImage: `linear-gradient(to right, ${theme("colors.primary.DEFAULT")}, ${theme("colors.primary.light")})`,
+					color: theme("colors.on.primary"),
+					"& :where(svg)": {
+						width: "1.125rem",
+						height: "1.125rem",
+					},
+					"&::before": {
+						content: "''",
+						position: "absolute",
+						inset: "0",
+						borderRadius: "inherit",
+						backgroundColor: "currentColor",
+						opacity: "0",
+					},
+					"&:hover::before": {
+						opacity: "0.1",
+					},
+					"&:active::before": {
+						opacity: "0.15",
+					},
+					"&:focus-visible": {
+						outline: `2px solid ${theme("colors.primary.DEFAULT")}`,
+						outlineOffset: "2px",
 					},
 				},
 			});

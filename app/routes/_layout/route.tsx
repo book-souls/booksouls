@@ -37,11 +37,14 @@ function Header() {
 	return (
 		<header className="flex items-center bg-surface px-6 text-on-surface">
 			<div className="mx-auto flex max-w-7xl grow items-center justify-between">
-				<Link to="/">
+				<Link
+					to="/"
+					className="focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
+				>
 					<Logo scale={0.75} />
 				</Link>
 				<nav>
-					<ul className="flex items-center justify-center gap-14">
+					<ul role="list" className="flex items-center justify-center gap-14">
 						<li>
 							<NavLink to="/">Home</NavLink>
 						</li>
@@ -102,19 +105,20 @@ function GenresMenu() {
 				</span>
 			</button>
 			<Portal>
-				<div {...api.getPositionerProps()}>
-					<Transition
-						show={api.open}
-						enter="transition-opacity duration-300"
-						enterFrom="opacity-0"
-						enterTo="opacity-100"
-						leave="transition-opacity"
-						leaveFrom="opacity-100"
-						leaveTo="opacity-0"
-					>
+				<Transition
+					show={api.open}
+					enter="transition-opacity duration-300"
+					enterFrom="opacity-0"
+					enterTo="opacity-100"
+					leave="transition-opacity"
+					leaveFrom="opacity-100"
+					leaveTo="opacity-0"
+				>
+					<div {...api.getPositionerProps()}>
 						<ul
 							{...api.getContentProps()}
-							className="!block rounded-xl bg-neutral-50 p-2 shadow-xl transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary-light"
+							role="list"
+							className="!block rounded-xl bg-floating p-2 text-on-floating shadow-lg transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary-light"
 						>
 							{genres.map((genre) => (
 								<li key={genre}>
@@ -122,15 +126,15 @@ function GenresMenu() {
 										{...api.getItemProps({ value: genre })}
 										to={`/genres/${genre}`}
 										tabIndex={-1}
-										className="!block rounded p-2 font-medium text-primary data-[highlighted]:bg-primary data-[highlighted]:text-on-primary"
+										className="!block rounded px-2 py-1.5 font-medium data-[highlighted]:bg-primary data-[highlighted]:text-on-primary"
 									>
 										{genre}
 									</Link>
 								</li>
 							))}
 						</ul>
-					</Transition>
-				</div>
+					</div>
+				</Transition>
 			</Portal>
 		</>
 	);
@@ -155,29 +159,28 @@ function UserAvatar({ user }: { user: User }) {
 				{user.email?.at(0)?.toUpperCase()}
 			</button>
 			<Portal>
-				<div {...api.getPositionerProps()}>
-					<Transition
-						show={api.open}
-						enter="transition-opacity duration-300"
-						enterFrom="opacity-0"
-						enterTo="opacity-100"
-						leave="transition-opacity"
-						leaveFrom="opacity-100"
-						leaveTo="opacity-0"
-					>
+				<Transition
+					show={api.open}
+					enter="transition-opacity duration-300"
+					enterFrom="opacity-0"
+					enterTo="opacity-100"
+					leave="transition-opacity"
+					leaveFrom="opacity-100"
+					leaveTo="opacity-0"
+				>
+					<div {...api.getPositionerProps()}>
 						<div
 							{...api.getContentProps()}
-							className="relative !block rounded-lg bg-neutral-50 p-4 text-neutral-950 shadow-lg"
+							className="relative !block rounded-lg bg-floating p-4 text-on-floating shadow-lg"
 						>
 							<div
 								{...api.getArrowProps()}
-								className="[--arrow-background:theme(colors.neutral.50)] [--arrow-size:8px]"
+								className="[--arrow-background:theme(colors.floating)] [--arrow-size:8px]"
 							>
 								<div {...api.getArrowTipProps()} />
 							</div>
 							<button
 								{...api.getCloseTriggerProps()}
-								aria-label="Close profile menu"
 								className="icon-button absolute right-2 top-2 size-8 [&_svg]:size-5"
 							>
 								<XIcon />
@@ -188,8 +191,8 @@ function UserAvatar({ user }: { user: User }) {
 							</div>
 							<SignOutButton />
 						</div>
-					</Transition>
-				</div>
+					</div>
+				</Transition>
 			</Portal>
 		</div>
 	);
@@ -211,7 +214,7 @@ function SignOutButton() {
 	return (
 		<button
 			aria-disabled={submitting}
-			className="mx-auto flex h-10 items-center justify-center gap-2 rounded-lg bg-red-700 px-6 text-sm text-red-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 [&_svg]:size-4"
+			className="button mx-auto flex bg-red-700 bg-none text-red-50 focus-visible:outline-red-700"
 			onClick={submit}
 		>
 			Sign Out
@@ -222,8 +225,8 @@ function SignOutButton() {
 
 function SignInLink() {
 	return (
-		<Link to="/sign-in" title="Sign in" className="icon-button">
-			<LogInIcon aria-label="Sign in" />
+		<Link to="/sign-in" aria-label="Sign in" title="Sign in" className="icon-button">
+			<LogInIcon />
 		</Link>
 	);
 }
@@ -259,7 +262,7 @@ function EmailContactForm() {
 					id={inputId}
 					type="email"
 					placeholder="Email..."
-					className="h-10 w-[200px] bg-transparent px-2 py-1 placeholder:text-on-surface/50 focus:outline-none"
+					className="h-10 w-[300px] bg-transparent px-2 py-1 placeholder:text-on-surface/50 focus:outline-none"
 				/>
 				<button
 					type="submit"

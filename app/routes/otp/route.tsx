@@ -9,7 +9,7 @@ import { loader } from "./loader.server";
 
 export { action, loader };
 
-export default function OTP() {
+export default function Page() {
 	const { email } = useLoaderData<typeof loader>();
 	const actionData = useActionData<typeof action>();
 
@@ -92,7 +92,7 @@ function VerifyButton({ error }: { error: string | undefined }) {
 			type="submit"
 			aria-disabled={submitting}
 			aria-label={submitting ? "Verifying" : "Verify"}
-			className="mx-auto flex h-10 w-32 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-primary-light to-primary px-10 text-on-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&_svg]:size-5"
+			className="button mx-auto flex"
 		>
 			<span>Verify</span>
 			{submitting && <Loader2Icon className="shrink-0 animate-spin" />}

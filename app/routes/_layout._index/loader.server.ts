@@ -3,17 +3,17 @@ import { createServerClient, type SupabaseClient } from "~/supabase/client.serve
 
 export async function loader({ request }: LoaderFunctionArgs) {
 	const supabase = createServerClient(request.headers);
-	const books = await getBooks(supabase);
-	return {
-		books: groupBooksByGenre(books),
-		featuredBooks: books.filter((book) => book.featured),
-	};
+	const featuredBooks = await getFeaturedBooks(supabase);
+	return { featuredBooks };
 }
 
-async function getBooks(supabase: SupabaseClient) {
+async function getFeaturedBooks(supabase: SupabaseClient) {
 	const { data, error } = await supabase
 		.from("books")
-		.select("id, image, title, genres, shortDescription:short_description, featured:is_featured")
+		.select(
+			"id, image, imageScaled:image_scaled, title, genres, author, shortDescription:short_description, featured:is_featured",
+		)
+		.eq("is_featured", true)
 		.order("title");
 
 	if (error !== null) {
@@ -23,19 +23,4 @@ async function getBooks(supabase: SupabaseClient) {
 	return data;
 }
 
-export type Book = Awaited<ReturnType<typeof getBooks>>[number];
-
-function groupBooksByGenre(books: Book[]) {
-	const bookGenreMap: Record<string, Book[]> = {};
-	for (const book of books) {
-		for (const genre of book.genres) {
-			bookGenreMap[genre] ??= [];
-			bookGenreMap[genre].push(book);
-		}
-	}
-
-	// Sort the genres alphabetically
-	return Object.keys(bookGenreMap)
-		.sort()
-		.map((key) => [key, bookGenreMap[key]] as const);
-}
+export type FeaturedBook = Awaited<ReturnType<typeof getFeaturedBooks>>[number];

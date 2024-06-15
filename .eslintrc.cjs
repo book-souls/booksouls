@@ -49,6 +49,7 @@ module.exports = {
 			},
 			rules: {
 				"react/prop-types": "off",
+				"jsx-a11y/no-redundant-roles": "off",
 			},
 		},
 
