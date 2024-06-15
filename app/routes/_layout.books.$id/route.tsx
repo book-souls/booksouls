@@ -21,7 +21,7 @@ export default function Page() {
 				<div>
 					<div className="flex justify-between gap-8">
 						<div>
-							<h1 className="text-2xl font-medium">{book.title}</h1>
+							<h1 className="text-3xl font-medium">{book.title}</h1>
 							<p className="mt-2 text-lg">{book.author}</p>
 						</div>
 						<ul role="list" aria-label="Genres" className="flex gap-2">

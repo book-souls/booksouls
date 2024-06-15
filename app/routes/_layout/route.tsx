@@ -126,7 +126,7 @@ function GenresMenu() {
 										{...api.getItemProps({ value: genre })}
 										to={`/genres/${genre}`}
 										tabIndex={-1}
-										className="!block rounded p-2 font-medium data-[highlighted]:bg-primary data-[highlighted]:text-on-primary"
+										className="!block rounded px-2 py-1.5 font-medium data-[highlighted]:bg-primary data-[highlighted]:text-on-primary"
 									>
 										{genre}
 									</Link>
