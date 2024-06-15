@@ -94,8 +94,8 @@ export default function Page() {
 	}
 
 	return (
-		<div className="flex h-screen min-h-[600px] w-full items-center justify-center bg-white text-neutral-800">
-			<div className="relative h-full max-h-[800px] w-full max-w-[1400px]">
+		<div className="flex h-screen w-full items-center justify-center bg-white text-neutral-800">
+			<div className="relative h-full max-h-[800px] min-h-[600px] w-full max-w-[1400px]">
 				<header className="absolute top-0 z-10 flex h-12 w-full items-center border-b border-gray-200 px-4 py-2 text-primary">
 					<Link to="/" aria-label="Home" className="icon-button h-8 w-8">
 						<HomeIcon className="size-4" />
@@ -179,7 +179,7 @@ function SummarizeButton({
 			</Transition>
 			<dialog
 				ref={dialogRef}
-				className="relative h-[500px] w-[600px] rounded-xl p-6 pt-16 [&::backdrop]:bg-black/50"
+				className="relative h-[500px] w-[600px] rounded-xl p-6 pt-16 backdrop:bg-black/50 backdrop:backdrop-blur-sm"
 			>
 				<button
 					// eslint-disable-next-line jsx-a11y/no-autofocus
