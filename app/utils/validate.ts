@@ -9,3 +9,7 @@ export function isEmail(value: unknown): value is string {
 export function isDigit(value: unknown): value is string {
 	return typeof value === "string" && /^[0-9]$/.test(value);
 }
+
+export function isNumber(value: unknown): value is number {
+	return typeof value === "number";
+}
