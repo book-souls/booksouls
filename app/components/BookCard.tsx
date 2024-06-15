@@ -5,7 +5,7 @@ import * as tooltip from "@zag-js/tooltip";
 import { useId } from "react";
 import { BookImage } from "./BookImage";
 
-type BookCardProps = {
+export type BookCardProps = {
 	book: {
 		id: number;
 		image: string;
@@ -35,7 +35,7 @@ export function BookCard({ book }: BookCardProps) {
 			<Link
 				{...api.getTriggerProps()}
 				to={`/books/${book.id}`}
-				className="block rounded-lg transition-transform duration-300 hover:scale-105 focus-visible:scale-105 focus-visible:outline-none"
+				className="block rounded-lg transition-transform duration-300 hover:scale-105 focus-visible:scale-105 focus-visible:outline-none motion-reduce:duration-0"
 			>
 				<BookImage book={book} className="h-[240px] w-[160px] rounded-lg shadow-md" />
 			</Link>

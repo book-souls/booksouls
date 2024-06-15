@@ -195,7 +195,7 @@ function SummarizeButton({
 				</div>
 				<div className="flex gap-4 pt-6">
 					<BotIcon role="img" aria-label="Chatbot" className="shrink-0" />
-					<div className="rounded-3xl bg-primary/35 px-5 py-2.5">
+					<div aria-live="polite" className="rounded-3xl bg-primary/35 px-5 py-2.5">
 						{state === "submitting" ? (
 							<ChatLoadingIndicator />
 						) : error ? (

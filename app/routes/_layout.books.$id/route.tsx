@@ -105,22 +105,25 @@ function FavoriteButton({ favorite, user }: { favorite: boolean; user: User | nu
 
 function SimilarBooksPlaceholder() {
 	return (
-		<div className="flex pb-6 pt-4">
-			{Array(4)
-				.fill(null)
-				.map((_, i) => (
-					<div key={i} className="shrink-0 basis-1/4">
-						<div className="mx-auto h-[240px] w-[160px] animate-pulse rounded-lg bg-gray-400 shadow-md" />
-					</div>
-				))}
-		</div>
+		<>
+			<span className="sr-only">Loading</span>
+			<div className="flex pb-6 pt-4">
+				{Array(4)
+					.fill(null)
+					.map((_, i) => (
+						<div key={i} className="shrink-0 basis-1/4">
+							<div className="mx-auto h-[240px] w-[160px] animate-pulse rounded-lg bg-gray-400 shadow-md" />
+						</div>
+					))}
+			</div>
+		</>
 	);
 }
 
 function SimilarBooksError() {
 	return (
 		<div className="flex h-[240px] flex-col items-center justify-center pb-6 pt-4">
-			<AlertCircleIcon size={32} className="text-red-600" />
+			<AlertCircleIcon size={32} aria-label="Error" className="text-red-600" />
 			<p className="mt-3 text-xl">An error has occured</p>
 		</div>
 	);
