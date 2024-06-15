@@ -54,7 +54,7 @@ function SearchForm({ error }: { error: boolean | null }) {
 function SearchSubmit({ error }: { error: boolean | null }) {
 	const navigation = useNavigation();
 	const idle = navigation.state === "idle";
-	const loading = navigation.state === "loading";
+	const loading = navigation.state === "loading" && navigation.location.pathname === "/search";
 
 	useEffect(() => {
 		if (!idle || !error) {
