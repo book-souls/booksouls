@@ -38,6 +38,9 @@ importers:
       '@vercel/remix':
         specifier: ^2.9.1
         version: 2.9.2(@remix-run/dev@2.9.2(@remix-run/react@2.9.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.3.3))(@remix-run/serve@2.9.2(typescript@5.3.3))(@types/node@16.18.11)(ts-node@10.9.1(@types/node@16.18.11)(typescript@5.3.3))(typescript@5.3.3)(vite@5.1.4(@types/node@16.18.11)))(@remix-run/node@2.9.2(typescript@5.3.3))(@remix-run/server-runtime@2.9.2(typescript@5.3.3))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@zag-js/dialog':
+        specifier: ^0.56.1
+        version: 0.56.1
       '@zag-js/menu':
         specifier: ^0.56.1
         version: 0.56.1
@@ -1329,6 +1332,9 @@ packages:
 
   '@zag-js/core@0.56.1':
     resolution: {integrity: sha512-3Iwum6+UmDxBqJIT4t2wSnr5hz83c6oRDS8j7I0hgV4U2Xt/IJMPedZt/KmV8ghjai/BlETskHUW1JvwZ4jaYA==}
+
+  '@zag-js/dialog@0.56.1':
+    resolution: {integrity: sha512-dD4A457wW5Lnz2nm9vVvDQs2H3z/CTVS6ujCq/9W61Eo3LmhCPJQOHbr1QDB8kssYYdZn6eJZsbO5PSt7gCO1w==}
 
   '@zag-js/dismissable@0.56.1':
     resolution: {integrity: sha512-jG3KMdhazYgcoW83Aay/VCKg/VParejXhKqZn+7ze5doqRXklL2LsuwSd2ecWuqX9ckB0ppd63w0IN7xAL1I8Q==}
@@ -6173,6 +6179,18 @@ snapshots:
     dependencies:
       '@zag-js/store': 0.56.1
       klona: 2.0.6
+
+  '@zag-js/dialog@0.56.1':
+    dependencies:
+      '@zag-js/anatomy': 0.56.1
+      '@zag-js/aria-hidden': 0.56.1
+      '@zag-js/core': 0.56.1
+      '@zag-js/dismissable': 0.56.1
+      '@zag-js/dom-query': 0.56.1
+      '@zag-js/remove-scroll': 0.56.1
+      '@zag-js/types': 0.56.1
+      '@zag-js/utils': 0.56.1
+      focus-trap: 7.5.4
 
   '@zag-js/dismissable@0.56.1':
     dependencies:

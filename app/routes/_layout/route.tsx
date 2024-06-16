@@ -199,17 +199,15 @@ function UserAvatar({ user }: { user: User }) {
 }
 
 function SignOutButton() {
-	const { submit, state, error } = useSignOut();
-	const idle = state === "idle";
-	const submitting = state === "submitting";
+	const { submit, submitting, error } = useSignOut();
 
 	useEffect(() => {
-		if (!idle || error == null) {
+		if (submitting || error == null) {
 			return;
 		}
 
 		toast.error("Failed to sign out", { description: error });
-	}, [idle, error]);
+	}, [submitting, error]);
 
 	return (
 		<button

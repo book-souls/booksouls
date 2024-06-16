@@ -1,8 +1,10 @@
 import { Transition } from "@headlessui/react";
 import { Link, useLoaderData } from "@remix-run/react";
+import * as dialog from "@zag-js/dialog";
+import { mergeProps, normalizeProps, Portal, useMachine } from "@zag-js/react";
 import epubjs, { Contents, Rendition, type Location } from "epubjs";
 import { ChevronLeft, ChevronRight, HomeIcon, Loader2Icon, XIcon } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import BotIcon from "~/assets/bot.svg?react";
 import { useSummarize } from "../api.summarize/use-summarize";
 import { loader } from "./loader.server";
@@ -63,11 +65,7 @@ export default function Page() {
 				case "ArrowRight":
 					rendition.next();
 					break;
-				default:
-					return;
 			}
-
-			event.preventDefault();
 		}
 
 		rendition.on("keydown", handleKeyDown);
@@ -101,7 +99,7 @@ export default function Page() {
 				<div className="h-full w-full p-16">
 					<div
 						ref={readerRef}
-						className="relative h-full w-full after:absolute after:left-1/2 after:top-1/2 after:h-full after:w-px after:-translate-x-1/2 after:-translate-y-1/2 after:bg-gray-400"
+						className="relative h-full w-full after:absolute after:left-1/2 after:top-1/2 after:h-[90%] after:w-px after:-translate-x-1/2 after:-translate-y-1/2 after:bg-gray-400"
 					/>
 				</div>
 				{loading && (
@@ -134,26 +132,21 @@ export default function Page() {
 }
 
 function SummarizeButton({ selectedText }: { selectedText: string }) {
-	const { submit, state, summary, error } = useSummarize();
-	const dialogRef = useRef<HTMLDialogElement>(null);
+	const { submit, submitting, summary, error } = useSummarize();
+	const id = useId();
+	const [state, send] = useMachine(dialog.machine({ id }));
+	const api = dialog.connect(state, send, normalizeProps);
 
-	function summarize() {
-		if (dialogRef.current === null) {
-			return;
-		}
-
-		submit(selectedText);
-		dialogRef.current.showModal();
-	}
-
-	function closeDialog() {
-		dialogRef.current?.close();
-	}
+	const triggerProps = mergeProps(api.getTriggerProps(), {
+		onClick() {
+			submit(selectedText);
+		},
+	});
 
 	return (
 		<>
 			<Transition
-				show={selectedText.length >= 800}
+				show={selectedText.length >= 500}
 				enter="transition-opacity duration-300"
 				enterFrom="opacity-0"
 				enterTo="opacity-100"
@@ -161,54 +154,93 @@ function SummarizeButton({ selectedText }: { selectedText: string }) {
 				leaveFrom="opacity-100"
 				leaveTo="opacity-0"
 			>
-				<button className="button absolute bottom-4 left-1/2 -translate-x-1/2" onClick={summarize}>
+				<button {...triggerProps} className="button absolute bottom-4 left-1/2 -translate-x-1/2">
 					Summarize
 				</button>
 			</Transition>
-			<dialog
-				ref={dialogRef}
-				className="relative h-[500px] w-[600px] rounded-xl p-6 pt-16 backdrop:bg-black/50 backdrop:backdrop-blur-sm"
-			>
-				<button
-					// eslint-disable-next-line jsx-a11y/no-autofocus
-					autoFocus
-					aria-label="Close dialog"
-					className="icon-button absolute right-3 top-3 size-8"
-					onClick={closeDialog}
+			<Portal>
+				<Transition
+					show={api.open}
+					enter="duration-300 transition-opacity"
+					enterFrom="opacity-0"
+					enterTo="opacity-100"
+					leave="transition-opacity duration-300"
+					leaveFrom="opacity-100"
+					leaveTo="opacity-0"
 				>
-					<XIcon className="size-5" />
-				</button>
-				<div className="ml-auto w-fit rounded-3xl bg-primary-light/35 px-5 py-2.5">
-					<p>Summarize the highlighted text</p>
-				</div>
-				<div className="flex gap-4 pt-6">
-					<BotIcon role="img" aria-label="Chatbot" className="shrink-0" />
-					<div aria-live="polite" className="rounded-3xl bg-primary/35 px-5 py-2.5">
-						{state === "submitting" ? (
-							<ChatLoadingIndicator />
-						) : error ? (
-							<ChatEffect text="Failed to summarize. Please try again later." />
-						) : summary != null ? (
-							<ChatEffect text={summary} />
-						) : null}
+					<div
+						{...api.getBackdropProps()}
+						className="fixed inset-0 z-20 !block bg-black/50 backdrop-blur-sm"
+					/>
+				</Transition>
+				<Transition
+					show={api.open}
+					enter="motion-safe:transition-transform motion-safe:duration-500 motion-reduce:transition-opacity motion-reduce:duration-300"
+					enterFrom="motion-safe:translate-y-full motion-reduce:opacity-0"
+					enterTo="motion-safe:translate-y-0 motion-reduce:opacity-100"
+					leave="motion-safe:transition-[opacity,transform] motion-safe:duration-500 motion-reduce:transition-opacity motion-reduce:duration-300"
+					leaveFrom="opacity-100 motion-safe:scale-100"
+					leaveTo="opacity-0 motion-safe:scale-50"
+				>
+					<div
+						{...api.getPositionerProps()}
+						className="fixed inset-0 z-20 flex items-center justify-center"
+					>
+						<div
+							{...api.getContentProps()}
+							className="relative !block h-full max-h-[500px] w-full max-w-[600px] overflow-y-auto rounded-xl bg-floating p-6 pt-16 text-on-floating"
+						>
+							<p className="ml-auto w-fit rounded-3xl bg-primary-light/35 px-4 py-2 text-sm">
+								Summarize the highlighted text
+							</p>
+							<div className="flex gap-4 pt-6">
+								<BotIcon role="img" aria-label="Chatbot" className="size-9 shrink-0" />
+								<div aria-live="polite" className="rounded-3xl bg-primary/35 px-4 py-2 text-sm">
+									{submitting ? (
+										<LoadingDots />
+									) : error ? (
+										<TypingEffect text="Failed to summarize. Please try again later." />
+									) : summary != null ? (
+										<TypingEffect text={summary} />
+									) : null}
+								</div>
+							</div>
+							<button
+								{...api.getCloseTriggerProps()}
+								aria-label="Close dialog"
+								className="icon-button absolute right-3 top-3 size-8"
+							>
+								<XIcon className="size-5" />
+							</button>
+						</div>
 					</div>
-				</div>
-			</dialog>
+				</Transition>
+			</Portal>
 		</>
 	);
 }
 
-function ChatLoadingIndicator() {
+function LoadingDots() {
 	return (
-		<svg width={40} height="1rem" aria-label="Loading" className="translate-y-[12.5%]">
-			<circle r="4" cx="4" cy="50%" className="animate-bounce" />
-			<circle r="4" cx="50%" cy="50%" className="animate-bounce [animation-delay:166ms]" />
-			<circle r="4" cx="36" cy="50%" className="animate-bounce [animation-delay:333ms]" />
+		<svg width={40} height={20} aria-label="Loading" className="translate-y-[12.5%]">
+			<circle r="4" cx="4" cy="50%" className="animate-bounce [animation-duration:900ms]" />
+			<circle
+				r="4"
+				cx="50%"
+				cy="50%"
+				className="animate-bounce [animation-duration:900ms] [animation-delay:150ms]"
+			/>
+			<circle
+				r="4"
+				cx="36"
+				cy="50%"
+				className="animate-bounce [animation-duration:900ms] [animation-delay:300ms]"
+			/>
 		</svg>
 	);
 }
 
-function ChatEffect({ text }: { text: string }) {
+function TypingEffect({ text }: { text: string }) {
 	const [index, setIndex] = useState(0);
 
 	useEffect(() => {
@@ -218,7 +250,7 @@ function ChatEffect({ text }: { text: string }) {
 				start = timestamp;
 			}
 
-			const delayMs = 17.5;
+			const delayMs = 15;
 			const index = Math.floor((timestamp - start) / delayMs);
 			setIndex(index);
 
@@ -232,5 +264,12 @@ function ChatEffect({ text }: { text: string }) {
 		};
 	}, [text]);
 
-	return <p>{text.slice(0, index)}</p>;
+	return (
+		<p data-animating={index < text.length} className="relative">
+			{text.slice(0, index)}
+			{index < text.length && (
+				<span className="ml-1 inline-block h-3 w-[1ch] bg-current [animation:flicker_0.5s_infinite]" />
+			)}
+		</p>
+	);
 }
