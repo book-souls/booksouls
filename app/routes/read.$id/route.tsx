@@ -2,7 +2,7 @@ import { Transition } from "@headlessui/react";
 import { Link, useLoaderData } from "@remix-run/react";
 import epubjs, { Contents, Rendition, type Location } from "epubjs";
 import { ChevronLeft, ChevronRight, HomeIcon, Loader2Icon, XIcon } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import BotIcon from "~/assets/bot.svg?react";
 import { useSummarize } from "../api.summarize/use-summarize";
 import { loader } from "./loader.server";
@@ -14,16 +14,9 @@ export default function Page() {
 	const [loading, setLoading] = useState(true);
 	const [atStart, setAtStart] = useState(true);
 	const [atEnd, setAtEnd] = useState(false);
-	const [showSummarize, setShowSummarize] = useState(false);
+	const [selectedText, setSelectedText] = useState("");
 	const readerRef = useRef<HTMLDivElement>(null);
 	const renditionRef = useRef<Rendition | null>(null);
-	const selectionRef = useRef<Selection | null>(null);
-
-	function clearSelection() {
-		selectionRef.current?.empty();
-		selectionRef.current = null;
-		setShowSummarize(false);
-	}
 
 	useEffect(() => {
 		const reader = readerRef.current;
@@ -38,24 +31,28 @@ export default function Page() {
 			allowScriptedContent: true,
 			spread: "always",
 		});
-
 		renditionRef.current = rendition;
+
 		rendition.display().then(() => {
 			setLoading(false);
 		});
 
+		let selection: Selection | null = null;
+
 		rendition.hooks.content.register((contents: Contents) => {
 			contents.document.addEventListener("selectionchange", function () {
-				const selection = this.getSelection();
-				selectionRef.current = selection;
-				setShowSummarize(selection !== null && selection.toString().length > 200);
+				selection = this.getSelection();
+				setSelectedText(selection?.toString() ?? "");
 			});
 		});
 
 		rendition.on("relocated", (location: Location) => {
 			setAtStart(location.atStart);
 			setAtEnd(location.atEnd);
-			clearSelection();
+
+			selection?.empty();
+			selection = null;
+			setSelectedText("");
 		});
 
 		function handleKeyDown(event: KeyboardEvent) {
@@ -78,18 +75,15 @@ export default function Page() {
 
 		return () => {
 			rendition.destroy();
-			renditionRef.current = null;
 			document.removeEventListener("keydown", handleKeyDown);
-			clearSelection();
-			setLoading(true);
 		};
 	}, [epub]);
 
-	function goToPrevious() {
+	function navigateBack() {
 		renditionRef.current?.prev();
 	}
 
-	function goToNext() {
+	function navigateForward() {
 		renditionRef.current?.next();
 	}
 
@@ -104,7 +98,6 @@ export default function Page() {
 				</header>
 				<div
 					ref={readerRef}
-					data-loading={loading}
 					className="relative z-0 h-full w-full rounded-lg p-16 after:absolute after:left-1/2 after:top-1/2 after:h-3/4 after:w-px after:-translate-x-1/2 after:-translate-y-1/2 after:bg-gray-400"
 				/>
 				{loading && (
@@ -117,7 +110,7 @@ export default function Page() {
 					aria-label="Go to the previous page"
 					tabIndex={-1}
 					className="icon-button absolute left-6 top-1/2 -translate-y-1/2"
-					onClick={goToPrevious}
+					onClick={navigateBack}
 				>
 					<ChevronLeft />
 				</button>
@@ -126,32 +119,26 @@ export default function Page() {
 					aria-label="Go to the next page"
 					tabIndex={-1}
 					className="icon-button absolute right-6 top-1/2 -translate-y-1/2"
-					onClick={goToNext}
+					onClick={navigateForward}
 				>
 					<ChevronRight />
 				</button>
-				<SummarizeButton shown={showSummarize} selection={selectionRef} />
+				<SummarizeButton selectedText={selectedText} />
 			</div>
 		</div>
 	);
 }
 
-function SummarizeButton({
-	shown,
-	selection,
-}: {
-	shown: boolean;
-	selection: React.RefObject<Selection | null>;
-}) {
+function SummarizeButton({ selectedText }: { selectedText: string }) {
 	const { submit, state, summary, error } = useSummarize();
 	const dialogRef = useRef<HTMLDialogElement>(null);
 
-	function summarizeSelection() {
-		if (!shown || selection.current === null || dialogRef.current === null) {
+	function summarize() {
+		if (dialogRef.current === null) {
 			return;
 		}
 
-		submit(selection.current.toString());
+		submit(selectedText);
 		dialogRef.current.showModal();
 	}
 
@@ -162,7 +149,7 @@ function SummarizeButton({
 	return (
 		<>
 			<Transition
-				show={shown}
+				show={selectedText.length >= 200}
 				enter="transition-opacity duration-300"
 				enterFrom="opacity-0"
 				enterTo="opacity-100"
@@ -170,10 +157,7 @@ function SummarizeButton({
 				leaveFrom="opacity-100"
 				leaveTo="opacity-0"
 			>
-				<button
-					className="button absolute bottom-4 left-1/2 -translate-x-1/2"
-					onClick={summarizeSelection}
-				>
+				<button className="button absolute bottom-4 left-1/2 -translate-x-1/2" onClick={summarize}>
 					Summarize
 				</button>
 			</Transition>
