@@ -89,22 +89,27 @@ export default function Page() {
 
 	return (
 		<div className="flex h-screen w-full items-center justify-center bg-white text-neutral-800">
-			<div className="relative h-full max-h-[800px] min-h-[600px] w-full max-w-[1400px]">
-				<header className="absolute top-0 z-10 flex h-12 w-full items-center border-b border-gray-200 px-4 py-2 text-primary">
-					<Link to="/" aria-label="Home" className="icon-button h-8 w-8">
+			<header className="fixed left-0 right-0 top-0 z-10 h-12 border-b border-gray-300 text-primary">
+				<div className="relative mx-auto flex h-full max-w-7xl items-center justify-center">
+					<h1 className="font-medium">{title}</h1>
+					<Link to="/" aria-label="Home" className="icon-button absolute left-4 size-8">
 						<HomeIcon className="size-4" />
 					</Link>
-					<h1 className="absolute left-1/2 -translate-x-1/2 font-medium leading-tight">{title}</h1>
-				</header>
-				<div
-					ref={readerRef}
-					className="relative z-0 h-full w-full rounded-lg p-16 after:absolute after:left-1/2 after:top-1/2 after:h-3/4 after:w-px after:-translate-x-1/2 after:-translate-y-1/2 after:bg-gray-400"
-				/>
+				</div>
+			</header>
+			<div className="relative z-0 mt-12 h-[calc(100%-3rem)] max-h-[800px] w-full max-w-[1400px]">
+				<div className="h-full w-full p-16">
+					<div
+						ref={readerRef}
+						className="relative h-full w-full after:absolute after:left-1/2 after:top-1/2 after:h-full after:w-px after:-translate-x-1/2 after:-translate-y-1/2 after:bg-gray-400"
+					/>
+				</div>
 				{loading && (
 					<div className="absolute left-1/4 top-1/2 -translate-x-1/2 -translate-y-1/2">
 						<Loader2Icon aria-label="Loading" className="size-10 animate-spin text-primary" />
 					</div>
 				)}
+				<SummarizeButton selectedText={selectedText} />
 				<button
 					aria-disabled={loading || atStart}
 					aria-label="Go to the previous page"
@@ -123,7 +128,6 @@ export default function Page() {
 				>
 					<ChevronRight />
 				</button>
-				<SummarizeButton selectedText={selectedText} />
 			</div>
 		</div>
 	);
@@ -149,7 +153,7 @@ function SummarizeButton({ selectedText }: { selectedText: string }) {
 	return (
 		<>
 			<Transition
-				show={selectedText.length >= 200}
+				show={selectedText.length >= 800}
 				enter="transition-opacity duration-300"
 				enterFrom="opacity-0"
 				enterTo="opacity-100"
