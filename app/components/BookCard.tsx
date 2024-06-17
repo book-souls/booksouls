@@ -26,6 +26,7 @@ export function BookCard({ book }: BookCardProps) {
 			positioning: {
 				placement: "right",
 			},
+			closeOnScroll: false,
 		}),
 	);
 	const api = tooltip.connect(state, send, normalizeProps);
