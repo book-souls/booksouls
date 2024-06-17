@@ -3,7 +3,7 @@ import type { action } from "./action.server";
 
 export function useSummarize() {
 	const fetcher = useFetcher<typeof action>();
-	const state = fetcher.state;
+	const submitting = fetcher.state === "submitting";
 	const summary = fetcher.data?.summary;
 	const error = fetcher.data?.error;
 
@@ -15,5 +15,5 @@ export function useSummarize() {
 		});
 	}
 
-	return { submit, state, summary, error };
+	return { submit, submitting, summary, error };
 }
