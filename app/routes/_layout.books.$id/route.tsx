@@ -1,7 +1,7 @@
-import { Await, Link, useFetcher, useLoaderData } from "@remix-run/react";
+import { Link, useFetcher, useLoaderData } from "@remix-run/react";
 import type { User } from "@supabase/supabase-js";
-import { AlertCircleIcon, Star } from "lucide-react";
-import React, { Suspense, useEffect } from "react";
+import { Star } from "lucide-react";
+import React, { useEffect } from "react";
 import { toast } from "sonner";
 import { BookCard } from "~/components/BookCard";
 import { BookImage } from "~/components/BookImage";
@@ -11,7 +11,7 @@ import { loader, type SimilarBook } from "./loader.server";
 export { loader, action };
 
 export default function Page() {
-	const { book, favorite, user, similarBooks } = useLoaderData<typeof loader>();
+	const { user, book, favorite, similarBooks } = useLoaderData<typeof loader>();
 	return (
 		<main className="mx-auto max-w-4xl px-8">
 			<section className="flex items-center gap-8 pt-12">
@@ -49,11 +49,7 @@ export default function Page() {
 			</section>
 			<section className="py-8">
 				<h2 className="text-2xl font-medium">Similar Books</h2>
-				<Suspense fallback={<SimilarBooksPlaceholder />}>
-					<Await resolve={similarBooks} errorElement={<SimilarBooksError />}>
-						{(books) => <SimilarBooks books={books} />}
-					</Await>
-				</Suspense>
+				<SimilarBooks books={similarBooks} />
 			</section>
 		</main>
 	);
@@ -100,32 +96,6 @@ function FavoriteButton({ favorite, user }: { favorite: boolean; user: User | nu
 				/>
 			</button>
 		</fetcher.Form>
-	);
-}
-
-function SimilarBooksPlaceholder() {
-	return (
-		<>
-			<span className="sr-only">Loading</span>
-			<div className="flex pb-6 pt-4">
-				{Array(4)
-					.fill(null)
-					.map((_, i) => (
-						<div key={i} className="shrink-0 basis-1/4">
-							<div className="mx-auto h-[240px] w-[160px] animate-pulse rounded-lg bg-gray-400 shadow-md" />
-						</div>
-					))}
-			</div>
-		</>
-	);
-}
-
-function SimilarBooksError() {
-	return (
-		<div className="flex h-[240px] flex-col items-center justify-center pb-6 pt-4">
-			<AlertCircleIcon size={32} aria-label="Error" className="text-red-600" />
-			<p className="mt-3 text-xl">An error has occured</p>
-		</div>
 	);
 }
 
