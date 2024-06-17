@@ -39,8 +39,7 @@ async function getBookSearchResults(supabase: SupabaseClient, query: string) {
 }
 
 export async function generateSearchEmbedding(query: string) {
-	const url = new URL("/vectorize", process.env.RECOMMENDATION_BASE_URL);
-	const response = await fetch(url, {
+	const response = await fetch("https://api.booksouls.site/vectorize", {
 		method: "POST",
 		body: JSON.stringify({
 			input: preprocessSearchQuery(query),
