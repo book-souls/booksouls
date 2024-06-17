@@ -1,8 +1,7 @@
 import type { User } from "@supabase/supabase-js";
-import { defer, type LoaderFunctionArgs } from "@vercel/remix";
+import { json, type LoaderFunctionArgs } from "@vercel/remix";
 import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
 import { bookNotFound } from "~/utils/not-found";
-import { generateSearchEmbedding } from "~/utils/search.server";
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
 	const id = Number(params.id);
@@ -16,12 +15,13 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 		data: { user },
 	} = await supabase.auth.getUser();
 
-	const [book, favorite] = await Promise.all([
+	const [book, favorite, similarBooks] = await Promise.all([
 		getBook(supabase, id),
 		isFavoriteBook(supabase, user, id),
+		getSimilarBooks(supabase, id),
 	]);
-	const similarBooks = getSimilarBooks(supabase, book);
-	return defer({ book, favorite, user, similarBooks }, { headers });
+
+	return json({ user, book, favorite, similarBooks }, { headers });
 }
 
 async function getBook(supabase: SupabaseClient, id: number) {
@@ -61,16 +61,12 @@ export async function isFavoriteBook(supabase: SupabaseClient, user: User | null
 	return count !== null && count > 0;
 }
 
-async function getSimilarBooks(
-	supabase: SupabaseClient,
-	book: { id: number; description: string },
-) {
-	const embedding = await generateSearchEmbedding(book.description);
+async function getSimilarBooks(supabase: SupabaseClient, id: number) {
 	const { data: results, error } = await supabase
-		.rpc("book_search", {
-			query_embedding: JSON.stringify(embedding),
+		.rpc("book_recommendations", {
+			book_id: id,
 			match_threshold: 0.5,
-			match_limit: 9,
+			match_limit: 8,
 		})
 		.select(
 			"id, title, image, imageScaled:image_scaled, author, shortDescription:short_description, author",
@@ -80,8 +76,7 @@ async function getSimilarBooks(
 		throw error;
 	}
 
-	// Don't suggest the same book.
-	return results.filter(({ id }) => book.id !== id);
+	return results;
 }
 
 export type SimilarBook = Awaited<ReturnType<typeof getSimilarBooks>>[number];

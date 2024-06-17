@@ -89,6 +89,29 @@ export type Database = {
 			[_ in never]: never;
 		};
 		Functions: {
+			book_recommendations: {
+				Args: {
+					book_id: number;
+					match_threshold: number;
+					match_limit: number;
+				};
+				Returns: {
+					author: string;
+					description: string;
+					description_embedding: string | null;
+					epub: string;
+					epub_file_name: string;
+					fts: unknown;
+					genres: string[];
+					id: number;
+					image: string;
+					image_file_name: string;
+					image_scaled: string;
+					is_featured: boolean;
+					short_description: string;
+					title: string;
+				}[];
+			};
 			book_search: {
 				Args: {
 					query_embedding: string;
