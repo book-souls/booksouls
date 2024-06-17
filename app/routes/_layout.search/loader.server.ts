@@ -25,7 +25,7 @@ async function getBookSearchResults(supabase: SupabaseClient, query: string) {
 		.rpc("hybrid_book_search", {
 			query,
 			query_embedding: JSON.stringify(embedding),
-			match_limit: 30,
+			match_limit: 10,
 		})
 		.select(
 			"id, title, genres, author, shortDescription:short_description, image, imageScaled:image_scaled",
