@@ -228,13 +228,13 @@ function LoadingDots() {
 				r="4"
 				cx="50%"
 				cy="50%"
-				className="animate-bounce [animation-duration:900ms] [animation-delay:150ms]"
+				className="animate-bounce [animation-delay:150ms] [animation-duration:900ms]"
 			/>
 			<circle
 				r="4"
 				cx="36"
 				cy="50%"
-				className="animate-bounce [animation-duration:900ms] [animation-delay:300ms]"
+				className="animate-bounce [animation-delay:300ms] [animation-duration:900ms]"
 			/>
 		</svg>
 	);
