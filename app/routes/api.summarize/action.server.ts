@@ -5,9 +5,9 @@ export async function action({ request }: ActionFunctionArgs) {
 	try {
 		const input = await request.text();
 		const { generated_text: summary } = await textGeneration({
-			model: "booksouls/long-t5-tglobal-base",
+			model: "booksouls/bart-large-cnn",
 			inputs: input,
-			accessToken: process.env.HF_API_KEY,
+			accessToken: process.env.HF_TOKEN,
 		});
 		return { summary, error: false };
 	} catch (error) {
