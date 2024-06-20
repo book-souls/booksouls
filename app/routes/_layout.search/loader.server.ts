@@ -1,4 +1,4 @@
-import type { LoaderFunctionArgs } from "@remix-run/server-runtime";
+import { json, type LoaderFunctionArgs } from "@vercel/remix";
 import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
 import { isNumber } from "~/utils/validate";
 
@@ -15,7 +15,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 		return { results, error: null };
 	} catch (error) {
 		console.error("Failed to get search results:", error);
-		return { results: null, error: true };
+		return json({ results: null, error: true }, { status: 500 });
 	}
 }
 
