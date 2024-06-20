@@ -1,4 +1,4 @@
-import { type LoaderFunctionArgs } from "@vercel/remix";
+import type { LoaderFunctionArgs } from "@vercel/remix";
 import { createServerClient, type SupabaseClient } from "~/supabase/client.server";
 import { bookNotFound } from "~/utils/not-found";
 
