@@ -238,7 +238,7 @@ function ChatbotMessage({
 	}
 
 	if (data.timeout) {
-		return <TypingEffect text="We are experiencing downtime. Please try again in a few minutes." />;
+		return <TypingEffect text="Request timed out. Please try again in a few minutes." />;
 	}
 
 	return <TypingEffect text="Failed to summarize. Please try again later." />;
