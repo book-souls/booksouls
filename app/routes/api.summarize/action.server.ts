@@ -8,8 +8,9 @@ const HF_TOKEN = env("HF_TOKEN");
 export async function action({ request }: ActionFunctionArgs) {
 	try {
 		const input = await request.text();
-		// Timeout manually before Vercel's timeout kicks in (60 seconds).
-		const signal = AbortSignal.timeout(55_000);
+		// If the cold start takes more than 30 seconds, just abort
+		// the request to avoid Vercel Function timeout errors.
+		const signal = AbortSignal.timeout(30_000);
 		return summarize(input, signal);
 	} catch (error) {
 		if (error instanceof Error && error.name === "AbortError") {
