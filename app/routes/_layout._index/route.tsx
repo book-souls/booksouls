@@ -17,7 +17,7 @@ export default function Page() {
 			<div className="line-gradient" />
 			<FeatureSection
 				title="Smart Suggestions"
-				description="Smart suggestions based on the content of the book"
+				description="Smart suggestions based on the content of the book to enhance the user experience"
 				video={similarBooks}
 			/>
 			<FeatureSection
@@ -76,7 +76,13 @@ function FeatureSection({
 					</h2>
 					<p className="mt-8 text-justify text-lg">{description}</p>
 				</div>
-				<video autoPlay loop muted playsInline className="aspect-[3/2] w-[480px] rounded-xl">
+				<video
+					autoPlay
+					loop
+					muted
+					playsInline
+					className="aspect-[3/2] w-[480px] rounded-xl xl:w-[640px]"
+				>
 					<source src={video} type="video/mp4" />
 				</video>
 			</div>
