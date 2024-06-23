@@ -31,7 +31,6 @@ export default function Page() {
 				description="Summarize books in seconds with our AI-powered summarization tool"
 				video={summarization}
 			/>
-			<div className="mt-16" />
 			<FeaturedBooksSection books={featuredBooks} />
 		</main>
 	);
@@ -88,11 +87,11 @@ function FeatureSection({
 function FeaturedBooksSection({ books }: { books: FeaturedBook[] }) {
 	const headerId = useId();
 	return (
-		<section aria-labelledby={headerId} className="py-12">
+		<section aria-labelledby={headerId} className="pb-12 pt-32">
 			<h2 id={headerId} className="mb-8 text-center text-4xl font-medium uppercase">
 				Featured Books
 			</h2>
-			<ul role="list" className="mx-auto grid w-fit grid-cols-4 gap-8 lg:grid-cols-5">
+			<ul role="list" className="mx-auto grid w-fit grid-cols-4 gap-8 xl:grid-cols-5">
 				{books.map((book) => (
 					<li key={book.id}>
 						<BookCard book={book} />
