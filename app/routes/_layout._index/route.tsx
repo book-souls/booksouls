@@ -1,10 +1,8 @@
 import { useLoaderData } from "@remix-run/react";
 import { useId } from "react";
-import ReactPlayer from "react-player";
-import Read from "~/assets/read.svg?react";
-import Recomendation from "~/assets/recomendation.webm";
-import Search from "~/assets/search.webm";
-import Summarization from "~/assets/summarization.webm";
+import search from "~/assets/search.mp4";
+import similarBooks from "~/assets/similar-books.mp4";
+import summarization from "~/assets/summarization.mp4";
 import { BookCard } from "~/components/BookCard";
 import ConsoleText from "~/components/ConsoleText";
 import { loader, type FeaturedBook } from "./loader.server";
@@ -15,59 +13,78 @@ export default function Page() {
 	const { featuredBooks } = useLoaderData<typeof loader>();
 	return (
 		<main>
-			<Section1 />
+			<LandingSection />
 			<div className="line-gradient" />
-			<Section2
-				video={Summarization}
-				text="Summarize your books in seconds with our AI powered summarization tool"
+			<FeatureSection
+				title="Smart Suggestions"
+				description="Smart suggestions based on the content of the book"
+				video={similarBooks}
 			/>
-			<Section2
-				video={Recomendation}
-				reverse={true}
-				text="Get Books similar to any book you like with our AI powered recommendation tool"
+			<FeatureSection
+				title="Narrate your story"
+				description="Discover new books with our easy to use AI-powered search engine"
+				video={search}
+				reverse
 			/>
-			<Section2
-				video={Search}
-				text="Search for any book you like By Title, Author, or Description with our AI powered search tool"
+			<FeatureSection
+				title="Book Summarization"
+				description="Summarize books in seconds with our AI-powered summarization tool"
+				video={summarization}
 			/>
 			<div className="mt-16" />
-			<FeaturedBooksSection books={featuredBooks}/>
-			<div className="line-gradient" />
+			<FeaturedBooksSection books={featuredBooks} />
 		</main>
 	);
 }
 
-function Section1() {
+function LandingSection() {
 	return (
-		<section className="flex max-h-[calc(100vh-var(--header-h))] min-h-[400px] flex-row items-center bg-surface  text-on-surface">
-			<div className="flex w-[50%] justify-center items-center px-20">
+		<section className="flex max-h-[calc(100vh-var(--header-h))] min-h-[400px] flex-row items-center bg-surface text-on-surface">
+			<div className="flex w-[50%] items-center justify-center px-20">
 				<ConsoleText
 					words={["Your Reading Companion \n Summarized Texts \n & Thoughtful Book Choicess"]}
 					id="text"
 					colors={["#d2ecf9"]}
-					className="text-4xl font-medium "
+					className="text-4xl font-medium"
 				/>
 			</div>
 			<div className="mb-4 flex w-[50%] justify-center"></div>
 		</section>
 	);
 }
-function Section2({ text, video, reverse }: { text: string; video: string ; reverse?: boolean}) {
+
+function FeatureSection({
+	title,
+	description,
+	video,
+	reverse,
+}: {
+	title: string;
+	description: string;
+	video: string;
+	reverse?: boolean;
+}) {
+	const headerId = useId();
 	return (
-		<section className="  m-auto  mt-16 flex  w-[90%] flex-row  rounded-xl  justify-between text-on-surface data-[reverse='true']:flex-row-reverse " data-reverse = {reverse}>
-			
-				<div className="flex w-[30%] justify-center items-center  text-2xl   bg-surface p-10 mx-2 rounded-xl">
-					<div >{text}</div>
+		<section aria-labelledby={headerId} className="mx-auto w-fit pt-32">
+			<div
+				data-reverse={reverse}
+				className="flex flex-row items-center gap-12 rounded-xl bg-surface p-10 text-on-surface data-[reverse='true']:flex-row-reverse"
+			>
+				<div className="w-80">
+					<h2 id={headerId} className="text-3xl">
+						{title}
+					</h2>
+					<p className="mt-8 text-justify text-lg">{description}</p>
 				</div>
-				<div className=" flex w-[70%] justify-center overflow-hidden rounded-xl border border-gray-400 ">
-					<video autoPlay loop muted playsInline className="w-full">
-						<source src={video} type="video/mp4" />
-					</video>
-				</div>
-			
+				<video autoPlay loop muted playsInline className="aspect-[3/2] w-[480px] rounded-xl">
+					<source src={video} type="video/mp4" />
+				</video>
+			</div>
 		</section>
 	);
 }
+
 function FeaturedBooksSection({ books }: { books: FeaturedBook[] }) {
 	const headerId = useId();
 	return (
@@ -75,7 +92,7 @@ function FeaturedBooksSection({ books }: { books: FeaturedBook[] }) {
 			<h2 id={headerId} className="mb-8 text-center text-4xl font-medium uppercase">
 				Featured Books
 			</h2>
-			<ul role="list" className="mx-auto grid w-fit grid-cols-4 gap-8">
+			<ul role="list" className="mx-auto grid w-fit grid-cols-4 gap-8 lg:grid-cols-5">
 				{books.map((book) => (
 					<li key={book.id}>
 						<BookCard book={book} />
