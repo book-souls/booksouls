@@ -1,5 +1,6 @@
 import { useLoaderData } from "@remix-run/react";
 import { useId } from "react";
+import bot from "~/assets/Home Page Bot.svg";
 import search from "~/assets/search.mp4";
 import similarBooks from "~/assets/similar-books.mp4";
 import summarization from "~/assets/summarization.mp4";
@@ -47,7 +48,9 @@ function LandingSection() {
 					className="text-4xl font-medium"
 				/>
 			</div>
-			<div className="mb-4 flex w-[50%] justify-center"></div>
+			<div className="mb-4 flex w-[50%] justify-center">
+				<img src={bot} alt="Bot Next to Computer" className="max-w-[330px]" />
+			</div>
 		</section>
 	);
 }
