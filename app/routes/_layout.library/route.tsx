@@ -21,7 +21,7 @@ export function Books({ books }: { books: FavoriteBook[] }) {
 	}
 
 	return (
-		<ul role="list" className="mx-auto grid w-fit grid-cols-4 gap-8 p-8">
+		<ul role="list" className="mx-auto grid w-fit grid-cols-4 gap-8 p-8 xl:grid-cols-5">
 			{books.map((book) => (
 				<li key={book.id}>
 					<BookCard book={book} />
