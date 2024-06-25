@@ -6,6 +6,7 @@ import epubjs, { Contents, Rendition, type Location } from "epubjs";
 import { ChevronLeft, ChevronRight, HomeIcon, Loader2Icon, XIcon } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 import BotIcon from "~/assets/bot.svg?react";
+import { Typewriter } from "~/components/Typewriter";
 import { useSummarize } from "../api.summarize/use-summarize";
 import { loader } from "./loader.server";
 
@@ -199,9 +200,9 @@ function SummarizeButton({ selectedText }: { selectedText: string }) {
 									{submitting ? (
 										<LoadingDots />
 									) : error ? (
-										<TypingEffect text="Failed to summarize. Please try again later." />
+										<Typing text="Failed to summarize. Please try again later." />
 									) : summary != null ? (
-										<TypingEffect text={summary} />
+										<Typing text={summary} />
 									) : null}
 								</div>
 							</div>
@@ -240,36 +241,10 @@ function LoadingDots() {
 	);
 }
 
-function TypingEffect({ text }: { text: string }) {
-	const [index, setIndex] = useState(0);
-
-	useEffect(() => {
-		let start: number | null = null;
-		const requestId = window.requestAnimationFrame(function update(timestamp) {
-			if (start === null) {
-				start = timestamp;
-			}
-
-			const delayMs = 15;
-			const index = Math.floor((timestamp - start) / delayMs);
-			setIndex(index);
-
-			if (index < text.length) {
-				window.requestAnimationFrame(update);
-			}
-		});
-
-		return () => {
-			window.cancelAnimationFrame(requestId);
-		};
-	}, [text]);
-
+function Typing({ text }: { text: string }) {
 	return (
-		<p data-animating={index < text.length} className="relative">
-			{text.slice(0, index)}
-			{index < text.length && (
-				<span className="ml-1 inline-block h-3 w-[1ch] bg-current [animation:flicker_0.5s_infinite]" />
-			)}
-		</p>
+		<Typewriter tag="p" duration={text.length * 15}>
+			{text}
+		</Typewriter>
 	);
 }
