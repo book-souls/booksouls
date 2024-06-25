@@ -1,11 +1,11 @@
 import { useLoaderData } from "@remix-run/react";
 import { useId } from "react";
-import bot from "~/assets/Home Page Bot.svg";
+import BotIcon from "~/assets/home-page-bot.svg?react";
 import search from "~/assets/search.mp4";
 import similarBooks from "~/assets/similar-books.mp4";
 import summarization from "~/assets/summarization.mp4";
 import { BookCard } from "~/components/BookCard";
-import ConsoleText from "~/components/ConsoleText";
+import { Typewriter } from "~/components/Typewriter";
 import { loader, type FeaturedBook } from "./loader.server";
 
 export { loader };
@@ -15,7 +15,6 @@ export default function Page() {
 	return (
 		<main>
 			<LandingSection />
-			<div className="line-gradient" />
 			<FeatureSection
 				title="Smart Suggestions"
 				description="Smart suggestions based on the content of the book to enhance the user experience"
@@ -38,19 +37,42 @@ export default function Page() {
 }
 
 function LandingSection() {
+	const id = useId();
+	const headingId = `${id}:heading`;
+	const descriptionId = `${id}:description`;
+	const title = "Your Reading Companion";
+	const description = "Summarized Texts & Thoughtful Book Choices";
+	const animationFrequency = 40;
+	const animationDelay = 250;
 	return (
-		<section className="flex max-h-[calc(100vh-var(--header-h))] min-h-[400px] flex-row items-center bg-surface text-on-surface">
-			<div className="flex w-[50%] items-center justify-center px-20">
-				<ConsoleText
-					words={["Your Reading Companion \n Summarized Texts \n & Thoughtful Book Choicess"]}
-					id="text"
-					colors={["#d2ecf9"]}
-					className="text-4xl font-medium"
-				/>
+		<section
+			aria-labelledby={headingId}
+			aria-describedby={descriptionId}
+			className="flex h-[calc(100vh-var(--header-h))] max-h-[800px] min-h-[400px] flex-col bg-surface text-on-surface"
+		>
+			<div className="flex flex-grow flex-row items-center justify-center gap-20">
+				<div className="w-[600px]">
+					<Typewriter
+						tag="h1"
+						id={headingId}
+						duration={title.length * animationFrequency}
+						className="text-4xl font-medium"
+					>
+						{title}
+					</Typewriter>
+					<Typewriter
+						tag="p"
+						id={descriptionId}
+						duration={description.length * animationFrequency}
+						delay={title.length * animationFrequency + animationDelay}
+						className="mt-8 min-h-8 text-2xl"
+					>
+						{description}
+					</Typewriter>
+				</div>
+				<BotIcon role="img" aria-label="A bot next to a laptop" className="h-[auto] w-[250px]" />
 			</div>
-			<div className="mb-4 flex w-[50%] justify-center">
-				<img src={bot} alt="Bot Next to Computer" className="max-w-[330px]" />
-			</div>
+			<div className="line-gradient shrink-0" />
 		</section>
 	);
 }
@@ -66,15 +88,15 @@ function FeatureSection({
 	video: string;
 	reverse?: boolean;
 }) {
-	const headerId = useId();
+	const headingId = useId();
 	return (
-		<section aria-labelledby={headerId} className="mx-auto w-fit pt-32">
+		<section aria-labelledby={headingId} className="mx-auto w-fit pt-32">
 			<div
 				data-reverse={reverse}
 				className="flex flex-row items-center gap-12 rounded-xl bg-surface p-10 text-on-surface data-[reverse='true']:flex-row-reverse"
 			>
 				<div className="w-80">
-					<h2 id={headerId} className="text-3xl">
+					<h2 id={headingId} className="text-3xl font-medium">
 						{title}
 					</h2>
 					<p className="mt-8 text-justify text-lg">{description}</p>
@@ -94,10 +116,10 @@ function FeatureSection({
 }
 
 function FeaturedBooksSection({ books }: { books: FeaturedBook[] }) {
-	const headerId = useId();
+	const headingId = useId();
 	return (
-		<section aria-labelledby={headerId} className="pb-12 pt-32">
-			<h2 id={headerId} className="mb-8 text-center text-4xl font-medium uppercase">
+		<section aria-labelledby={headingId} className="pb-12 pt-32">
+			<h2 id={headingId} className="mb-8 text-center text-4xl font-medium uppercase">
 				Featured Books
 			</h2>
 			<ul role="list" className="mx-auto grid w-fit grid-cols-4 gap-8 xl:grid-cols-5">

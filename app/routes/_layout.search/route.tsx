@@ -96,10 +96,10 @@ function SearchResults({ results }: { results: Book[] | null }) {
 }
 
 function SearchResultsNotFound() {
-	const headerId = useId();
+	const headingId = useId();
 	return (
-		<section aria-labelledby={headerId} className="pt-12">
-			<h1 id={headerId} className="text-center text-2xl font-medium text-[#DE2A4C]">
+		<section aria-labelledby={headingId} className="pt-12">
+			<h1 id={headingId} className="text-center text-2xl font-medium text-[#DE2A4C]">
 				No Search Results Found!
 			</h1>
 			<SearchNotFound
@@ -112,10 +112,10 @@ function SearchResultsNotFound() {
 }
 
 function SearchResultsList({ results }: { results: Book[] }) {
-	const headerId = useId();
+	const headingId = useId();
 	return (
-		<section aria-labelledby={headerId} className="mx-auto max-w-3xl py-12">
-			<h1 id={headerId} className="text-2xl font-medium">
+		<section aria-labelledby={headingId} className="mx-auto max-w-3xl py-12">
+			<h1 id={headingId} className="text-2xl font-medium">
 				{results.length} Results Found
 			</h1>
 			<ul role="list" className="flex flex-col gap-8 pt-8">
