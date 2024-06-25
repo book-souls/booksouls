@@ -29,7 +29,7 @@ function SearchForm({ error }: { error: boolean | null }) {
 	const location = useLocation();
 	const query = new URLSearchParams(location.search).get("query") ?? "";
 	return (
-		<Form preventScrollReset>
+		<Form role="search" preventScrollReset>
 			<div className="mx-auto flex w-[600px] max-w-full border-2 border-primary focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-current">
 				<input
 					type="text"
