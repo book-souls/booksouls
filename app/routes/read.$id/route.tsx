@@ -1,7 +1,7 @@
 import { Transition, TransitionChild } from "@headlessui/react";
 import { Link, useLoaderData } from "@remix-run/react";
 import * as dialog from "@zag-js/dialog";
-import { normalizeProps, Portal, useMachine } from "@zag-js/react";
+import { mergeProps, normalizeProps, Portal, useMachine } from "@zag-js/react";
 import epubjs, { Contents, Rendition, type Location } from "epubjs";
 import { ChevronLeft, ChevronRight, HomeIcon, Loader2Icon, XIcon } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
@@ -135,16 +135,13 @@ export default function Page() {
 function SummarizeButton({ selectedText }: { selectedText: string }) {
 	const id = useId();
 	const { summarize, state, data } = useSummarizeFetcher();
-	const [dialogState, send] = useMachine(dialog.machine({ id }), {
-		context: {
-			onOpenChange({ open }) {
-				if (open) {
-					summarize(selectedText);
-				}
-			},
+	const [dialogState, send] = useMachine(dialog.machine({ id }));
+	const api = dialog.connect(dialogState, send, normalizeProps);
+	const triggerProps = mergeProps(api.getTriggerProps(), {
+		onClick() {
+			summarize(selectedText);
 		},
 	});
-	const api = dialog.connect(dialogState, send, normalizeProps);
 	return (
 		<>
 			<Transition
@@ -156,10 +153,7 @@ function SummarizeButton({ selectedText }: { selectedText: string }) {
 				leaveFrom="opacity-100"
 				leaveTo="opacity-0"
 			>
-				<button
-					{...api.getTriggerProps()}
-					className="button absolute bottom-4 left-1/2 -translate-x-1/2"
-				>
+				<button {...triggerProps} className="button absolute bottom-4 left-1/2 -translate-x-1/2">
 					Summarize
 				</button>
 			</Transition>
