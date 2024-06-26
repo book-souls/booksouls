@@ -30,7 +30,7 @@ export default function Page() {
 }
 
 function AboutUsSection() {
-	const headerId = useId();
+	const headingId = useId();
 
 	function navigateToVisionSection(event: React.MouseEvent) {
 		const vision = document.getElementById("vision");
@@ -42,12 +42,12 @@ function AboutUsSection() {
 
 	return (
 		<section
-			aria-labelledby={headerId}
+			aria-labelledby={headingId}
 			className="flex h-[calc(100vh-var(--header-h))] max-h-[800px] min-h-[500px] flex-col bg-surface text-on-surface"
 		>
 			<div className="flex flex-grow items-center justify-center gap-24 px-20">
 				<div className="flex flex-col items-center gap-10">
-					<h1 id={headerId} className="text-center text-4xl font-light uppercase tracking-widest">
+					<h1 id={headingId} className="text-center text-4xl font-light uppercase tracking-widest">
 						About Us
 					</h1>
 					<p className="max-w-2xl text-lg font-light leading-loose">
@@ -76,14 +76,14 @@ function AboutUsSection() {
 }
 
 function VisionSection() {
-	const headerId = useId();
+	const headingId = useId();
 	return (
 		<section
 			id="vision"
-			aria-labelledby={headerId}
+			aria-labelledby={headingId}
 			className="flex flex-col items-center px-20 pb-16 pt-10 text-primary"
 		>
-			<h2 id={headerId} className="text-lg uppercase">
+			<h2 id={headingId} className="text-lg uppercase">
 				Our Vision
 			</h2>
 			<p className="pt-5 text-4xl font-medium text-surface">Easy, Simple, and Delightful!</p>
@@ -107,13 +107,13 @@ function VisionSection() {
 }
 
 function FutureWorkSection() {
-	const headerId = useId();
+	const headingId = useId();
 	return (
 		<section
-			aria-labelledby={headerId}
+			aria-labelledby={headingId}
 			className="flex flex-col items-center bg-surface bg-opacity-10 px-20 pb-16 pt-10 text-primary"
 		>
-			<h2 id={headerId} className="text-lg uppercase">
+			<h2 id={headingId} className="text-lg uppercase">
 				Future Work
 			</h2>
 			<p className="pt-5 text-4xl font-medium text-surface">Shaping the Future: Ongoing Work</p>
@@ -128,10 +128,10 @@ function FutureWorkSection() {
 }
 
 function TeamSection() {
-	const headerId = useId();
+	const headingId = useId();
 	return (
-		<section aria-labelledby={headerId} className="flex flex-col items-center px-20 pb-16 pt-10">
-			<h2 id={headerId} className="text-lg uppercase">
+		<section aria-labelledby={headingId} className="flex flex-col items-center px-20 pb-16 pt-10">
+			<h2 id={headingId} className="text-lg uppercase">
 				The Team
 			</h2>
 			<p className="pt-5 text-4xl font-medium text-surface">Meet The Creators</p>

@@ -17,5 +17,6 @@ const unusedAssets = fs
 	.filter((asset) => scriptFiles.every((file) => !file.includes(asset)));
 
 for (const asset of unusedAssets) {
+	console.log("Deleting", asset);
 	fs.rmSync(path.join("app", "assets", asset));
 }

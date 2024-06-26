@@ -6,6 +6,7 @@ import epubjs, { Contents, Rendition, type Location } from "epubjs";
 import { ChevronLeft, ChevronRight, HomeIcon, Loader2Icon, XIcon } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 import BotIcon from "~/assets/bot.svg?react";
+import { Typewriter } from "~/components/Typewriter";
 import { useSummarizeFetcher, type SummarizeFetcher } from "../api.summarize/use-summarize-fetcher";
 import { loader } from "./loader.server";
 
@@ -234,14 +235,14 @@ function ChatbotMessage({
 	}
 
 	if (!data.error) {
-		return <TypingEffect text={data.summary} />;
+		return <Typing text={data.summary} />;
 	}
 
 	if (data.timeout) {
-		return <TypingEffect text="Request timed out. Please try again in a few minutes." />;
+		return <Typing text="Request timed out. Please try again in a few minutes." />;
 	}
 
-	return <TypingEffect text="Failed to summarize. Please try again later." />;
+	return <Typing text="Failed to summarize. Please try again later." />;
 }
 
 function LoadingDots() {
@@ -264,36 +265,10 @@ function LoadingDots() {
 	);
 }
 
-function TypingEffect({ text }: { text: string }) {
-	const [index, setIndex] = useState(0);
-
-	useEffect(() => {
-		let start: number | null = null;
-		const requestId = window.requestAnimationFrame(function update(timestamp) {
-			if (start === null) {
-				start = timestamp;
-			}
-
-			const delayMs = 15;
-			const index = Math.floor((timestamp - start) / delayMs);
-			setIndex(index);
-
-			if (index < text.length) {
-				window.requestAnimationFrame(update);
-			}
-		});
-
-		return () => {
-			window.cancelAnimationFrame(requestId);
-		};
-	}, [text]);
-
+function Typing({ text }: { text: string }) {
 	return (
-		<p>
-			{text.slice(0, index)}
-			{index < text.length && (
-				<span className="ml-1 inline-block h-3 w-[1ch] bg-current [animation:flicker_0.5s_infinite]" />
-			)}
-		</p>
+		<Typewriter tag="p" duration={text.length * 15}>
+			{text}
+		</Typewriter>
 	);
 }

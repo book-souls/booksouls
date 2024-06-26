@@ -29,7 +29,7 @@ function SearchForm({ error }: { error: boolean | null }) {
 	const location = useLocation();
 	const query = new URLSearchParams(location.search).get("query") ?? "";
 	return (
-		<Form>
+		<Form role="search" preventScrollReset>
 			<div className="mx-auto flex w-[600px] max-w-full border-2 border-primary focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-current">
 				<input
 					type="text"
@@ -96,10 +96,10 @@ function SearchResults({ results }: { results: Book[] | null }) {
 }
 
 function SearchResultsNotFound() {
-	const headerId = useId();
+	const headingId = useId();
 	return (
-		<section aria-labelledby={headerId} className="pt-12">
-			<h1 id={headerId} className="text-center text-2xl font-medium text-[#DE2A4C]">
+		<section aria-labelledby={headingId} className="pt-12">
+			<h1 id={headingId} className="text-center text-2xl font-medium text-[#DE2A4C]">
 				No Search Results Found!
 			</h1>
 			<SearchNotFound
@@ -112,10 +112,10 @@ function SearchResultsNotFound() {
 }
 
 function SearchResultsList({ results }: { results: Book[] }) {
-	const headerId = useId();
+	const headingId = useId();
 	return (
-		<section aria-labelledby={headerId} className="mx-auto max-w-3xl py-12">
-			<h1 id={headerId} className="text-2xl font-medium">
+		<section aria-labelledby={headingId} className="mx-auto max-w-3xl py-12">
+			<h1 id={headingId} className="text-2xl font-medium">
 				{results.length} Results Found
 			</h1>
 			<ul role="list" className="flex flex-col gap-8 pt-8">
