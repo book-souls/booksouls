@@ -193,27 +193,25 @@ function UserAvatar({ user }: { user: User }) {
 }
 
 function SignOutButton() {
-	const { signOut, state, data } = useSignOutFetcher();
-	const submitting = state === "submitting";
-	const error = data?.error;
+	const fetcher = useSignOutFetcher();
+	const loading = fetcher.state === "submitting";
 
 	useEffect(() => {
-		if (submitting || error == null) {
-			return;
+		if (fetcher.state === "idle" && fetcher.data?.error != null) {
+			toast.error("Failed to sign out", { description: fetcher.data.error });
 		}
-
-		toast.error("Failed to sign out", { description: error });
-	}, [submitting, error]);
+	}, [fetcher]);
 
 	return (
-		<button
-			aria-disabled={submitting}
-			className="button mx-auto flex bg-red-700 bg-none text-red-50 focus-visible:outline-red-700"
-			onClick={signOut}
-		>
-			Sign Out
-			{submitting ? <Loader2Icon className="animate-spin" /> : <LogOutIcon />}
-		</button>
+		<fetcher.Form method="post" action="/api/sign-out">
+			<button
+				aria-disabled={loading}
+				className="button mx-auto flex bg-red-700 bg-none text-red-50 focus-visible:outline-red-700"
+			>
+				Sign Out
+				{loading ? <Loader2Icon className="animate-spin" /> : <LogOutIcon />}
+			</button>
+		</fetcher.Form>
 	);
 }
 
