@@ -1,4 +1,4 @@
-import { Transition } from "@headlessui/react";
+import { Transition, TransitionChild } from "@headlessui/react";
 import { Link, useLoaderData } from "@remix-run/react";
 import * as dialog from "@zag-js/dialog";
 import { mergeProps, normalizeProps, Portal, useMachine } from "@zag-js/react";
@@ -7,7 +7,7 @@ import { ChevronLeft, ChevronRight, HomeIcon, Loader2Icon, XIcon } from "lucide-
 import { useEffect, useId, useRef, useState } from "react";
 import BotIcon from "~/assets/bot.svg?react";
 import { Typewriter } from "~/components/Typewriter";
-import { useSummarize } from "../api.summarize/use-summarize";
+import { useSummarizeFetcher, type SummarizeFetcher } from "../api.summarize/use-summarize-fetcher";
 import { loader } from "./loader.server";
 
 export { loader };
@@ -133,17 +133,15 @@ export default function Page() {
 }
 
 function SummarizeButton({ selectedText }: { selectedText: string }) {
-	const { submit, submitting, summary, error } = useSummarize();
 	const id = useId();
-	const [state, send] = useMachine(dialog.machine({ id }));
-	const api = dialog.connect(state, send, normalizeProps);
-
+	const { summarize, state, data } = useSummarizeFetcher();
+	const [dialogState, send] = useMachine(dialog.machine({ id }));
+	const api = dialog.connect(dialogState, send, normalizeProps);
 	const triggerProps = mergeProps(api.getTriggerProps(), {
 		onClick() {
-			submit(selectedText);
+			summarize(selectedText);
 		},
 	});
-
 	return (
 		<>
 			<Transition
@@ -160,80 +158,100 @@ function SummarizeButton({ selectedText }: { selectedText: string }) {
 				</button>
 			</Transition>
 			<Portal>
-				<Transition
-					show={api.open}
-					enter="duration-300 transition-opacity"
-					enterFrom="opacity-0"
-					enterTo="opacity-100"
-					leave="transition-opacity duration-300"
-					leaveFrom="opacity-100"
-					leaveTo="opacity-0"
-				>
-					<div
-						{...api.getBackdropProps()}
-						className="fixed inset-0 z-20 !block bg-black/50 backdrop-blur-sm"
-					/>
-				</Transition>
-				<Transition
-					show={api.open}
-					enter="motion-safe:transition-transform motion-safe:duration-500 motion-reduce:transition-opacity motion-reduce:duration-300"
-					enterFrom="motion-safe:translate-y-full motion-reduce:opacity-0"
-					enterTo="motion-safe:translate-y-0 motion-reduce:opacity-100"
-					leave="motion-safe:transition-[opacity,transform] motion-safe:duration-500 motion-reduce:transition-opacity motion-reduce:duration-300"
-					leaveFrom="opacity-100 motion-safe:scale-100"
-					leaveTo="opacity-0 motion-safe:scale-50"
-				>
-					<div
-						{...api.getPositionerProps()}
-						className="fixed inset-0 z-20 flex items-center justify-center"
+				<Transition show={api.open}>
+					<TransitionChild
+						enter="duration-300 transition-opacity"
+						enterFrom="opacity-0"
+						enterTo="opacity-100"
+						leave="transition-opacity duration-300"
+						leaveFrom="opacity-100"
+						leaveTo="opacity-0"
 					>
 						<div
-							{...api.getContentProps()}
-							className="relative !block h-full max-h-[500px] w-full max-w-[600px] overflow-y-auto rounded-xl bg-floating p-6 pt-16 text-on-floating"
+							{...api.getBackdropProps()}
+							className="fixed inset-0 z-20 !block bg-black/50 backdrop-blur-sm"
+						/>
+					</TransitionChild>
+					<TransitionChild
+						enter="motion-safe:transition-transform motion-safe:duration-500 motion-reduce:transition-opacity motion-reduce:duration-300"
+						enterFrom="motion-safe:translate-y-full motion-reduce:opacity-0"
+						enterTo="motion-safe:translate-y-0 motion-reduce:opacity-100"
+						leave="motion-safe:transition-[opacity,transform] motion-safe:duration-500 motion-reduce:transition-opacity motion-reduce:duration-300"
+						leaveFrom="opacity-100 motion-safe:scale-100"
+						leaveTo="opacity-0 motion-safe:scale-50"
+					>
+						<div
+							{...api.getPositionerProps()}
+							className="fixed inset-0 z-20 flex items-center justify-center"
 						>
-							<p className="ml-auto w-fit rounded-3xl bg-primary-light/35 px-4 py-2 text-sm">
-								Summarize the highlighted text
-							</p>
-							<div className="flex gap-4 pt-6">
-								<BotIcon role="img" aria-label="Chatbot" className="size-9 shrink-0" />
-								<div aria-live="polite" className="rounded-3xl bg-primary/35 px-4 py-2 text-sm">
-									{submitting ? (
-										<LoadingDots />
-									) : error ? (
-										<Typing text="Failed to summarize. Please try again later." />
-									) : summary != null ? (
-										<Typing text={summary} />
-									) : null}
-								</div>
-							</div>
-							<button
-								{...api.getCloseTriggerProps()}
-								aria-label="Close dialog"
-								className="icon-button absolute right-3 top-3 size-8"
+							<div
+								{...api.getContentProps()}
+								className="relative !block h-full max-h-[500px] w-full max-w-[600px] overflow-y-auto rounded-xl bg-floating p-6 pt-16 text-on-floating"
 							>
-								<XIcon className="size-5" />
-							</button>
+								<p className="ml-auto w-fit rounded-3xl bg-primary-light/35 px-4 py-2 text-sm">
+									Summarize the highlighted text
+								</p>
+								<div className="flex gap-4 pt-6">
+									<BotIcon role="img" aria-label="Chatbot" className="size-9 shrink-0" />
+									<div aria-live="polite" className="rounded-3xl bg-primary/35 px-4 py-2 text-sm">
+										<ChatbotMessage state={state} data={data} />
+									</div>
+								</div>
+								<button
+									{...api.getCloseTriggerProps()}
+									aria-label="Close dialog"
+									className="icon-button absolute right-3 top-3 size-8"
+								>
+									<XIcon className="size-5" />
+								</button>
+							</div>
 						</div>
-					</div>
+					</TransitionChild>
 				</Transition>
 			</Portal>
 		</>
 	);
 }
 
+function ChatbotMessage({
+	state,
+	data,
+}: {
+	state: SummarizeFetcher["state"];
+	data: SummarizeFetcher["data"];
+}) {
+	if (state === "submitting") {
+		return <LoadingDots />;
+	}
+
+	if (data === undefined) {
+		return null;
+	}
+
+	if (!data.error) {
+		return <Typing text={data.summary} />;
+	}
+
+	if (data.timeout) {
+		return <Typing text="Request timed out. Please try again in a few minutes." />;
+	}
+
+	return <Typing text="Failed to summarize. Please try again later." />;
+}
+
 function LoadingDots() {
 	return (
 		<svg width={40} height={20} aria-label="Loading" className="translate-y-[12.5%]">
-			<circle r="4" cx="4" cy="50%" className="animate-bounce [animation-duration:900ms]" />
+			<circle r="4.5" cx="4.5" cy="50%" className="animate-bounce [animation-duration:900ms]" />
 			<circle
-				r="4"
+				r="4.5"
 				cx="50%"
 				cy="50%"
 				className="animate-bounce [animation-delay:150ms] [animation-duration:900ms]"
 			/>
 			<circle
-				r="4"
-				cx="36"
+				r="4.5"
+				cx="35.5"
 				cy="50%"
 				className="animate-bounce [animation-delay:300ms] [animation-duration:900ms]"
 			/>

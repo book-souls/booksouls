@@ -17,7 +17,7 @@ import { toast } from "sonner";
 import footerLogo from "~/assets/footer-logo.svg";
 import { Logo } from "~/components/Logo";
 import { genres } from "~/utils/genres";
-import { useSignOut } from "../api.sign-out/use-sign-out";
+import { useSignOutFetcher } from "../api.sign-out/use-sign-out-fetcher";
 import { loader } from "./loader.server";
 
 export { loader };
@@ -193,7 +193,9 @@ function UserAvatar({ user }: { user: User }) {
 }
 
 function SignOutButton() {
-	const { submit, submitting, error } = useSignOut();
+	const { signOut, state, data } = useSignOutFetcher();
+	const submitting = state === "submitting";
+	const error = data?.error;
 
 	useEffect(() => {
 		if (submitting || error == null) {
@@ -207,7 +209,7 @@ function SignOutButton() {
 		<button
 			aria-disabled={submitting}
 			className="button mx-auto flex bg-red-700 bg-none text-red-50 focus-visible:outline-red-700"
-			onClick={submit}
+			onClick={signOut}
 		>
 			Sign Out
 			{submitting ? <Loader2Icon className="animate-spin" /> : <LogOutIcon />}
