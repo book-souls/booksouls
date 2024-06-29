@@ -46,10 +46,10 @@ export function Typewriter({
 				const index = Math.floor((timestamp - start) / frequnecy);
 				setIndex(index);
 
-				if (index === children.length) {
-					setTyping(false);
-				} else {
+				if (index < children.length) {
 					window.requestAnimationFrame(updateText);
+				} else {
+					setTyping(false);
 				}
 			});
 		}, delayRef.current);
@@ -67,6 +67,11 @@ export function Typewriter({
 			<Tag id={id} className="sr-only">
 				{children}
 			</Tag>
+			<noscript>
+				<p aria-hidden className={className}>
+					{children}
+				</p>
+			</noscript>
 			<p aria-hidden className={className}>
 				{children.slice(0, index)}
 				{typing && (

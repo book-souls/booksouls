@@ -1,7 +1,7 @@
 import { Transition, TransitionChild } from "@headlessui/react";
 import { Link, useLoaderData } from "@remix-run/react";
 import * as dialog from "@zag-js/dialog";
-import { mergeProps, normalizeProps, Portal, useMachine } from "@zag-js/react";
+import { normalizeProps, Portal, useMachine } from "@zag-js/react";
 import epubjs, { Contents, Rendition, type Location } from "epubjs";
 import { ChevronLeft, ChevronRight, HomeIcon, Loader2Icon, XIcon } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
@@ -134,14 +134,9 @@ export default function Page() {
 
 function SummarizeButton({ selectedText }: { selectedText: string }) {
 	const id = useId();
-	const { summarize, state, data } = useSummarizeFetcher();
+	const fetcher = useSummarizeFetcher();
 	const [dialogState, send] = useMachine(dialog.machine({ id }));
 	const api = dialog.connect(dialogState, send, normalizeProps);
-	const triggerProps = mergeProps(api.getTriggerProps(), {
-		onClick() {
-			summarize(selectedText);
-		},
-	});
 	return (
 		<>
 			<Transition
@@ -153,9 +148,16 @@ function SummarizeButton({ selectedText }: { selectedText: string }) {
 				leaveFrom="opacity-100"
 				leaveTo="opacity-0"
 			>
-				<button {...triggerProps} className="button absolute bottom-4 left-1/2 -translate-x-1/2">
-					Summarize
-				</button>
+				<fetcher.Form method="post" action="/api/summarize">
+					<input type="hidden" name="input" value={selectedText} />
+					<button
+						{...api.getTriggerProps()}
+						type="submit"
+						className="button absolute bottom-4 left-1/2 -translate-x-1/2"
+					>
+						Summarize
+					</button>
+				</fetcher.Form>
 			</Transition>
 			<Portal>
 				<Transition show={api.open}>
@@ -194,7 +196,7 @@ function SummarizeButton({ selectedText }: { selectedText: string }) {
 								<div className="flex gap-4 pt-6">
 									<BotIcon role="img" aria-label="Chatbot" className="size-9 shrink-0" />
 									<div aria-live="polite" className="rounded-3xl bg-primary/35 px-4 py-2 text-sm">
-										<ChatbotMessage state={state} data={data} />
+										<ChatbotMessage state={fetcher.state} data={fetcher.data} />
 									</div>
 								</div>
 								<button
@@ -213,30 +215,20 @@ function SummarizeButton({ selectedText }: { selectedText: string }) {
 	);
 }
 
-function ChatbotMessage({
-	state,
-	data,
-}: {
-	state: SummarizeFetcher["state"];
-	data: SummarizeFetcher["data"];
-}) {
+function ChatbotMessage({ state, data }: Pick<SummarizeFetcher, "state" | "data">) {
 	if (state === "submitting") {
 		return <LoadingDots />;
 	}
 
-	if (data === undefined) {
-		return null;
+	if (data?.error === true) {
+		return <Typing text="Failed to summarize. Please try again later." />;
 	}
 
-	if (!data.error) {
+	if (data?.summary != null) {
 		return <Typing text={data.summary} />;
 	}
 
-	if (data.timeout) {
-		return <Typing text="Request timed out. Please try again in a few minutes." />;
-	}
-
-	return <Typing text="Failed to summarize. Please try again later." />;
+	return null;
 }
 
 function LoadingDots() {

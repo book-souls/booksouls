@@ -1,22 +1,55 @@
-import { Form, Link, useLoaderData, useLocation, useNavigation } from "@remix-run/react";
+import { Link } from "@remix-run/react";
 import { Loader2Icon, Search } from "lucide-react";
 import { useEffect, useId } from "react";
 import { toast } from "sonner";
 import SearchBooks from "~/assets/search-books.svg?react";
 import SearchNotFound from "~/assets/search-not-found.svg?react";
 import { BookImage } from "~/components/BookImage";
-import { loader, type Book } from "./loader.server";
-
-export { loader };
+import type { SearchResult } from "../api.search/action.server";
+import { useSearchFetcher } from "../api.search/use-search-fetcher";
 
 export default function Page() {
-	const { results, error } = useLoaderData<typeof loader>();
+	const descriptionId = useId();
+	const fetcher = useSearchFetcher();
+	const loading = fetcher.state === "submitting";
+
+	useEffect(() => {
+		if (fetcher.state === "idle" && fetcher.data?.error === true) {
+			toast.error("Failed to search. Please try again later.");
+		}
+	}, [fetcher]);
+
 	return (
 		<main>
 			<div className="px-8 pt-16">
-				<SearchForm error={error} />
+				<fetcher.Form method="post" action="/api/search" role="search" preventScrollReset>
+					<div className="mx-auto flex w-[600px] max-w-full border-2 border-primary focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-current">
+						<input
+							type="text"
+							name="query"
+							placeholder="Search..."
+							required
+							aria-label="Search"
+							aria-describedby={descriptionId}
+							className="w-full bg-transparent px-3 placeholder:text-primary/60 focus:outline-none"
+						/>
+						<button
+							type="submit"
+							tabIndex={-1}
+							aria-disabled={loading}
+							aria-label={loading ? "Searching" : "Search"}
+							className="flex h-12 w-12 shrink-0 items-center justify-center bg-primary text-on-primary"
+						>
+							{loading ? <Loader2Icon className="animate-spin" /> : <Search />}
+						</button>
+					</div>
+					<p id={descriptionId} className="mx-auto mt-3 w-[400px] text-center">
+						Our <strong className="font-medium">AI-Powered Search</strong> helps you discover books
+						matching your description
+					</p>
+				</fetcher.Form>
 				<div aria-live="polite">
-					<SearchResults results={results} />
+					<SearchResults results={fetcher.data?.results} />
 				</div>
 			</div>
 			<div className="line-gradient" />
@@ -24,61 +57,8 @@ export default function Page() {
 	);
 }
 
-function SearchForm({ error }: { error: boolean | null }) {
-	const descriptionId = useId();
-	const location = useLocation();
-	const query = new URLSearchParams(location.search).get("query") ?? "";
-	return (
-		<Form role="search" preventScrollReset>
-			<div className="mx-auto flex w-[600px] max-w-full border-2 border-primary focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-current">
-				<input
-					type="text"
-					name="query"
-					defaultValue={query}
-					placeholder="Search..."
-					required
-					aria-label="Search"
-					aria-describedby={descriptionId}
-					className="w-full bg-transparent px-3 placeholder:text-primary/60 focus:outline-none"
-				/>
-				<SearchSubmit error={error} />
-			</div>
-			<p id={descriptionId} className="mx-auto mt-3 w-[400px] text-center">
-				Our <strong className="font-medium">AI-Powered Search</strong> helps you discover books
-				matching your description
-			</p>
-		</Form>
-	);
-}
-
-function SearchSubmit({ error }: { error: boolean | null }) {
-	const navigation = useNavigation();
-	const idle = navigation.state === "idle";
-	const loading = navigation.state === "loading" && navigation.location.pathname === "/search";
-
-	useEffect(() => {
-		if (!idle || !error) {
-			return;
-		}
-
-		toast.error("Failed to search. Please try again later.");
-	}, [idle, error]);
-
-	return (
-		<button
-			type="submit"
-			tabIndex={-1}
-			aria-disabled={loading}
-			aria-label={loading ? "Searching" : "Search"}
-			className="flex h-12 w-12 shrink-0 items-center justify-center bg-primary text-on-primary"
-		>
-			{loading ? <Loader2Icon className="animate-spin" /> : <Search />}
-		</button>
-	);
-}
-
-function SearchResults({ results }: { results: Book[] | null }) {
-	if (results === null) {
+function SearchResults({ results }: { results: SearchResult[] | null | undefined }) {
+	if (results == null) {
 		return (
 			<SearchBooks
 				role="img"
@@ -111,7 +91,7 @@ function SearchResultsNotFound() {
 	);
 }
 
-function SearchResultsList({ results }: { results: Book[] }) {
+function SearchResultsList({ results }: { results: SearchResult[] }) {
 	const headingId = useId();
 	return (
 		<section aria-labelledby={headingId} className="mx-auto max-w-3xl py-12">
