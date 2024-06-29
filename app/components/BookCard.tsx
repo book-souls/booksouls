@@ -21,7 +21,7 @@ export function BookCard({ book }: BookCardProps) {
 	const [state, send] = useMachine(
 		tooltip.machine({
 			id,
-			openDelay: 1000,
+			openDelay: 500,
 			closeDelay: 0,
 			positioning: {
 				placement: "right",
